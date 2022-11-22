@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.flatcode.simplemultiapps">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@drawable/logo"
+        android:supportsRtl="false"
+        android:theme="@style/OneTheme"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:supportsRtl"
+        tools:targetApi="33">
+        <activity
+            android:name=".MainApp.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainApp.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".StopWatch.StopWatchActivity" />
+        <activity android:name=".RandomImgGenerating.RandomImgGeneratingActivity" />
+        <activity android:name=".RandomImgGenerating.ImageInfoActivity" />
+        <activity android:name=".CandyCrushGame.CandyCrushGameActivity" />
+        <activity android:name=".MultipleDelete.MultiDeleteActivity" />
+        <activity android:name=".BloggerApp.Activity.PageDetailsActivity" />
+        <activity android:name=".BloggerApp.Activity.PagesActivity" />
+        <activity android:name=".BloggerApp.Activity.PostDetailsActivity" />
+        <activity android:name=".BloggerApp.Activity.BloggerAppActivity" />
+        <activity android:name=".JokeApp.JokeAppActivity" />
+        <activity android:name=".LiveTV.Activity.CategoriesActivity" />
+        <activity android:name=".LiveTV.Activity.CategoryDetailsActivity" />
+        <activity
+            android:name=".LiveTV.Activity.LiveTVDetailsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity android:name=".LiveTV.Activity.LiveTVActivity" />
+        <activity android:name=".NewsApp.Activity.NewsAppActivity" />
+        <activity android:name=".NewsApp.Activity.NewsAppDetailsActivity" />
+        <activity android:name=".VideoPlayer.Activity.VideoPlayerActivity" />
+        <activity android:name=".VideoPlayer.Activity.PlayerActivity" />
+        <activity android:name=".VideoPlayer.Activity.VideoFolderActivity" />
+        <activity android:name=".WebApp.WebAppActivity" />
+        <activity android:name=".WebApp.WebViewActivity" />
+        <activity
+            android:name=".PdfReader.Activity.PdfReaderActivity"
+            android:documentLaunchMode="intoExisting" />
+        <activity
+            android:name=".PdfReader.Activity.PdfReaderIntroActivity"
+            android:label="@string/intro"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity
+            android:name=".Wordpress.Activity.WordpressFavoritesActivity"/>
+        <activity
+            android:name=".Wordpress.Activity.WordpressActivity" />
+        <activity
+            android:name=".Wordpress.Activity.WordpressDetailsActivity"
+            android:theme="@style/Theme.WpToAndroidApp" />
+    </application>
+
+</manifest>

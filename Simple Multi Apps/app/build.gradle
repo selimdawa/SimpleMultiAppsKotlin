@@ -1,0 +1,81 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+android {
+    compileSdk 33
+    //buildToolsVersion "33.0.3"
+
+    defaultConfig {
+        applicationId "com.flatcode.simplemultiapps"
+        minSdk 23
+        targetSdk 33
+        versionCode 3
+        versionName "1.2"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        release {
+            storeFile file('D:\\MyProjects\\Kotlin\\Simple Multi Apps\\Simple Multi Apps\\SimpleMultiApps.jks')
+            storePassword '00000000'
+            keyAlias = 'SimpleMultiApps'
+            keyPassword '00000000'
+        }
+    }
+    buildTypes {
+        release {
+            //minifyEnabled false
+            //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_11
+            targetCompatibility JavaVersion.VERSION_11
+        }
+
+        buildFeatures {
+            dataBinding true
+        }
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    namespace 'com.flatcode.simplemultiapps'
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.9.0'                      //Kotlin Core
+    implementation 'androidx.appcompat:appcompat:1.4.2'                //Appcompat for class
+    implementation 'androidx.preference:preference:1.2.0'              //Shared preference
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    //Layout
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'  //Constraint Layout
+    implementation 'com.google.android.material:material:1.6.1'        //Material
+    implementation 'androidx.cardview:cardview:1.0.0'                  //Card View
+    //Pdf Reader
+    implementation 'com.github.paolorotolo:appintro:v5.1.0'
+    implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
+    implementation 'com.github.franmontiel:AttributionPresenter:1.0.1'
+    implementation 'io.github.tonnyl:whatsnew:0.1.1'
+    //Image
+    //implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'                //Circle image
+    implementation 'com.github.bumptech.glide:glide:4.12.0'            //Glide image
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'    //Glide compiler
+    //Multi delete demo
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    //Others
+    implementation 'org.jsoup:jsoup:1.13.1'
+    implementation 'com.google.android.exoplayer:exoplayer:2.14.2'
+    implementation 'com.android.volley:volley:1.2.1'
+    //News & Wordpress
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    //Wordpress
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.google.code.gson:gson:2.8.9'
+}

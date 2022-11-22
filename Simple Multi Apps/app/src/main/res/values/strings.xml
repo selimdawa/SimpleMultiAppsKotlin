@@ -1,0 +1,84 @@
+<resources>
+    <string name="app_name">Simple Multi Apps</string>
+    //Day Theme
+    <string name="one_theme">Day Mode</string>
+    <string name="two_theme">Gradual</string>
+    <string name="three_theme">Blue</string>
+    <string name="four_theme">Orange 1</string>
+    <string name="five_theme">Orange 2</string>
+    <string name="six_theme">Fuchsia</string>
+    <string name="seven_theme">Pink</string>
+    <string name="eight_theme">Brouwn</string>
+    <string name="nine_theme">Red</string>
+    <string name="teen_theme">Green</string>
+    //Night Theme
+    <string name="night_theme">Night Mode</string>
+    <string name="corner_one">Gradual 1</string>
+    <string name="corner_two">Gradual 2</string>
+    <string name="corner_three">Gradual 3</string>
+    <string name="corner_four">Gradual 4</string>
+    <string name="corner_five">Gradual 5</string>
+    <string name="corner_six">Gradual 6</string>
+    //Needed
+    <string name="none_display">There are no items to display</string>
+    <string name="categories">Categories</string>
+    <string name="post_details">Post Details</string>
+    <string name="blogger_pages">Tip Top Pages</string>
+    <string name="page_details">Page Details</string>
+    <string name="blogger_name">Tip Top Blogger</string>
+    <string name="candy_crush_game">Candy Crush Game</string>
+    <string name="image_info">Image Info</string>
+    <string name="random_img_generating">Random Img Generating</string>
+    <string name="stop_watch">Stop Watch</string>
+    <string name="joke">Joke</string>
+    <string name="web_app">Web App</string>
+    <string name="live_tv">Live TV</string>
+    //Blogger
+    <string name="search">Search</string>
+    <string name="load_more">Load More</string>
+    <string name="labels">Labels</string>
+    <string name="comments">Comments</string>
+    //Joke App
+    <string name="programming">Programming</string>
+    <string name="first_line">First Line"</string>
+    <string name="second_line">Second Line"</string>
+    //News App
+    <string name="news_app">News App</string>
+    <string name="copy">Copy</string>
+    <string name="share">Share</string>
+    //Web App
+    <string name="support">Support</string>
+    <string name="about_us">About Us</string>
+    <string name="web_site">WebSite</string>
+    <string name="rate_app">Rate App</string>
+    <string name="share_app">Share App</string>
+    //Pdf Reader
+    <string name="pick_file">Pick File</string>
+    <string name="toast_pick_file_error">Unable to pick file. Check status of file manager.</string>
+    <string name="toast_http_code_error">Remote server responded with an error.</string>
+    <string name="toast_generic_download_error">We couldn\'t download this file for some reason.</string>
+    <string name="toast_ssl_error">Secure connection failed.</string>
+    <string name="saved_to_download">File saved to Download folder.</string>
+    <string name="save_to_download_failed">Couldn\'t save file to Download folder.</string>
+    <string name="intro">Replay Intro</string>
+    <string name="ok">Ok</string>
+    <string name="title_permission">Storage Permissions</string>
+    <string name="description__permission">You will now be prompted to allow the app to access the phone\'s storage. Without this permission, documents might fail to open in some cases.</string>
+    <string name="share_file">Share File</string>
+    <string name="print">Print File</string>
+    <string name="full_screen">Full Screen</string>
+    <string name="meta">File Info</string>
+    <string name="pdf_title">Title: %1$s</string>
+    <string name="pdf_author">Author: %1$s</string>
+    <string name="pdf_creation_date">Creation Date: %1$s</string>
+    <string name="file_opening_error">An error occurred while opening the file.</string>
+    <string name="protected_pdf">Protected PDF</string>
+    <string name="enter_password">Enter the correct password to open the document:</string>
+    <string name="wrong_password">Wrong password.</string>
+    //Wordpress
+    <string name="wordpress_app">Wordpress App</string>
+    <string name="favorites">Favorites</string>
+    <string name="progressdialog_title">Please wait...</string>
+    <string name="progressdialog_message">Loading...</string>
+    <string name="add_as_favorite">add</string>
+</resources>
