@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:argType="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.exoplayer2.ui.PlayerView
+        <com.google.android.exoplayer2.ui.StyledPlayerView
             android:id="@+id/expo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/dark"
-            app:controller_layout_id="@layout/custom_controller_view"
-            app:fastforward_increment="10000"
-            app:hide_on_touch="true"
-            app:player_layout_id="@layout/exo_simple_player_view"
-            app:resize_mode="fit"
-            app:rewind_increment="10000"
-            app:show_timeout="5000"
-            app:shutter_background_color="@color/dark"
-            app:use_controller="true" />
+            argType:resize_mode="fixed_width"
+            argType:show_buffering="when_playing"
+            argType:show_fastforward_button="true"
+            argType:show_next_button="false"
+            argType:show_previous_button="false"
+            argType:show_rewind_button="true"
+            argType:show_subtitle_button="true"
+            argType:use_artwork="true"
+            argType:use_controller="true">
+
+        </com.google.android.exoplayer2.ui.StyledPlayerView>
 
     </LinearLayout>
 

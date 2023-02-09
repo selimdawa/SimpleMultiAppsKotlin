@@ -47,7 +47,7 @@ class LiveTVDetailsActivity : AppCompatActivity() {
                 if (supportActionBar != null) {
                     supportActionBar!!.show()
                 }
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
                 val params = binding!!.playerView.layoutParams as ConstraintLayout.LayoutParams
                 params.width = ViewGroup.LayoutParams.MATCH_PARENT
                 params.height = (200 * applicationContext.resources.displayMetrics.density).toInt()
@@ -72,7 +72,7 @@ class LiveTVDetailsActivity : AppCompatActivity() {
                 isFullScreen = true
             }
         }
-        binding!!.description.text = channel!!.description
+        binding!!.description.text = channel.description
         binding!!.facebookLink.setOnClickListener { openLink(channel.facebook) }
         binding!!.twitterLink.setOnClickListener { openLink(channel.twitter) }
         binding!!.youtubeLink.setOnClickListener { openLink(channel.youtube) }

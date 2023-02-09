@@ -11,6 +11,7 @@ import com.flatcode.simplemultiapps.VideoPlayer.Adapter.VideoAdapter.Companion.v
 import com.flatcode.simplemultiapps.VideoPlayer.Adapter.VideoFolderAdapter.Companion.folderVideoFile
 import com.flatcode.simplemultiapps.VideoPlayer.VideoFiles
 import com.flatcode.simplemultiapps.databinding.ActivityPlayerBinding
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.extractor.ExtractorsFactory
@@ -38,10 +39,8 @@ class PlayerActivity : AppCompatActivity() {
 
         position = intent.getIntExtra("position", -1)
         val sender = intent.getStringExtra("sender")
-        myFiles = if (sender == "FolderIsSending")
-            folderVideoFile!!
-        else
-            videoFile!!
+        myFiles = if (sender == "FolderIsSending") folderVideoFile!!
+        else videoFile!!
 
         val path = myFiles!![position]!!.path
         if (path != null) {
@@ -50,8 +49,10 @@ class PlayerActivity : AppCompatActivity() {
             val factory: DataSource.Factory =
                 DefaultDataSourceFactory(context, Util.getUserAgent(context, "My App Name"))
             val extractorsFactory: ExtractorsFactory = DefaultExtractorsFactory()
+            val mediaItem: MediaItem = MediaItem.fromUri(uri)
+
             val mediaSource: MediaSource =
-                ProgressiveMediaSource.Factory(factory, extractorsFactory).createMediaSource(uri)
+                ProgressiveMediaSource.Factory(factory, extractorsFactory).createMediaSource(mediaItem)
             binding!!.expo.player = simpleExoPlayer
             binding!!.expo.keepScreenOn = true
             simpleExoPlayer!!.prepare(mediaSource)
@@ -60,7 +61,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun setFullScreen() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
     }

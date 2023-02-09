@@ -52,7 +52,6 @@
             android:includeFontPadding="false"
             android:textColor="#FFBEBEBE"/>
         <FrameLayout
-            android:id="@+id/exo_fullscreen_button"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="right">
