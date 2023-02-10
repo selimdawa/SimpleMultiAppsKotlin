@@ -46,20 +46,6 @@ object VOID {
         context.startActivity(intent)
     }
 
-    fun IntentExtra2(
-        context: Context,
-        c: Class<*>?,
-        key: String?,
-        value: String?,
-        key2: String?,
-        value2: String?,
-    ) {
-        val intent = Intent(context, c)
-        intent.putExtra(key, value)
-        intent.putExtra(key2, value2)
-        context.startActivity(intent)
-    }
-
     fun Glide(context: Context?, Url: String?, Image: ImageView) {
         try {
             Glide.with(context!!).load(Url).placeholder(R.color.image_profile).into(Image)
@@ -71,11 +57,28 @@ object VOID {
     fun Intro(context: Context?, background: ImageView, backWhite: ImageView, backDark: ImageView) {
         val sharedPreferences = PreferenceManager
             .getDefaultSharedPreferences(context!!)
-        if (sharedPreferences.getString("color_option", "ONE") == "ONE") {
+        if ((sharedPreferences.getString("color_option", "ONE") == "ONE") ||
+            (sharedPreferences.getString("color_option", "TWO") == "TWO") ||
+            (sharedPreferences.getString("color_option", "THREE") == "THREE") ||
+            (sharedPreferences.getString("color_option", "FOUR") == "FOUR") ||
+            (sharedPreferences.getString("color_option", "FIVE") == "FIVE") ||
+            (sharedPreferences.getString("color_option", "SIX") == "SIX") ||
+            (sharedPreferences.getString("color_option", "SEVEN") == "SEVEN") ||
+            (sharedPreferences.getString("color_option", "EIGHT") == "EIGHT") ||
+            (sharedPreferences.getString("color_option", "NINE") == "NINE") ||
+            (sharedPreferences.getString("color_option", "TEEN") == "TEEN")
+        ) {
             background.setImageResource(R.drawable.background_day)
             backWhite.visibility = View.VISIBLE
             backDark.visibility = View.GONE
-        } else if (sharedPreferences.getString("color_option", "NIGHT_ONE") == "NIGHT_ONE") {
+        } else if ((sharedPreferences.getString("color_option", "NIGHT_ONE") == "NIGHT_ONE") ||
+            (sharedPreferences.getString("color_option", "NIGHT_TWO") == "NIGHT_TWO") ||
+            (sharedPreferences.getString("color_option", "NIGHT_THREE") == "NIGHT_THREE") ||
+            (sharedPreferences.getString("color_option", "NIGHT_FOUR") == "NIGHT_FOUR") ||
+            (sharedPreferences.getString("color_option", "NIGHT_FIVE") == "NIGHT_FIVE") ||
+            (sharedPreferences.getString("color_option", "NIGHT_SIX") == "NIGHT_SIX") ||
+            (sharedPreferences.getString("color_option", "NIGHT_SEVEN") == "NIGHT_SEVEN")
+        ) {
             background.setImageResource(R.drawable.background_night)
             backWhite.visibility = View.GONE
             backDark.visibility = View.VISIBLE
@@ -85,11 +88,26 @@ object VOID {
     fun Logo(context: Context?, background: ImageView) {
         val sharedPreferences = PreferenceManager
             .getDefaultSharedPreferences(context!!)
-        if (sharedPreferences.getString("color_option", "ONE") == "ONE") {
-            background.setImageResource(R.drawable.logo)
-        } else if (sharedPreferences.getString("color_option", "NIGHT_ONE") == "NIGHT_ONE") {
+        if ((sharedPreferences.getString("color_option", "ONE") == "ONE") ||
+            (sharedPreferences.getString("color_option", "TWO") == "TWO") ||
+            (sharedPreferences.getString("color_option", "THREE") == "THREE") ||
+            (sharedPreferences.getString("color_option", "FOUR") == "FOUR") ||
+            (sharedPreferences.getString("color_option", "FIVE") == "FIVE") ||
+            (sharedPreferences.getString("color_option", "SIX") == "SIX") ||
+            (sharedPreferences.getString("color_option", "SEVEN") == "SEVEN") ||
+            (sharedPreferences.getString("color_option", "EIGHT") == "EIGHT") ||
+            (sharedPreferences.getString("color_option", "NINE") == "NINE") ||
+            (sharedPreferences.getString("color_option", "TEEN") == "TEEN")
+        ) background.setImageResource(R.drawable.logo)
+        else if ((sharedPreferences.getString("color_option", "NIGHT_ONE") == "NIGHT_ONE") ||
+            (sharedPreferences.getString("color_option", "NIGHT_TWO") == "NIGHT_TWO") ||
+            (sharedPreferences.getString("color_option", "NIGHT_THREE") == "NIGHT_THREE") ||
+            (sharedPreferences.getString("color_option", "NIGHT_FOUR") == "NIGHT_FOUR") ||
+            (sharedPreferences.getString("color_option", "NIGHT_FIVE") == "NIGHT_FIVE") ||
+            (sharedPreferences.getString("color_option", "NIGHT_SIX") == "NIGHT_SIX") ||
+            (sharedPreferences.getString("color_option", "NIGHT_SEVEN") == "NIGHT_SEVEN")
+        )
             background.setImageResource(R.drawable.logo_night)
-        }
     }
 
     fun plainTextShareIntent(chooserTitle: String?, text: String?): Intent {
@@ -112,11 +130,12 @@ object VOID {
     fun canWriteToDownloadFolder(context: Context?): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             true
-        } else ContextCompat.checkSelfPermission(context!!,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        } else ContextCompat.checkSelfPermission(
+            context!!,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
-    @Throws(IOException::class)
     fun readBytesToEnd(inputStream: InputStream): ByteArray {
         val output = ByteArrayOutputStream()
         val buffer = ByteArray(8 * 1024)
@@ -127,7 +146,6 @@ object VOID {
         return output.toByteArray()
     }
 
-    @Throws(IOException::class)
     fun writeBytesToFile(directory: File?, fileName: String?, fileContent: ByteArray?) {
         val file = File(directory, fileName)
         FileOutputStream(file).use { stream -> stream.write(fileContent) }

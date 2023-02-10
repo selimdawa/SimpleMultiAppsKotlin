@@ -18,12 +18,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
-        release {
-            /*storeFile file('D:\\MyProjects\\Kotlin\\Simple Multi Apps\\Simple Multi Apps\\SimpleMultiApps.jks')
+        /*release {
+            storeFile file('D:\\MyProjects\\Kotlin\\Simple Multi Apps\\Simple Multi Apps\\SimpleMultiApps.jks')
             storePassword '00000000'
             keyAlias = 'SimpleMultiApps'
-            keyPassword '00000000'*/
-        }
+            keyPassword '00000000'
+        }*/
     }
     buildTypes {
         release {

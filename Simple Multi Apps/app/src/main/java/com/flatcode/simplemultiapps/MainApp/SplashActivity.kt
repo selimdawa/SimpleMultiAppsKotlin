@@ -3,6 +3,7 @@ package com.flatcode.simplemultiapps.MainApp
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.Unit.CLASS
 import com.flatcode.simplemultiapps.Unit.THEME
@@ -14,7 +15,6 @@ class SplashActivity : AppCompatActivity() {
     private var binding: ActivitySplashBinding? = null
     var context: Context = this@SplashActivity
 
-    //FirebaseAuth auth;
     var time_per_second = 2
     var time_final = time_per_millis * time_per_second
 
@@ -28,8 +28,7 @@ class SplashActivity : AppCompatActivity() {
         VOID.Logo(baseContext, binding!!.logo)
         VOID.Intro(baseContext, binding!!.background, binding!!.backWhite, binding!!.backBlack)
 
-        //auth = FirebaseAuth.getInstance();
-        Handler().postDelayed({ launch() }, time_final.toLong())
+        Handler(Looper.getMainLooper()).postDelayed({ launch() }, time_final.toLong())
     }
 
     private fun launch() {
