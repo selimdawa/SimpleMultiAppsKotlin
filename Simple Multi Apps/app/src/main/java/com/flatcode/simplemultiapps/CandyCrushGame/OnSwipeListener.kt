@@ -22,13 +22,13 @@ open class OnSwipeListener(context: Context?) : OnTouchListener {
         }
 
         override fun onFling(
-            e1: MotionEvent,
+            e1: MotionEvent?,
             e2: MotionEvent,
             velocityX: Float,
             velocityY: Float,
         ): Boolean {
             var result = false
-            val yDiff = e2.y - e1.y
+            val yDiff = e2.y - e1!!.y
             val xDiff = e2.x - e1.x
             if (abs(xDiff) > abs(yDiff)) {
                 if (abs(xDiff) > SWIPE_SOLD && abs(velocityX) > SWIPE_VELOCITY_SOLD) {
