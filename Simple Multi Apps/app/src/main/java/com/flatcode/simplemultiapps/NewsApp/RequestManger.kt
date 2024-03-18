@@ -23,8 +23,7 @@ class RequestManger(var context: Context) {
         try {
             call.enqueue(object : Callback<NewsApiResponse?> {
                 override fun onResponse(
-                    call: Call<NewsApiResponse?>,
-                    response: Response<NewsApiResponse?>,
+                    call: Call<NewsApiResponse?>, response: Response<NewsApiResponse?>,
                 ) {
                     if (!response.isSuccessful) {
                         Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()

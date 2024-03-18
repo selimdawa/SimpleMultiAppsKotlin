@@ -14,36 +14,27 @@ abstract class ThreadedPrintDocumentAdapter(private val ctxt: Context?) : PrintD
     private val threadPool = Executors.newFixedThreadPool(1)
 
     abstract fun buildLayoutJob(
-        oldAttributes: PrintAttributes?,
-        newAttributes: PrintAttributes?,
-        cancellationSignal: CancellationSignal?,
-        callback: LayoutResultCallback?,
-        extras: Bundle?,
+        oldAttributes: PrintAttributes?, newAttributes: PrintAttributes?,
+        cancellationSignal: CancellationSignal?, callback: LayoutResultCallback?, extras: Bundle?,
     ): LayoutJob
 
     abstract fun buildWriteJob(
-        pages: Array<PageRange>?,
-        destination: ParcelFileDescriptor?,
-        cancellationSignal: CancellationSignal?,
-        callback: WriteResultCallback?,
-        ctxt: Context?,
+        pages: Array<PageRange>?, destination: ParcelFileDescriptor?,
+        cancellationSignal: CancellationSignal?, callback: WriteResultCallback?, ctxt: Context?,
     ): WriteJob
 
     override fun onLayout(
-        oldAttributes: PrintAttributes,
-        newAttributes: PrintAttributes,
-        cancellationSignal: CancellationSignal,
-        callback: LayoutResultCallback, extras: Bundle,
+        oldAttributes: PrintAttributes, newAttributes: PrintAttributes,
+        cancellationSignal: CancellationSignal, callback: LayoutResultCallback, extras: Bundle,
     ) {
-        threadPool.submit(buildLayoutJob(oldAttributes, newAttributes,
-            cancellationSignal, callback, extras))
+        threadPool.submit(
+            buildLayoutJob(oldAttributes, newAttributes, cancellationSignal, callback, extras)
+        )
     }
 
     override fun onWrite(
-        pages: Array<PageRange>,
-        destination: ParcelFileDescriptor,
-        cancellationSignal: CancellationSignal,
-        callback: WriteResultCallback,
+        pages: Array<PageRange>, destination: ParcelFileDescriptor,
+        cancellationSignal: CancellationSignal, callback: WriteResultCallback,
     ) {
         threadPool.submit(buildWriteJob(pages, destination, cancellationSignal, callback, ctxt))
     }
@@ -54,8 +45,7 @@ abstract class ThreadedPrintDocumentAdapter(private val ctxt: Context?) : PrintD
     }
 
     abstract class LayoutJob internal constructor(
-        var oldAttributes: PrintAttributes?,
-        var newAttributes: PrintAttributes?,
+        var oldAttributes: PrintAttributes?, var newAttributes: PrintAttributes?,
         var cancellationSignal: CancellationSignal?,
         var callback: LayoutResultCallback?, var extras: Bundle?,
     ) : Runnable

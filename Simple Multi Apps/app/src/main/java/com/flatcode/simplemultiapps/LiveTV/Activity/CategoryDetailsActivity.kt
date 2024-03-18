@@ -35,6 +35,7 @@ class CategoryDetailsActivity : AppCompatActivity() {
         channels = ArrayList()
         dataService = ChannelDataService(this)
         categoryName = intent.getStringExtra("categoryName")
+
         if (categoryName == null || categoryName == "") {
             category = intent.getSerializableExtra("category") as Category?
             binding!!.toolbar.nameSpace.text = category!!.name

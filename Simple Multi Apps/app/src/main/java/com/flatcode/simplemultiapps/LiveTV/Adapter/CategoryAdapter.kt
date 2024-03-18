@@ -19,8 +19,7 @@ class CategoryAdapter(private val context: Context, categoryList: List<Category?
     private var binding: ItemLiveTvCategoryBinding? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemLiveTvCategoryBinding.inflate(LayoutInflater.from(
-            context), parent, false)
+        binding = ItemLiveTvCategoryBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding!!.root)
     }
 
@@ -28,10 +27,9 @@ class CategoryAdapter(private val context: Context, categoryList: List<Category?
         holder.title.text = categoryList[position]!!.name
         VOID.Glide(context, categoryList[position]!!.image_url, holder.image)
         holder.itemView.setOnClickListener { v: View ->
-            VOID.IntentExtraChannel(v.context,
-                CLASS.LIVE_TV_CATEGORIES_DETAILS,
-                "category",
-                categoryList[position])
+            VOID.IntentExtraChannel(
+                v.context, CLASS.LIVE_TV_CATEGORIES_DETAILS, "category", categoryList[position]
+            )
         }
     }
 

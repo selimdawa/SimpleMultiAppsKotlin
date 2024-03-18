@@ -10,6 +10,8 @@
 
     <application
         android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
@@ -17,7 +19,8 @@
         android:supportsRtl="false"
         android:theme="@style/OneTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="android:supportsRtl">
+        tools:replace="android:supportsRtl"
+        tools:targetApi="31">
         <activity
             android:name=".MainApp.SplashActivity"
             android:exported="true"
@@ -31,29 +34,71 @@
         <activity
             android:name=".MainApp.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".StopWatch.StopWatchActivity" />
-        <activity android:name=".RandomImgGenerating.RandomImgGeneratingActivity" />
-        <activity android:name=".RandomImgGenerating.ImageInfoActivity" />
-        <activity android:name=".CandyCrushGame.CandyCrushGameActivity" />
-        <activity android:name=".MultipleDelete.MultiDeleteActivity" />
-        <activity android:name=".BloggerApp.Activity.PageDetailsActivity" />
-        <activity android:name=".BloggerApp.Activity.PagesActivity" />
-        <activity android:name=".BloggerApp.Activity.PostDetailsActivity" />
-        <activity android:name=".BloggerApp.Activity.BloggerAppActivity" />
-        <activity android:name=".JokeApp.JokeAppActivity" />
-        <activity android:name=".LiveTV.Activity.CategoriesActivity" />
-        <activity android:name=".LiveTV.Activity.CategoryDetailsActivity" />
+        <activity
+            android:name=".StopWatch.StopWatchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RandomImgGenerating.RandomImgGeneratingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RandomImgGenerating.ImageInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CandyCrushGame.CandyCrushGameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MultipleDelete.MultiDeleteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BloggerApp.Activity.PageDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BloggerApp.Activity.PagesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BloggerApp.Activity.PostDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BloggerApp.Activity.BloggerAppActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".JokeApp.JokeAppActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LiveTV.Activity.CategoriesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LiveTV.Activity.CategoryDetailsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LiveTV.Activity.LiveTVDetailsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity android:name=".LiveTV.Activity.LiveTVActivity" />
-        <activity android:name=".NewsApp.Activity.NewsAppActivity" />
-        <activity android:name=".NewsApp.Activity.NewsAppDetailsActivity" />
-        <activity android:name=".VideoPlayer.Activity.VideoPlayerActivity" />
-        <activity android:name=".VideoPlayer.Activity.PlayerActivity" />
-        <activity android:name=".VideoPlayer.Activity.VideoFolderActivity" />
-        <activity android:name=".WebApp.WebAppActivity" />
-        <activity android:name=".WebApp.WebViewActivity" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LiveTV.Activity.LiveTVActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NewsApp.Activity.NewsAppActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NewsApp.Activity.NewsAppDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VideoPlayer.Activity.VideoPlayerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VideoPlayer.Activity.PlayerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VideoPlayer.Activity.VideoFolderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WebApp.WebAppActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WebApp.WebViewActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".PdfReader.Activity.PdfReaderActivity"
             android:documentLaunchMode="intoExisting" />
@@ -61,10 +106,16 @@
             android:name=".PdfReader.Activity.PdfReaderIntroActivity"
             android:label="@string/intro"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
-        <activity android:name=".Wordpress.Activity.WordpressFavoritesActivity" />
-        <activity android:name=".Wordpress.Activity.WordpressActivity" />
+
+        <activity
+            android:name=".Wordpress.Activity.WordpressFavoritesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Wordpress.Activity.WordpressActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Wordpress.Activity.WordpressDetailsActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.WpToAndroidApp" />
     </application>
 

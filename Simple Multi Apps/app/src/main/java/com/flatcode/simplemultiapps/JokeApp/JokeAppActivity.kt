@@ -24,6 +24,7 @@ class JokeAppActivity : AppCompatActivity() {
         setContentView(view)
 
         binding!!.toolbar.nameSpace.setText(R.string.joke)
+
         val cats = ArrayList<String>()
         cats.add("Any")
         cats.add("Programming")
@@ -38,8 +39,9 @@ class JokeAppActivity : AppCompatActivity() {
         catAdapter = JokeCategoriesAdapter(context, cats)
         binding!!.recyclerView.adapter = catAdapter
         val manager = supportFragmentManager
-        val transaction = manager.beginTransaction().replace(R.id.fragment,
-            JokesFragment("https://v2.jokeapi.dev/joke/Any?amount=10"))
+        val transaction = manager.beginTransaction().replace(
+            R.id.fragment, JokesFragment("https://v2.jokeapi.dev/joke/Any?amount=10")
+        )
         transaction.commit()
     }
 }

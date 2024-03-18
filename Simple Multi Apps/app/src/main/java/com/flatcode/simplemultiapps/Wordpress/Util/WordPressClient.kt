@@ -13,6 +13,5 @@ object WordPressClient {
             .build()
 
     val apiService: WPApiService
-        get() = retroInstance.create(
-            WPApiService::class.java)
+        get() = retroInstance.create(WPApiService::class.java)
 }

@@ -17,8 +17,7 @@ class FilesFragment : Fragment() {
     var adapter: VideoAdapter? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_files, container, false)
@@ -27,9 +26,9 @@ class FilesFragment : Fragment() {
         if (videoFiles != null && videoFiles!!.size > 0) {
             adapter = VideoAdapter(requireContext(), videoFiles!!)
             recyclerView!!.adapter = adapter
-            recyclerView!!.layoutManager = LinearLayoutManager(context,
-                RecyclerView.VERTICAL,
-                false)
+            recyclerView!!.layoutManager = LinearLayoutManager(
+                context, RecyclerView.VERTICAL, false
+            )
         }
         return view
     }

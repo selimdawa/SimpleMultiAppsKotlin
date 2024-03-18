@@ -51,8 +51,9 @@ class PlayerActivity : AppCompatActivity() {
             val extractorsFactory: ExtractorsFactory = DefaultExtractorsFactory()
             val mediaItem: MediaItem = MediaItem.fromUri(uri)
 
-            val mediaSource: MediaSource =
-                ProgressiveMediaSource.Factory(factory, extractorsFactory).createMediaSource(mediaItem)
+            val mediaSource: MediaSource = ProgressiveMediaSource.Factory(
+                factory, extractorsFactory
+            ).createMediaSource(mediaItem)
             binding!!.expo.player = simpleExoPlayer
             binding!!.expo.keepScreenOn = true
             simpleExoPlayer!!.prepare(mediaSource)
@@ -62,8 +63,10 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun setFullScreen() {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
     }
 
     override fun onPause() {

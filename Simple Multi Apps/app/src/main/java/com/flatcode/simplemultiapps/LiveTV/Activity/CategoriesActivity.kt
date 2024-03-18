@@ -42,9 +42,11 @@ class CategoriesActivity : AppCompatActivity() {
                     for (i in 0 until response.length()) {
                         try {
                             val categoryData = response.getJSONObject(i.toString())
-                            val category = Category(categoryData.getInt("id"),
+                            val category = Category(
+                                categoryData.getInt("id"),
                                 categoryData.getString("name"),
-                                categoryData.getString("image_url"))
+                                categoryData.getString("image_url")
+                            )
                             categoryList!!.add(category)
                             categoryAdapter!!.notifyDataSetChanged()
                         } catch (e: JSONException) {

@@ -37,36 +37,33 @@ class WebAppActivity : AppCompatActivity() {
         setContentView(view)
 
         binding!!.toolbar.nameSpace.setText(R.string.web_app)
-        if (ActivityCompat.checkSelfPermission(this@WebAppActivity,
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED
+        if (ActivityCompat.checkSelfPermission(
+                this@WebAppActivity, Manifest.permission.CALL_PHONE
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this@WebAppActivity,
-                arrayOf(Manifest.permission.CALL_PHONE),
-                1)
+            ActivityCompat.requestPermissions(
+                this@WebAppActivity, arrayOf(Manifest.permission.CALL_PHONE), 1
+            )
         }
         binding!!.webSite.setOnClickListener {
-            VOID.IntentExtra(context,
-                CLASS.WEB_VIEW,
-                DATA.WEB_NAME,
-                DATA.WEBSITE)
+            VOID.IntentExtra(
+                context, CLASS.WEB_VIEW, DATA.WEB_NAME, DATA.WEBSITE
+            )
         }
         binding!!.instagram.setOnClickListener {
-            VOID.IntentExtra(context,
-                CLASS.WEB_VIEW,
-                DATA.WEB_NAME,
-                DATA.INSTAGRAM)
+            VOID.IntentExtra(
+                context, CLASS.WEB_VIEW, DATA.WEB_NAME, DATA.INSTAGRAM
+            )
         }
         binding!!.twitter.setOnClickListener {
-            VOID.IntentExtra(context,
-                CLASS.WEB_VIEW,
-                DATA.WEB_NAME,
-                DATA.TWITTER)
+            VOID.IntentExtra(
+                context, CLASS.WEB_VIEW, DATA.WEB_NAME, DATA.TWITTER
+            )
         }
         binding!!.facebook.setOnClickListener {
-            VOID.IntentExtra(context,
-                CLASS.WEB_VIEW,
-                DATA.WEB_NAME,
-                DATA.FACEBOOK)
+            VOID.IntentExtra(
+                context, CLASS.WEB_VIEW, DATA.WEB_NAME, DATA.FACEBOOK
+            )
         }
         binding!!.aboutUs.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(context)
@@ -78,6 +75,7 @@ class WebAppActivity : AppCompatActivity() {
             contact.visibility = View.GONE
             val about_us = dialogView.findViewById<TextView>(R.id.about_us)
             val close = dialogView.findViewById<TextView>(R.id.close)
+
             alertDialog = dialogBuilder.create()
             close.setOnClickListener { alertDialog!!.dismiss() }
             about_us.visibility = View.VISIBLE
@@ -99,6 +97,7 @@ class WebAppActivity : AppCompatActivity() {
             val phone = dialogView.findViewById<ImageView>(R.id.phone)
             alertDialog = dialogBuilder.create()
             val close = dialogView.findViewById<TextView>(R.id.close)
+
             close.setOnClickListener { alertDialog!!.dismiss() }
             alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             email.setOnClickListener {
@@ -122,36 +121,42 @@ class WebAppActivity : AppCompatActivity() {
             val share = Intent(Intent.ACTION_SEND)
             share.type = "text/plain"
             share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET)
-            share.putExtra(Intent.EXTRA_TEXT, """
+            share.putExtra(
+                Intent.EXTRA_TEXT, """
      Share App with
      https://play.google.com/store/apps/details?id=${context.packageName}
-     """.trimIndent())
+     """.trimIndent()
+            )
             startActivity(Intent.createChooser(share, "Share link!"))
         }
         binding!!.rateApp.setOnClickListener {
             val uri = Uri.parse("market://details?id=" + context.packageName)
             val goToMarket = Intent(Intent.ACTION_VIEW, uri)
-            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
-                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
-                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+            goToMarket.addFlags(
+                Intent.FLAG_ACTIVITY_NO_HISTORY or
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+            )
             try {
                 startActivity(goToMarket)
             } catch (e: ActivityNotFoundException) {
-                startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://play.google.com/store/apps/details?id=" + context.packageName)))
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("http://play.google.com/store/apps/details?id=" + context.packageName)
+                    )
+                )
             }
         }
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray,
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             1 -> {
-                if (grantResults.size > 0
+                if (grantResults.isNotEmpty()
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
                     Toast.makeText(applicationContext, "Permission granted", Toast.LENGTH_SHORT)

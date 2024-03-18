@@ -31,10 +31,12 @@ class PageDetailsActivity : AppCompatActivity() {
         val view = binding!!.root
         setContentView(view)
 
+        pageId = intent.getStringExtra("pageId")
+
         binding!!.toolbar.nameSpace.text = getString(R.string.page_details)
         binding!!.toolbar.back.visibility = View.VISIBLE
         binding!!.toolbar.back.setOnClickListener { onBackPressed() }
-        pageId = intent.getStringExtra("pageId")
+
         loadPageDetails()
     }
 
@@ -63,18 +65,14 @@ class PageDetailsActivity : AppCompatActivity() {
                 binding!!.title.text = title
                 binding!!.publishInfo.text =
                     MessageFormat.format("By {0}{1}{2}", displayName, DATA.SPACE, formattedDate)
-                binding!!.webView.loadDataWithBaseURL(null,
-                    content,
-                    "text/html",
-                    OutputKeys.ENCODING,
-                    null)
+                binding!!.webView.loadDataWithBaseURL(
+                    null, content, "text/html", OutputKeys.ENCODING, null
+                )
             } catch (e: Exception) {
                 Toast.makeText(context, DATA.EMPTY + e.message, Toast.LENGTH_SHORT).show()
             }
         }) { error: VolleyError ->
-            Toast.makeText(context,
-                DATA.EMPTY + error.message,
-                Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, DATA.EMPTY + error.message, Toast.LENGTH_SHORT).show()
         }
         val requestQueue = Volley.newRequestQueue(context)
         requestQueue.add(stringRequest)

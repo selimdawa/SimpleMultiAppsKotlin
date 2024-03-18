@@ -16,8 +16,7 @@ class JokeAdapter(
     var jokes: List<Joke>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemJokeBinding.inflate(LayoutInflater.from(
-            context), parent, false)
+        binding = ItemJokeBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding!!.root)
     }
 

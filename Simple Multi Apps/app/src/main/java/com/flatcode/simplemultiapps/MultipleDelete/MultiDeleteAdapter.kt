@@ -3,7 +3,12 @@ package com.flatcode.simplemultiapps.MultipleDelete
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
-import android.view.*
+import android.view.ActionMode
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -17,10 +22,8 @@ import com.flatcode.simplemultiapps.databinding.ItemMultiDeleteBinding
 
 //Create Constructor
 class MultiDeleteAdapter(
-    private val context: Context,
-    var activity: Activity?,
-    var arrayList: ArrayList<String>,
-    var tvEmpty: TextView,
+    private val context: Context, var activity: Activity?,
+    var arrayList: ArrayList<String>, var tvEmpty: TextView,
 ) : RecyclerView.Adapter<MultiDeleteAdapter.ViewHolder>() {
 
     private var binding: ItemMultiDeleteBinding? = null
@@ -31,11 +34,10 @@ class MultiDeleteAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         //Initialize view
-        binding = ItemMultiDeleteBinding.inflate(LayoutInflater.from(
-            context), parent, false)
+        binding = ItemMultiDeleteBinding.inflate(LayoutInflater.from(context), parent, false)
         //Initialize view model
         mainViewModel =
-            ViewModelProviders.of((activity as FragmentActivity?)!!).get(MultiDelete::class.java)
+            ViewModelProviders.of((activity as FragmentActivity?)!!)[MultiDelete::class.java]
         //Return view
         return ViewHolder(binding!!.root)
     }
@@ -76,8 +78,7 @@ class MultiDeleteAdapter(
                     }
 
                     override fun onActionItemClicked(
-                        actionMode: ActionMode,
-                        menuItem: MenuItem,
+                        actionMode: ActionMode, menuItem: MenuItem,
                     ): Boolean {
                         //When click on action mode item
                         //Get item id
@@ -99,6 +100,7 @@ class MultiDeleteAdapter(
                                 //Finish action mode
                                 actionMode.finish()
                             }
+
                             R.id.menu_select_all -> {
                                 //When click on select all
                                 //Check condition
@@ -157,8 +159,9 @@ class MultiDeleteAdapter(
             } else {
                 //When action mode is not enable
                 //Display Toast
-                Toast.makeText(activity, "You Clicked " + arrayList[holder.adapterPosition],
-                    Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    activity, "You Clicked " + arrayList[holder.adapterPosition], Toast.LENGTH_SHORT
+                ).show()
             }
         }
 

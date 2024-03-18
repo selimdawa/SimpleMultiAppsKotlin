@@ -39,10 +39,12 @@ class PostDetailsActivity : AppCompatActivity() {
         val view = binding!!.root
         setContentView(view)
 
+        postId = intent.getStringExtra("postId")
+
         binding!!.toolbar.nameSpace.setText(R.string.post_details)
         binding!!.toolbar.back.visibility = View.VISIBLE
         binding!!.toolbar.back.setOnClickListener { onBackPressed() }
-        postId = intent.getStringExtra("postId")
+
         loadPostDetails()
     }
 
@@ -71,11 +73,9 @@ class PostDetailsActivity : AppCompatActivity() {
                 binding!!.title.text = title
                 binding!!.publishInfo.text =
                     MessageFormat.format("By {0}{1}{2}", displayName, DATA.SPACE, formattedDate)
-                binding!!.webView.loadDataWithBaseURL(null,
-                    content,
-                    "text/html",
-                    OutputKeys.ENCODING,
-                    null)
+                binding!!.webView.loadDataWithBaseURL(
+                    null, content, "text/html", OutputKeys.ENCODING, null
+                )
                 try {
                     list = ArrayList()
                     list!!.clear()
@@ -94,9 +94,7 @@ class PostDetailsActivity : AppCompatActivity() {
                 Toast.makeText(context, DATA.EMPTY + e.message, Toast.LENGTH_SHORT).show()
             }
         }) { error: VolleyError ->
-            Toast.makeText(context,
-                DATA.EMPTY + error.message,
-                Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, DATA.EMPTY + error.message, Toast.LENGTH_SHORT).show()
         }
         val requestQueue = Volley.newRequestQueue(context)
         requestQueue.add(stringRequest)
@@ -105,9 +103,8 @@ class PostDetailsActivity : AppCompatActivity() {
     private fun loadComments() {
         val url = ("https://www.googleapis.com/blogger/v3/blogs/" + DATA.BLOG_ID + "/posts/"
                 + postId + "/comments?key=" + DATA.BLOGGER_API)
-        val stringRequest = StringRequest(Request.Method.GET,
-            url,
-            { response: String -> onResponse(response) }) { error: VolleyError? -> }
+        val stringRequest = StringRequest(Request.Method.GET, url,
+            { response: String -> onResponse(response) }) { _: VolleyError? -> }
         val requestQueue = Volley.newRequestQueue(context)
         requestQueue.add(stringRequest)
     }
@@ -127,9 +124,11 @@ class PostDetailsActivity : AppCompatActivity() {
                 val profileImage =
                     "http:" + jsonObject1.getJSONObject("author").getJSONObject("image")
                         .getString("url")
-                val comment = Comment(DATA.EMPTY + id, DATA.EMPTY + displayName,
+                val comment = Comment(
+                    DATA.EMPTY + id, DATA.EMPTY + displayName,
                     DATA.EMPTY + profileImage, DATA.EMPTY + published,
-                    DATA.EMPTY + content)
+                    DATA.EMPTY + content
+                )
                 comments!!.add(comment)
             }
             commentAdapter = CommentAdapter(context, comments!!)

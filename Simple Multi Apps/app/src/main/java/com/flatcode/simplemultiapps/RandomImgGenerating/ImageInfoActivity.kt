@@ -30,6 +30,7 @@ class ImageInfoActivity : AppCompatActivity() {
         binding!!.catOrigin.text = data.getStringExtra("origin")
         binding!!.catDescription.text = data.getStringExtra("desc")
         binding!!.catTemperament.text = data.getStringExtra("temp")
+
         VOID.Glide(context, data.getStringExtra("imageUrl"), binding!!.catImage)
 
         binding!!.wikiBtn.setOnClickListener {

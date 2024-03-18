@@ -26,11 +26,13 @@ class NewsAppDetailsActivity : AppCompatActivity() {
         headlines = intent.getSerializableExtra(DATA.DATA) as NewsHeadlines?
         binding!!.toolbar.nameSpace.setText(R.string.post_details)
         binding!!.toolbar.back.setOnClickListener { onBackPressed() }
+
         binding!!.title.text = headlines!!.title
         binding!!.author.text = headlines!!.author
         binding!!.time.text = headlines!!.publishedAt
         binding!!.detail.text = headlines!!.description
         binding!!.content.text = headlines!!.content
+
         VOID.Glide(context, headlines!!.urlToImage, binding!!.image)
     }
 }

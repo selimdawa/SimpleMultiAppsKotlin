@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.Unit.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityCandyCrashGameBinding
-import java.util.*
+import java.util.Arrays
 import kotlin.math.floor
 
 class CandyCrushGameActivity : AppCompatActivity() {
@@ -20,7 +20,8 @@ class CandyCrushGameActivity : AppCompatActivity() {
     private val context: Context = this@CandyCrushGameActivity
     var candies = intArrayOf(
         R.drawable.bluecandy, R.drawable.greencandy, R.drawable.redcandy,
-        R.drawable.orangecandy, R.drawable.yellowcandy, R.drawable.purplecandy)
+        R.drawable.orangecandy, R.drawable.yellowcandy, R.drawable.purplecandy
+    )
     var widthOfBlock = 0
     var noOfBlocks = 8
     var widthOfScreen = 0

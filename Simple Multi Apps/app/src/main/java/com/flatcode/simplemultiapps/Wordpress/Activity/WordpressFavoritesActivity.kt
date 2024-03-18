@@ -38,6 +38,7 @@ class WordpressFavoritesActivity : AppCompatActivity() {
         binding!!.toolbar.back.visibility = View.VISIBLE
         binding!!.toolbar.back.setOnClickListener { onBackPressed() }
         binding!!.toolbar.nameSpace.setText(R.string.favorites)
+
         sqLitePostList = PostDB.getInstance(applicationContext)!!.allDbPosts
         setFavListContent(true, sqLitePostList)
     }
@@ -47,16 +48,17 @@ class WordpressFavoritesActivity : AppCompatActivity() {
             val api: WPApiService = WordPressClient.apiService
             val call: Call<List<Post?>?> = api.getPosts()!!
             val progressDialog: ProgressDialog
+
             progressDialog = ProgressDialog(context)
             progressDialog.setTitle(getString(R.string.progressdialog_title))
             progressDialog.setMessage(getString(R.string.progressdialog_message))
             if (withProgress) {
                 progressDialog.show()
             }
+
             call.enqueue(object : Callback<List<Post?>?> {
                 override fun onResponse(
-                    call: Call<List<Post?>?>,
-                    response: Response<List<Post?>?>,
+                    call: Call<List<Post?>?>, response: Response<List<Post?>?>,
                 ) {
                     val myList: ArrayList<Post> = ArrayList()
                     postList = response.body()

@@ -14,7 +14,11 @@ import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.flatcode.simplemultiapps.LiveTV.Model.Category
 import com.flatcode.simplemultiapps.R
-import java.io.*
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.Serializable
 
 object VOID {
     fun IntentClear(context: Context, c: Class<*>?) {
@@ -86,8 +90,7 @@ object VOID {
     }
 
     fun Logo(context: Context?, background: ImageView) {
-        val sharedPreferences = PreferenceManager
-            .getDefaultSharedPreferences(context!!)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context!!)
         if ((sharedPreferences.getString("color_option", "ONE") == "ONE") ||
             (sharedPreferences.getString("color_option", "TWO") == "TWO") ||
             (sharedPreferences.getString("color_option", "THREE") == "THREE") ||
@@ -106,8 +109,7 @@ object VOID {
             (sharedPreferences.getString("color_option", "NIGHT_FIVE") == "NIGHT_FIVE") ||
             (sharedPreferences.getString("color_option", "NIGHT_SIX") == "NIGHT_SIX") ||
             (sharedPreferences.getString("color_option", "NIGHT_SEVEN") == "NIGHT_SEVEN")
-        )
-            background.setImageResource(R.drawable.logo_night)
+        ) background.setImageResource(R.drawable.logo_night)
     }
 
     fun plainTextShareIntent(chooserTitle: String?, text: String?): Intent {
@@ -121,8 +123,7 @@ object VOID {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "application/pdf"
         intent.putExtra(Intent.EXTRA_STREAM, fileUri)
-        intent.clipData =
-            ClipData(fileName, arrayOf("application/pdf"), ClipData.Item(fileUri))
+        intent.clipData = ClipData(fileName, arrayOf("application/pdf"), ClipData.Item(fileUri))
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         return Intent.createChooser(intent, chooserTitle)
     }
@@ -131,8 +132,7 @@ object VOID {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             true
         } else ContextCompat.checkSelfPermission(
-            context!!,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE
         ) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -147,7 +147,7 @@ object VOID {
     }
 
     fun writeBytesToFile(directory: File?, fileName: String?, fileContent: ByteArray?) {
-        val file = File(directory, fileName)
+        val file = File(directory, fileName!!)
         FileOutputStream(file).use { stream -> stream.write(fileContent) }
     }
 

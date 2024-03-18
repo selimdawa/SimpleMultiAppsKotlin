@@ -36,6 +36,7 @@ class VideoPlayerActivity : AppCompatActivity() {
                     fragmentTransaction.commit()
                     item.isChecked = true
                 }
+
                 R.id.files -> {
                     val fragmentTransaction2 = supportFragmentManager.beginTransaction()
                     fragmentTransaction2.replace(R.id.constraint, FilesFragment())
@@ -48,12 +49,16 @@ class VideoPlayerActivity : AppCompatActivity() {
     }
 
     private fun permission() {
-        if (ContextCompat.checkSelfPermission(applicationContext,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(
+                applicationContext,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this@VideoPlayerActivity,
+            ActivityCompat.requestPermissions(
+                this@VideoPlayerActivity,
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                REQUEST_CODE_PERMISSION)
+                REQUEST_CODE_PERMISSION
+            )
         } else {
             videoFiles = getAllVideos(context)
             val fragmentTransaction = supportFragmentManager.beginTransaction()
@@ -63,9 +68,7 @@ class VideoPlayerActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray,
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSION) {
@@ -76,9 +79,11 @@ class VideoPlayerActivity : AppCompatActivity() {
                 fragmentTransaction.commit()
                 permission()
             } else {
-                ActivityCompat.requestPermissions(this@VideoPlayerActivity,
+                ActivityCompat.requestPermissions(
+                    this@VideoPlayerActivity,
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    REQUEST_CODE_PERMISSION)
+                    REQUEST_CODE_PERMISSION
+                )
             }
         }
     }

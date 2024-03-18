@@ -10,15 +10,11 @@ class Post {
     var updated: String? = null
     var url: String? = null
 
+    constructor()
+
     constructor(
-        authorName: String?,
-        content: String?,
-        id: String?,
-        published: String?,
-        selfLink: String?,
-        title: String?,
-        updated: String?,
-        url: String?,
+        authorName: String?, content: String?, id: String?, published: String?,
+        selfLink: String?, title: String?, updated: String?, url: String?,
     ) {
         this.authorName = authorName
         this.content = content
@@ -29,6 +25,4 @@ class Post {
         this.updated = updated
         this.url = url
     }
-
-    constructor()
 }

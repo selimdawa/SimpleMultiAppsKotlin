@@ -23,8 +23,7 @@ class PostAdapter(private val context: Context, var posts: ArrayList<Post>) :
     private var binding: ItemBloggerBinding? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemBloggerBinding.inflate(LayoutInflater.from(
-            context), parent, false)
+        binding = ItemBloggerBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding!!.root)
     }
 
@@ -51,6 +50,7 @@ class PostAdapter(private val context: Context, var posts: ArrayList<Post>) :
         val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         val dateFormat2 = SimpleDateFormat("dd/MM/yyyy K:mm a")
         var formattedDate = DATA.EMPTY
+
         try {
             val date = dateFormat.parse(published)
             formattedDate = dateFormat2.format(date)
@@ -64,8 +64,7 @@ class PostAdapter(private val context: Context, var posts: ArrayList<Post>) :
         holder.publishInfo.text =
             MessageFormat.format("By {0}{1}{2}", authorName, DATA.SPACE, formattedDate)
         holder.itemView.setOnClickListener {
-            VOID.IntentExtra(
-                context, CLASS.BLOGGER_POST_DETAILS, "postId", id)
+            VOID.IntentExtra(context, CLASS.BLOGGER_POST_DETAILS, "postId", id)
         }
     }
 

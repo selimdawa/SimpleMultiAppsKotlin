@@ -21,8 +21,7 @@ class MainAdapter(private val context: Context, list: List<Main>) :
     var list: List<Main>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemMainBinding.inflate(LayoutInflater.from(
-            context), parent, false)
+        binding = ItemMainBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding!!.root)
     }
 

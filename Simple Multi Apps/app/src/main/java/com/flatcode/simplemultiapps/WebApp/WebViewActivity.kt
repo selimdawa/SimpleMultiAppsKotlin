@@ -27,13 +27,12 @@ class WebViewActivity : AppCompatActivity() {
         binding!!.webView.settings.loadsImagesAutomatically = true
         binding!!.webView.settings.javaScriptEnabled = true
         binding!!.webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+
         when (webName) {
             DATA.WEBSITE -> binding!!.webView.loadUrl(DATA.mySite)
-            DATA.INSTAGRAM -> binding!!.webView.loadUrl(
-                DATA.myInstagram)
+            DATA.INSTAGRAM -> binding!!.webView.loadUrl(DATA.myInstagram)
             DATA.FACEBOOK -> binding!!.webView.loadUrl(DATA.myFacebook)
-            DATA.TWITTER -> binding!!.webView.loadUrl(
-                DATA.myTwitter)
+            DATA.TWITTER -> binding!!.webView.loadUrl(DATA.myTwitter)
             else -> binding!!.webView.loadUrl(DATA.mySite)
         }
     }

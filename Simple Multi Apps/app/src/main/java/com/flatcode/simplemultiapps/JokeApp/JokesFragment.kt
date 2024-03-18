@@ -32,6 +32,7 @@ class JokesFragment(var jokesUrl: String) : Fragment() {
         jokesList!!.layoutManager = LinearLayoutManager(context)
         jokesList!!.adapter = adapter
         getJokes(jokesUrl)
+
         return view
     }
 
@@ -58,7 +59,7 @@ class JokesFragment(var jokesUrl: String) : Fragment() {
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
-            }) { error: VolleyError? -> }
+            }) { _: VolleyError? -> }
         queue.add(objectRequest)
     }
 

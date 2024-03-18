@@ -42,8 +42,7 @@ class WordpressActivity : AppCompatActivity() {
             }, 3000)
         }
         binding!!.toolbar.favorites.setOnClickListener {
-            VOID.Intent1(context,
-                CLASS.WORDPRESS_FAVORITES)
+            VOID.Intent1(context, CLASS.WORDPRESS_FAVORITES)
         }
         setListContent(true)
     }
@@ -53,21 +52,24 @@ class WordpressActivity : AppCompatActivity() {
             val api: WPApiService = WordPressClient.apiService
             val call: Call<List<Post?>?> = api.getPosts()!!
             val progressDialog: ProgressDialog
+
             progressDialog = ProgressDialog(this)
             progressDialog.setTitle(getString(R.string.progressdialog_title))
             progressDialog.setMessage(getString(R.string.progressdialog_message))
             if (withProgress) {
                 progressDialog.show()
             }
+
             call.enqueue(object : Callback<List<Post?>?> {
                 override fun onResponse(
-                    call: Call<List<Post?>?>,
-                    response: Response<List<Post?>?>,
+                    call: Call<List<Post?>?>, response: Response<List<Post?>?>
                 ) {
                     postItemList = response.body()
                     //binding.recyclerView.setHasFixedSize(true);
-                    binding!!.recyclerView.adapter = WordpressAdapter(context,
-                        postItemList as List<Post>)
+                    binding!!.recyclerView.adapter = WordpressAdapter(
+                        context,
+                        postItemList as List<Post>
+                    )
                     if (withProgress) {
                         progressDialog.dismiss()
                     }
@@ -80,9 +82,9 @@ class WordpressActivity : AppCompatActivity() {
                 }
             })
         } else {
-            Snackbar.make(binding!!.swipeRefresh,
-                "Can't connect to the Internet",
-                Snackbar.LENGTH_INDEFINITE).show()
+            Snackbar.make(
+                binding!!.swipeRefresh, "Can't connect to the Internet", Snackbar.LENGTH_INDEFINITE
+            ).show()
         }
     }
 }

@@ -38,26 +38,58 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         // Color Mode -------------------------------- End
         val sharedPreferences = PreferenceManager
             .getDefaultSharedPreferences(baseContext)
-        if (sharedPreferences.getString("color_option",
-                "ONE") == "ONE" || sharedPreferences.getString("color_option",
-                "TWO") == "TWO" || sharedPreferences.getString("color_option",
-                "THREE") == "THREE" || sharedPreferences.getString("color_option",
-                "FOUR") == "FOUR" || sharedPreferences.getString("color_option",
-                "FIVE") == "FIVE" || sharedPreferences.getString("color_option",
-                "SIX") == "SIX" || sharedPreferences.getString("color_option",
-                "SEVEN") == "SEVEN" || sharedPreferences.getString("color_option",
-                "EIGHT") == "EIGHT" || sharedPreferences.getString("color_option",
-                "NINE") == "NINE" || sharedPreferences.getString("color_option", "TEEN") == "TEEN"
+        if (sharedPreferences.getString(
+                "color_option",
+                "ONE"
+            ) == "ONE" || sharedPreferences.getString(
+                "color_option",
+                "TWO"
+            ) == "TWO" || sharedPreferences.getString(
+                "color_option",
+                "THREE"
+            ) == "THREE" || sharedPreferences.getString(
+                "color_option",
+                "FOUR"
+            ) == "FOUR" || sharedPreferences.getString(
+                "color_option",
+                "FIVE"
+            ) == "FIVE" || sharedPreferences.getString(
+                "color_option",
+                "SIX"
+            ) == "SIX" || sharedPreferences.getString(
+                "color_option",
+                "SEVEN"
+            ) == "SEVEN" || sharedPreferences.getString(
+                "color_option",
+                "EIGHT"
+            ) == "EIGHT" || sharedPreferences.getString(
+                "color_option",
+                "NINE"
+            ) == "NINE" || sharedPreferences.getString("color_option", "TEEN") == "TEEN"
         ) {
             binding!!.toolbar.mode.setBackgroundResource(R.drawable.sun)
-        } else if (sharedPreferences.getString("color_option",
-                "NIGHT_ONE") == "NIGHT_ONE" || sharedPreferences.getString("color_option",
-                "NIGHT_TWO") == "NIGHT_TWO" || sharedPreferences.getString("color_option",
-                "NIGHT_THREE") == "NIGHT_THREE" || sharedPreferences.getString("color_option",
-                "NIGHT_FOUR") == "NIGHT_FOUR" || sharedPreferences.getString("color_option",
-                "NIGHT_FIVE") == "NIGHT_FIVE" || sharedPreferences.getString("color_option",
-                "NIGHT_SIX") == "NIGHT_SIX" || sharedPreferences.getString("color_option",
-                "NIGHT_SEVEN") == "NIGHT_SEVEN"
+        } else if (sharedPreferences.getString(
+                "color_option",
+                "NIGHT_ONE"
+            ) == "NIGHT_ONE" || sharedPreferences.getString(
+                "color_option",
+                "NIGHT_TWO"
+            ) == "NIGHT_TWO" || sharedPreferences.getString(
+                "color_option",
+                "NIGHT_THREE"
+            ) == "NIGHT_THREE" || sharedPreferences.getString(
+                "color_option",
+                "NIGHT_FOUR"
+            ) == "NIGHT_FOUR" || sharedPreferences.getString(
+                "color_option",
+                "NIGHT_FIVE"
+            ) == "NIGHT_FIVE" || sharedPreferences.getString(
+                "color_option",
+                "NIGHT_SIX"
+            ) == "NIGHT_SIX" || sharedPreferences.getString(
+                "color_option",
+                "NIGHT_SEVEN"
+            ) == "NIGHT_SEVEN"
         ) {
             binding!!.toolbar.mode.setBackgroundResource(R.drawable.moon)
         }
@@ -65,6 +97,7 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         list = ArrayList()
         adapter = MainAdapter(context, list!!)
         binding!!.recyclerView.adapter = adapter
+
         IdeaPosts(1, 1, 1, 2, 4, 1, 4, 2, 2, 3, 2, 3)
     }
 

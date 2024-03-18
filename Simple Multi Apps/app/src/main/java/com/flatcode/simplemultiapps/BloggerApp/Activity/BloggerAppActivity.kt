@@ -40,16 +40,15 @@ class BloggerAppActivity : AppCompatActivity() {
         setContentView(view)
 
         binding!!.toolbar.nameSpace.text = getString(R.string.blogger_name)
-        binding!!.toolbar.pages.setOnClickListener {
-            VOID.Intent1(context,
-                CLASS.BLOGGER_PAGES)
-        }
+        binding!!.toolbar.close.setOnClickListener { onBackPressed() }
+        binding!!.toolbar.pages.setOnClickListener { VOID.Intent1(context, CLASS.BLOGGER_PAGES) }
+
         binding!!.toolbar.search.setOnClickListener {
             binding!!.toolbar.toolbar.visibility = View.GONE
             binding!!.toolbar.toolbarSearch.visibility = View.VISIBLE
             DATA.searchStatus = true
         }
-        binding!!.toolbar.close.setOnClickListener { onBackPressed() }
+
         dialog = ProgressDialog(context)
         dialog!!.setTitle("Please wait...")
         posts = ArrayList()
@@ -86,11 +85,13 @@ class BloggerAppActivity : AppCompatActivity() {
                 ("https://www.googleapis.com/blogger/v3/blogs/" + DATA.BLOG_ID + "/posts/search?q="
                         + query + "&key=" + DATA.BLOGGER_API)
             }
+
             "end" -> {
                 Toast.makeText(context, "No more posts...", Toast.LENGTH_SHORT).show()
                 dialog!!.dismiss()
                 return
             }
+
             else -> {
                 ("https://www.googleapis.com/blogger/v3/blogs/" + DATA.BLOG_ID + "/posts/search?q="
                         + query + "&pageToken=" + nextToken + "&key=" + DATA.BLOGGER_API)
@@ -120,10 +121,12 @@ class BloggerAppActivity : AppCompatActivity() {
                         val authorName =
                             jsonObject1.getJSONObject("author").getString("displayName")
                         //String image = jsonObject1.getJSONObject("author").getString("image");
-                        val post = Post(DATA.EMPTY + authorName, DATA.EMPTY + content,
+                        val post = Post(
+                            DATA.EMPTY + authorName, DATA.EMPTY + content,
                             DATA.EMPTY + id, DATA.EMPTY + published,
                             DATA.EMPTY + selfLink, DATA.EMPTY + title,
-                            DATA.EMPTY + updated, DATA.EMPTY + url)
+                            DATA.EMPTY + updated, DATA.EMPTY + url
+                        )
                         posts!!.add(post)
                     } catch (e: Exception) {
                         Toast.makeText(context, DATA.EMPTY + e.message, Toast.LENGTH_SHORT).show()
@@ -181,10 +184,12 @@ class BloggerAppActivity : AppCompatActivity() {
                         val authorName =
                             jsonObject1.getJSONObject("author").getString("displayName")
                         val image = jsonObject1.getJSONObject("author").getString("image")
-                        val post = Post(DATA.EMPTY + authorName, DATA.EMPTY + content,
+                        val post = Post(
+                            DATA.EMPTY + authorName, DATA.EMPTY + content,
                             DATA.EMPTY + id, DATA.EMPTY + published, DATA.EMPTY
                                     + selfLink, DATA.EMPTY + title, DATA.EMPTY + updated,
-                            DATA.EMPTY + url)
+                            DATA.EMPTY + url
+                        )
                         posts!!.add(post)
                     } catch (e: Exception) {
                         Toast.makeText(context, DATA.EMPTY + e.message, Toast.LENGTH_SHORT).show()

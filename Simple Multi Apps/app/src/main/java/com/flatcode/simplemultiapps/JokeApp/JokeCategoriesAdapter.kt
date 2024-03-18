@@ -21,13 +21,13 @@ class JokeCategoriesAdapter(private val context: Context, var categories: List<S
     var selected_position = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemJokeCategoryBinding.inflate(LayoutInflater.from(
-            context), parent, false)
+        binding = ItemJokeCategoryBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding!!.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.catName.text = categories[position]
+
         if (selected_position == position) {
             holder.card.setBackgroundResource(R.drawable.button_profile2)
             holder.catName.setTextColor(Color.WHITE)
@@ -72,7 +72,6 @@ class JokeCategoriesAdapter(private val context: Context, var categories: List<S
                 loadFragment(JokesFragment(DATA.JOKE_URL + "Programming?amount=10"), v)
             if (categories[selected_position] === "Christmas")
                 loadFragment(JokesFragment(DATA.JOKE_URL + "Christmas?amount=10"), v)
-
         }
 
         init {

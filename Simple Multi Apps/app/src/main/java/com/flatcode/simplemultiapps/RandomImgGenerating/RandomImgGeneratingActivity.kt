@@ -33,6 +33,7 @@ class RandomImgGeneratingActivity : AppCompatActivity() {
 
         binding!!.toolbar.nameSpace.text = getString(R.string.random_img_generating)
         getImage(DATA.API_RANDOM_IMAGE)
+
         binding!!.refreshBtn.setOnClickListener { getImage(DATA.API_RANDOM_IMAGE) }
     }
 
@@ -43,6 +44,7 @@ class RandomImgGeneratingActivity : AppCompatActivity() {
             try {
                 val kittyData = response.getJSONObject(0)
                 val catUrl = kittyData.getString("url")
+
                 VOID.Glide(context, catUrl, binding!!.kittyImage)
                 binding!!.downloadBtn.setOnClickListener {
                     val catUri = Uri.parse(catUrl)

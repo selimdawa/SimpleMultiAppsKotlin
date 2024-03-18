@@ -61,13 +61,16 @@ class PdfReaderActivity : AppCompatActivity() {
     private var viewBinding: ActivityPdfReaderBinding? = null
 
     private val documentPickerLauncher = registerForActivityResult(
-        OpenDocument()) { selectedDocumentUri: Uri? -> openSelectedDocument(selectedDocumentUri) }
+        OpenDocument()
+    ) { selectedDocumentUri: Uri? -> openSelectedDocument(selectedDocumentUri) }
     private val saveToDownloadPermissionLauncher = registerForActivityResult(
-        RequestPermission()) { isPermissionGranted: Boolean ->
+        RequestPermission()
+    ) { isPermissionGranted: Boolean ->
         saveDownloadedFileAfterPermissionRequest(isPermissionGranted)
     }
     private val readFileErrorPermissionLauncher = registerForActivityResult(
-        RequestPermission()) { isPermissionGranted: Boolean ->
+        RequestPermission()
+    ) { isPermissionGranted: Boolean ->
         restartAppIfGranted(isPermissionGranted)
     }
 
@@ -82,6 +85,7 @@ class PdfReaderActivity : AppCompatActivity() {
         StrictMode.setVmPolicy(builder.build())
         prefManager = PreferenceManager.getDefaultSharedPreferences(activity)
         mgr = getSystemService(PRINT_SERVICE) as PrintManager
+
         onFirstInstall()
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState)
@@ -168,6 +172,7 @@ class PdfReaderActivity : AppCompatActivity() {
                     toggleFullscreen()
                     return@setOnNavigationItemSelectedListener true
                 }
+
                 else -> {}
             }
             false
@@ -191,8 +196,7 @@ class PdfReaderActivity : AppCompatActivity() {
             .enableAntialiasing(prefManager!!.getBoolean("alias_pref", true))
             .onTap { e: MotionEvent -> toggleBottomNavigationVisibility(e) }
             .onPageScroll { page: Int, positionOffset: Float ->
-                toggleBottomNavigationAccordingToPosition(page,
-                    positionOffset)
+                toggleBottomNavigationAccordingToPosition(page, positionOffset)
             }
             .scrollHandle(DefaultScrollHandle(activity))
             .spacing(10) // in dp
@@ -225,8 +229,9 @@ class PdfReaderActivity : AppCompatActivity() {
     }
 
     private fun couldNotOpenFileDueToMissingPermission(e: Throwable): Boolean {
-        if (ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(
+                activity, Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
         ) return false
         val exceptionMessage = e.message
         return e is FileNotFoundException && exceptionMessage != null && exceptionMessage.contains("Permission denied")
@@ -393,8 +398,7 @@ class PdfReaderActivity : AppCompatActivity() {
     }
 
     fun askForPdfPassword() {
-        val dialogBinding = DialogPdfReaderPasswordBinding.inflate(
-            layoutInflater)
+        val dialogBinding = DialogPdfReaderPasswordBinding.inflate(layoutInflater)
         val alert = AlertDialog.Builder(activity)
             .setTitle(R.string.protected_pdf)
             .setView(dialogBinding.root)
@@ -425,11 +429,13 @@ class PdfReaderActivity : AppCompatActivity() {
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val builder = AlertDialog.Builder(requireContext())
             return builder.setTitle(R.string.meta)
-                .setMessage("""
+                .setMessage(
+                    """
     ${getString(R.string.pdf_title, requireArguments().getString(TITLE_ARGUMENT))}
     ${getString(R.string.pdf_author, requireArguments().getString(AUTHOR_ARGUMENT))}
     ${getString(R.string.pdf_creation_date, requireArguments().getString(CREATION_DATE_ARGUMENT))}
-    """.trimIndent())
+    """.trimIndent()
+                )
                 .setPositiveButton(R.string.ok) { dialog: DialogInterface?, which: Int -> }
                 .setIcon(R.drawable.info_icon)
                 .create()

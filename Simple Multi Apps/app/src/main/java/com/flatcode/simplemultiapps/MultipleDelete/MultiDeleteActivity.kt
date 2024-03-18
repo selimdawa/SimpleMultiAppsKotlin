@@ -24,21 +24,25 @@ class MultiDeleteActivity : AppCompatActivity() {
         setContentView(view)
 
         //Add values in array list
-        arrayList.addAll(listOf("one",
-            "two",
-            "three",
-            "four",
-            "five",
-            "sex",
-            "seven",
-            "eight",
-            "nine",
-            "ten",
-            "eleven",
-            "twelve",
-            "thirteen",
-            "fourteen",
-            "fifteen"))
+        arrayList.addAll(
+            listOf(
+                "one",
+                "two",
+                "three",
+                "four",
+                "five",
+                "sex",
+                "seven",
+                "eight",
+                "nine",
+                "ten",
+                "eleven",
+                "twelve",
+                "thirteen",
+                "fourteen",
+                "fifteen"
+            )
+        )
 
         //Set layout manager
         binding!!.recyclerView.layoutManager = LinearLayoutManager(context)

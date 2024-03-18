@@ -31,28 +31,27 @@ class PostDB(private val context: Context?) {
     val allDbPosts: List<Post>
         get() {
             val helper = TodoItemDbHelper(
-                context)
+                context
+            )
             val sqLiteDatabase: SQLiteDatabase = helper.readableDatabase
             val postList: ArrayList<Post> = ArrayList()
+
             try {
-                val cursor: Cursor = sqLiteDatabase.query(PostItem.TABLE_NAME,
-                    arrayOf(BaseColumns._ID,
-                        PostItem.COLNAME_POSTID,
-                        PostItem.COLNAME_TITLE,
-                        PostItem.COLNAME_EXCERPT,
-                        PostItem.COLNAME_ISFAV),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null)
+                val cursor: Cursor = sqLiteDatabase.query(
+                    PostItem.TABLE_NAME,
+                    arrayOf(
+                        BaseColumns._ID, PostItem.COLNAME_POSTID, PostItem.COLNAME_TITLE,
+                        PostItem.COLNAME_EXCERPT, PostItem.COLNAME_ISFAV
+                    ),
+                    null, null, null, null, null
+                )
                 try {
                     while (cursor.moveToNext()) {
-                        val tmpPost = Post(cursor.getInt(0),
-                            cursor.getInt(1),
-                            cursor.getString(2),
-                            cursor.getString(3),
-                            cursor.getInt(4))
+                        val tmpPost = Post(
+                            cursor.getInt(0), cursor.getInt(1),
+                            cursor.getString(2), cursor.getString(3),
+                            cursor.getInt(4)
+                        )
                         postList.add(tmpPost)
                     }
                 } finally {
@@ -65,30 +64,27 @@ class PostDB(private val context: Context?) {
         }
 
     fun getDbPostIsFav(postID: Int): Boolean {
-        val helper = TodoItemDbHelper(
-            context)
+        val helper = TodoItemDbHelper(context)
         val sqLiteDatabase: SQLiteDatabase = helper.readableDatabase
-        val postList: ArrayList<Post> = ArrayList<Post>()
+        val postList: ArrayList<Post> = ArrayList()
         var isFavorite = false
+
         try {
-            val cursor: Cursor = sqLiteDatabase.query(PostItem.TABLE_NAME,
-                arrayOf(BaseColumns._ID,
-                    PostItem.COLNAME_POSTID,
-                    PostItem.COLNAME_TITLE,
-                    PostItem.COLNAME_EXCERPT,
-                    PostItem.COLNAME_ISFAV),
-                null,
-                null,
-                null,
-                null,
-                null)
+            val cursor: Cursor = sqLiteDatabase.query(
+                PostItem.TABLE_NAME,
+                arrayOf(
+                    BaseColumns._ID, PostItem.COLNAME_POSTID,
+                    PostItem.COLNAME_TITLE, PostItem.COLNAME_EXCERPT, PostItem.COLNAME_ISFAV
+                ),
+                null, null, null, null, null
+            )
             try {
                 while (cursor.moveToNext()) {
-                    val tmpPost = Post(cursor.getInt(0),
-                        cursor.getInt(1),
-                        cursor.getString(2),
-                        cursor.getString(3),
-                        cursor.getInt(4))
+                    val tmpPost = Post(
+                        cursor.getInt(0), cursor.getInt(1),
+                        cursor.getString(2), cursor.getString(3),
+                        cursor.getInt(4)
+                    )
                     postList.add(tmpPost)
                 }
             } finally {
@@ -107,11 +103,10 @@ class PostDB(private val context: Context?) {
     }
 
     fun insert(wpPostID: Int, wpTitle: String?, wpExcerpt: String?, isFavorite: Boolean): Long {
-
         //Data heraus holen aus der DB
-        val helper = TodoItemDbHelper(
-            context)
+        val helper = TodoItemDbHelper(context)
         val db: SQLiteDatabase = helper.readableDatabase
+
         return try {
             val values = ContentValues()
             //Zuordnung spalten und values
@@ -126,9 +121,9 @@ class PostDB(private val context: Context?) {
     }
 
     fun update(post: Post): Int {
-        val helper = TodoItemDbHelper(
-            context)
+        val helper = TodoItemDbHelper(context)
         val db: SQLiteDatabase = helper.writableDatabase
+
         return try {
             val values = ContentValues()
             values.put(PostItem.COLNAME_TITLE, post.wpTitle)
@@ -145,9 +140,9 @@ class PostDB(private val context: Context?) {
     }
 
     fun delete(postID: Int): Int {
-        val helper = TodoItemDbHelper(
-            context)
+        val helper = TodoItemDbHelper(context)
         val db: SQLiteDatabase = helper.writableDatabase
+
         return try {
             val whereClause = PostItem.COLNAME_POSTID + " LIKE ?"
             val whereArgs = arrayOf(postID.toString())
@@ -161,6 +156,7 @@ class PostDB(private val context: Context?) {
         const val DATABASE_VERSION = 1
         const val DATABASE_NAME = "Post.db"
         private var myInstance: PostDB? = null
+
         fun getInstance(context: Context?): PostDB? {
             if (myInstance == null) {
                 myInstance = PostDB(context)

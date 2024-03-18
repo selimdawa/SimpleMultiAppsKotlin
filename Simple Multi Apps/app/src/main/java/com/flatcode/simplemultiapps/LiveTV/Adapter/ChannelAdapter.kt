@@ -17,12 +17,20 @@ class ChannelAdapter(var channels: List<Channel>, var type: String) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v: View
-        v = if (type == "slider") {
-            LayoutInflater.from(parent.context).inflate(R.layout.item_live_tv_slider, parent, false)
-        } else if (type == "details") {
-            LayoutInflater.from(parent.context).inflate(R.layout.item_live_tv, parent, false)
-        } else {
-            LayoutInflater.from(parent.context).inflate(R.layout.item_live_tv_home, parent, false)
+        v = when (type) {
+            "slider" -> {
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_live_tv_slider, parent, false)
+            }
+
+            "details" -> {
+                LayoutInflater.from(parent.context).inflate(R.layout.item_live_tv, parent, false)
+            }
+
+            else -> {
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_live_tv_home, parent, false)
+            }
         }
         return ViewHolder(v)
     }
@@ -30,6 +38,7 @@ class ChannelAdapter(var channels: List<Channel>, var type: String) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.name.text = channels[position].name
         VOID.Glide(null, channels[position].thumbnail, holder.image)
+
         holder.itemView.setOnClickListener { v: View ->
             val i = Intent(v.context, CLASS.LIVE_TV_DETAILS)
             i.putExtra("channel", channels[position])

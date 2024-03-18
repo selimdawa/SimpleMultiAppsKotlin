@@ -44,23 +44,28 @@ class DownloadPDFFile(activity: PdfReaderActivity) : AsyncTask<String?, Void?, A
             activity.hideProgressBar()
             when (result) {
                 null -> {
-                    Toast.makeText(activity,
+                    Toast.makeText(
+                        activity,
                         R.string.toast_generic_download_error,
-                        Toast.LENGTH_LONG).show()
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
+
                 is Int -> {
                     Toast.makeText(activity, R.string.toast_http_code_error, Toast.LENGTH_LONG)
                         .show()
                 }
+
                 is SSLException -> {
                     Toast.makeText(activity, R.string.toast_ssl_error, Toast.LENGTH_LONG).show()
                 }
+
                 is IOException -> {
-                    Toast.makeText(activity,
-                        R.string.toast_generic_download_error,
-                        Toast.LENGTH_LONG)
-                        .show()
+                    Toast.makeText(
+                        activity, R.string.toast_generic_download_error, Toast.LENGTH_LONG
+                    ).show()
                 }
+
                 is ByteArray -> {
                     activity.saveToFileAndDisplay(result as ByteArray?)
                 }

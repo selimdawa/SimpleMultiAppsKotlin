@@ -9,14 +9,11 @@ class VideoFiles {
     var dateAdded: String? = null
     var duration: String? = null
 
+    constructor()
+
     constructor(
-        id: String?,
-        path: String?,
-        title: String?,
-        fileName: String?,
-        size: String?,
-        dateAdded: String?,
-        duration: String?
+        id: String?, path: String?, title: String?, fileName: String?,
+        size: String?, dateAdded: String?, duration: String?
     ) {
         this.id = id
         this.path = path
@@ -26,6 +23,4 @@ class VideoFiles {
         this.dateAdded = dateAdded
         this.duration = duration
     }
-
-    constructor()
 }

@@ -43,6 +43,7 @@ class LiveTVActivity : AppCompatActivity() {
         binding!!.toolbar.nameSpace.setText(R.string.live_tv)
         channelList = ArrayList()
         service = ChannelDataService(this)
+
         binding!!.bigSliderList.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         bigSliderAdapter = ChannelAdapter(channelList!!, "slider")
@@ -52,8 +53,10 @@ class LiveTVActivity : AppCompatActivity() {
         getSportsChannel("http://" + DATA.IP_LIVE_TV + "/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=Sports")
         getEnterChannel("http://" + DATA.IP_LIVE_TV + "/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=Entertainment")
         binding!!.toolbar.categories.setOnClickListener {
-            VOID.Intent1(context,
-                CLASS.LIVE_TV_CATEGORIES)
+            VOID.Intent1(
+                context,
+                CLASS.LIVE_TV_CATEGORIES
+            )
         }
         binding!!.more.setOnClickListener { v: View ->
             val i = Intent(v.context, CLASS.LIVE_TV_CATEGORIES_DETAILS)

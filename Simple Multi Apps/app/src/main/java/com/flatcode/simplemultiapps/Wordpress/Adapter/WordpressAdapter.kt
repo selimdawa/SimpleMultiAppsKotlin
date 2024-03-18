@@ -18,6 +18,7 @@ class WordpressAdapter(private val context: Context, posts: List<Post>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
     private val posts: List<Post>
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.item_wordpress, parent, false)
@@ -60,9 +61,13 @@ class WordpressAdapter(private val context: Context, posts: List<Post>) :
             content = contentFilter(content, "<ins", "</ins>")
             content = videoFilter(content, "<iframe", "/iframe>")
             val intent: Intent =
-                WordpressDetailsActivity.createIntent(v.context, currentPost!!.id,
-                    currentPost!!.featured_media, Html.fromHtml(title,
-                        Html.FROM_HTML_MODE_LEGACY).toString(), excerpt, content)
+                WordpressDetailsActivity.createIntent(
+                    v.context, currentPost!!.id,
+                    currentPost!!.featured_media, Html.fromHtml(
+                        title,
+                        Html.FROM_HTML_MODE_LEGACY
+                    ).toString(), excerpt, content
+                )
             v.context.startActivity(intent)
         }
 

@@ -77,6 +77,7 @@ class LiveTVDetailsActivity : AppCompatActivity() {
         binding!!.twitterLink.setOnClickListener { openLink(channel.twitter) }
         binding!!.youtubeLink.setOnClickListener { openLink(channel.youtube) }
         binding!!.websiteLink.setOnClickListener { openLink(channel.website) }
+
         playChannel(channel.live_url)
     }
 
@@ -90,8 +91,11 @@ class LiveTVDetailsActivity : AppCompatActivity() {
         binding!!.playerView.player = player
         val dataSourceFactory: DataSource.Factory = DefaultHttpDataSourceFactory()
         val mediaSource =
-            HlsMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(
-                live_url!!))
+            HlsMediaSource.Factory(dataSourceFactory).createMediaSource(
+                MediaItem.fromUri(
+                    live_url!!
+                )
+            )
         player!!.setMediaSource(mediaSource)
         player!!.prepare()
         player!!.playWhenReady = true
@@ -102,10 +106,12 @@ class LiveTVDetailsActivity : AppCompatActivity() {
                         binding!!.progressBar.visibility = View.GONE
                         player!!.playWhenReady = true
                     }
+
                     Player.STATE_BUFFERING -> {
                         binding!!.progressBar.visibility = View.VISIBLE
                         binding!!.playerView.keepScreenOn = true
                     }
+
                     else -> {
                         binding!!.progressBar.visibility = View.GONE
                         player!!.playWhenReady = true

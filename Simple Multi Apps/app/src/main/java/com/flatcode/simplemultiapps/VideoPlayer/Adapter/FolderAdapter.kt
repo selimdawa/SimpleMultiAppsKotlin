@@ -55,7 +55,8 @@ class FolderAdapter(
         var countFiles = 0
         for (videoFiles in videoFiles!!) {
             if (videoFiles!!.path!!.substring(0, videoFiles.path!!.lastIndexOf("/")).endsWith(
-                    folderName!!)
+                    folderName!!
+                )
             ) {
                 countFiles++
             }

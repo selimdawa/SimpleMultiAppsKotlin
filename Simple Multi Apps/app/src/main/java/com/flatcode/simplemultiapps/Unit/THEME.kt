@@ -5,7 +5,6 @@ import androidx.preference.PreferenceManager
 import com.flatcode.simplemultiapps.R
 
 object THEME {
-    
     fun setThemeOfApp(context: Context) {
         val sharedPreferences = PreferenceManager
             .getDefaultSharedPreferences(context.applicationContext)

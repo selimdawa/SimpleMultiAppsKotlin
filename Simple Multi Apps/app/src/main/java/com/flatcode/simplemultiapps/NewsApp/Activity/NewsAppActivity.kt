@@ -38,9 +38,11 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
         binding!!.toolbar.back.visibility = View.VISIBLE
         binding!!.toolbar.back.setOnClickListener { onBackPressed() }
         binding!!.toolbar.nameSpace.setText(R.string.news_app)
+
         dialog = ProgressDialog(context)
         dialog!!.setTitle("Fetching news Articles...")
         dialog!!.show()
+
         binding!!.search.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 dialog!!.setTitle("Fetching news Articles of $query")
@@ -54,6 +56,7 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
                 return false
             }
         })
+
         binding!!.linearSwitchUser.business.setOnClickListener(this)
         binding!!.linearSwitchUser.entertainment.setOnClickListener(this)
         binding!!.linearSwitchUser.general.setOnClickListener(this)
@@ -61,6 +64,7 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
         binding!!.linearSwitchUser.science.setOnClickListener(this)
         binding!!.linearSwitchUser.sports.setOnClickListener(this)
         binding!!.linearSwitchUser.technology.setOnClickListener(this)
+
         val manger = RequestManger(context)
         manger.getNewsHeadlines(listener, "general", null)
     }

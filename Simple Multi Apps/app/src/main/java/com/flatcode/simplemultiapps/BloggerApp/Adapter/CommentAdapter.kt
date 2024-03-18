@@ -20,8 +20,7 @@ class CommentAdapter(private val context: Context, var comments: ArrayList<Comme
     private var binding: ItemBloggerCommentBinding? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemBloggerCommentBinding.inflate(LayoutInflater.from(
-            context), parent, false)
+        binding = ItemBloggerCommentBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding!!.root)
     }
 
@@ -47,6 +46,7 @@ class CommentAdapter(private val context: Context, var comments: ArrayList<Comme
         holder.name.text = name
         holder.date.text = formattedDate
         holder.comment.text = comment
+
         try {
             VOID.Glide(context, image, holder.image)
         } catch (e: Exception) {

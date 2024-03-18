@@ -35,6 +35,7 @@ class PagesActivity : AppCompatActivity() {
         binding!!.toolbar.nameSpace.setText(R.string.blogger_pages)
         binding!!.toolbar.back.visibility = View.VISIBLE
         binding!!.toolbar.back.setOnClickListener { onBackPressed() }
+
         loadPages()
     }
 
@@ -66,10 +67,12 @@ class PagesActivity : AppCompatActivity() {
                             jsonObject1.getJSONObject("author").getString("displayName")
                         val image = jsonObject1.getJSONObject("author").getJSONObject("image")
                             .getString("url")
-                        val page = Page(DATA.EMPTY + displayName, DATA.EMPTY + content,
+                        val page = Page(
+                            DATA.EMPTY + displayName, DATA.EMPTY + content,
                             DATA.EMPTY + id, DATA.EMPTY + published, DATA.EMPTY
                                     + selfLink, DATA.EMPTY + title,
-                            DATA.EMPTY + updated, DATA.EMPTY + url_)
+                            DATA.EMPTY + updated, DATA.EMPTY + url_
+                        )
                         pages!!.add(page)
                     } catch (e: Exception) {
                         Toast.makeText(context, DATA.EMPTY + e.message, Toast.LENGTH_SHORT).show()
