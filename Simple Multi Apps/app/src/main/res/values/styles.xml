@@ -1,0 +1,318 @@
+<resources>
+    <!-- Start application theme. -->
+    <style name="OneTheme" parent="Base.AppCompat.OneTheme" />
+
+    <style name="Base.AppCompat.OneTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/basic_2</item>
+        <item name="colorAccent">@color/basic_2</item>
+        <item name="color">@color/white</item>
+        <item name="background">@color/basic_2</item>
+        <item name="tickColor">@color/basic_2</item>
+        <item name="trackColor">@color/basic_2</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorError">@color/dark</item>
+        <item name="colorOnError">@color/basic_2</item>
+    </style>
+
+    <style name="TwoTheme" parent="Base.AppCompat.TwoTheme" />
+
+    <style name="Base.AppCompat.TwoTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/night_corner</item>
+        <item name="colorAccent">@color/night_corner</item>
+        <item name="color">@color/white</item>
+        <item name="background">@drawable/gradient</item>
+        <item name="tickColor">@color/night_corner</item>
+        <item name="trackColor">@color/night_corner_2</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorError">@color/dark</item>
+        <item name="colorOnError">@color/night_corner</item>
+    </style>
+
+    <style name="ThreeTheme" parent="Base.AppCompat.ThreeTheme" />
+
+    <style name="Base.AppCompat.ThreeTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/basic</item>
+        <item name="colorAccent">@color/basic</item>
+        <item name="color">@color/white</item>
+        <item name="background">@color/basic</item>
+        <item name="tickColor">@color/basic</item>
+        <item name="trackColor">@color/basic</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorError">@color/dark</item>
+        <item name="colorOnError">@color/basic</item>
+    </style>
+
+    <style name="FourTheme" parent="Base.AppCompat.FourTheme" />
+
+    <style name="Base.AppCompat.FourTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/basic_four</item>
+        <item name="colorAccent">@color/basic_four</item>
+        <item name="color">@color/white</item>
+        <item name="background">@color/basic_four</item>
+        <item name="tickColor">@color/basic_four</item>
+        <item name="trackColor">@color/basic_four</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorError">@color/dark</item>
+        <item name="colorOnError">@color/basic_four</item>
+    </style>
+
+    <style name="FiveTheme" parent="Base.AppCompat.FiveTheme" />
+
+    <style name="Base.AppCompat.FiveTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/basic_five</item>
+        <item name="colorAccent">@color/basic_five</item>
+        <item name="color">@color/white</item>
+        <item name="background">@color/basic_five</item>
+        <item name="tickColor">@color/basic_five</item>
+        <item name="trackColor">@color/basic_five</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorError">@color/dark</item>
+        <item name="colorOnError">@color/basic_five</item>
+    </style>
+
+    <style name="SixTheme" parent="Base.AppCompat.SixTheme" />
+
+    <style name="Base.AppCompat.SixTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/basic_six</item>
+        <item name="colorAccent">@color/basic_six</item>
+        <item name="color">@color/white</item>
+        <item name="background">@color/basic_six</item>
+        <item name="tickColor">@color/basic_six</item>
+        <item name="trackColor">@color/basic_six</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorError">@color/dark</item>
+        <item name="colorOnError">@color/basic_six</item>
+    </style>
+
+    <style name="SevenTheme" parent="Base.AppCompat.SevenTheme" />
+
+    <style name="Base.AppCompat.SevenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/basic_seven</item>
+        <item name="colorAccent">@color/basic_seven</item>
+        <item name="color">@color/white</item>
+        <item name="background">@color/basic_seven</item>
+        <item name="tickColor">@color/basic_seven</item>
+        <item name="trackColor">@color/basic_seven</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorError">@color/dark</item>
+        <item name="colorOnError">@color/basic_seven</item>
+    </style>
+
+    <style name="EightTheme" parent="Base.AppCompat.EightTheme" />
+
+    <style name="Base.AppCompat.EightTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/basic_eight</item>
+        <item name="colorAccent">@color/basic_eight</item>
+        <item name="color">@color/white</item>
+        <item name="background">@color/basic_eight</item>
+        <item name="tickColor">@color/basic_eight</item>
+        <item name="trackColor">@color/basic_eight</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorError">@color/dark</item>
+        <item name="colorOnError">@color/basic_eight</item>
+    </style>
+
+    <style name="NineTheme" parent="Base.AppCompat.NineTheme" />
+
+    <style name="Base.AppCompat.NineTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/basic_two</item>
+        <item name="colorAccent">@color/basic_two</item>
+        <item name="color">@color/white</item>
+        <item name="background">@color/basic_two</item>
+        <item name="tickColor">@color/basic_two</item>
+        <item name="trackColor">@color/basic_two</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorError">@color/dark</item>
+        <item name="colorOnError">@color/basic_two</item>
+    </style>
+
+    <style name="TeenTheme" parent="Base.AppCompat.TeenTheme" />
+
+    <style name="Base.AppCompat.TeenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/basic_three</item>
+        <item name="colorAccent">@color/basic_three</item>
+        <item name="color">@color/white</item>
+        <item name="background">@color/basic_three</item>
+        <item name="tickColor">@color/basic_three</item>
+        <item name="trackColor">@color/basic_three</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorError">@color/dark</item>
+        <item name="colorOnError">@color/basic_three</item>
+    </style>
+
+    <!-- Night application theme. -->
+    <style name="OneNightTheme" parent="Base.AppCompat.OneNightTheme" />
+
+    <style name="Base.AppCompat.OneNightTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/basic_night</item>
+        <item name="colorAccent">@color/basic_night</item>
+        <item name="color">@color/white</item>
+        <item name="background">@color/basic_night</item>
+        <item name="tickColor">@color/basic_night</item>
+        <item name="trackColor">@color/basic_night</item>
+        <item name="colorOnBackground">@color/dark</item>
+        <item name="colorError">@color/white</item>
+        <item name="colorOnError">@color/dark</item>
+    </style>
+
+    <style name="TwoNightTheme" parent="Base.AppCompat.TwoNightTheme" />
+
+    <style name="Base.AppCompat.TwoNightTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/night_corner_one</item>
+        <item name="colorAccent">@color/night_corner_one</item>
+        <item name="color">@color/white</item>
+        <item name="background">@drawable/corner_one</item>
+        <item name="tickColor">@color/night_corner_one</item>
+        <item name="trackColor">@color/night_corner_one_2</item>
+        <item name="colorOnBackground">@color/dark</item>
+        <item name="colorError">@color/white</item>
+        <item name="colorOnError">@color/white</item>
+    </style>
+
+    <style name="ThreeNightTheme" parent="Base.AppCompat.ThreeNightTheme" />
+
+    <style name="Base.AppCompat.ThreeNightTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/night_corner_two</item>
+        <item name="colorAccent">@color/night_corner_two</item>
+        <item name="color">@color/white</item>
+        <item name="background">@drawable/corner_two</item>
+        <item name="tickColor">@color/night_corner_two</item>
+        <item name="trackColor">@color/night_corner_two_2</item>
+        <item name="colorOnBackground">@color/dark</item>
+        <item name="colorError">@color/white</item>
+        <item name="colorOnError">@color/white</item>
+    </style>
+
+    <style name="FourNightTheme" parent="Base.AppCompat.FourNightTheme" />
+
+    <style name="Base.AppCompat.FourNightTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/night_corner_three</item>
+        <item name="colorAccent">@color/night_corner_three</item>
+        <item name="color">@color/white</item>
+        <item name="background">@drawable/corner_three</item>
+        <item name="tickColor">@color/night_corner_three</item>
+        <item name="trackColor">@color/night_corner_three_2</item>
+        <item name="colorOnBackground">@color/dark</item>
+        <item name="colorError">@color/white</item>
+        <item name="colorOnError">@color/white</item>
+    </style>
+
+    <style name="FiveNightTheme" parent="Base.AppCompat.FiveNightTheme" />
+
+    <style name="Base.AppCompat.FiveNightTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/night_corner_four</item>
+        <item name="colorAccent">@color/night_corner_four</item>
+        <item name="color">@color/white</item>
+        <item name="background">@drawable/corner_four</item>
+        <item name="tickColor">@color/night_corner_four</item>
+        <item name="trackColor">@color/night_corner_four_2</item>
+        <item name="colorOnBackground">@color/dark</item>
+        <item name="colorError">@color/white</item>
+        <item name="colorOnError">@color/white</item>
+    </style>
+
+    <style name="SixNightTheme" parent="Base.AppCompat.SixNightTheme" />
+
+    <style name="Base.AppCompat.SixNightTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/night_corner_five</item>
+        <item name="colorAccent">@color/night_corner_five</item>
+        <item name="color">@color/white</item>
+        <item name="background">@drawable/corner_five</item>
+        <item name="tickColor">@color/night_corner_five</item>
+        <item name="trackColor">@color/night_corner_five_2</item>
+        <item name="colorOnBackground">@color/dark</item>
+        <item name="colorError">@color/white</item>
+        <item name="colorOnError">@color/white</item>
+    </style>
+
+    <style name="SevenNightTheme" parent="Base.AppCompat.SevenNightTheme" />
+
+    <style name="Base.AppCompat.SevenNightTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/night_corner_six</item>
+        <item name="colorAccent">@color/night_corner_six</item>
+        <item name="color">@color/white</item>
+        <item name="background">@drawable/corner_six</item>
+        <item name="tickColor">@color/night_corner_six</item>
+        <item name="trackColor">@color/night_corner_six_2</item>
+        <item name="colorOnBackground">@color/dark</item>
+        <item name="colorError">@color/white</item>
+        <item name="colorOnError">@color/white</item>
+    </style>
+    <!-- End application theme. -->
+
+    <style name="Theme.WpToAndroidApp" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/dark</item>
+        <item name="colorPrimaryVariant">@color/dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?trackColor</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="ThemeOverlay.SearchView" parent="">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Text color -->
+        <item name="android:editTextColor">@color/white</item>
+        <!-- Hint text color -->
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
+</resources>

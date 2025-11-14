@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_corner_radius">15sp</dimen>
+    <dimen name="card_text_size">20sp</dimen>
+    <dimen name="social_margin_horizontal">20sp</dimen>
+    <dimen name="social_padding">10sp</dimen>
+    <dimen name="social_size">70sp</dimen>
+    <dimen name="item_card_text_size">20sp</dimen>
+    <dimen name="item_contact_size">100sp</dimen>
+    <dimen name="item_margin_top">20sp</dimen>
+    <dimen name="item_margin_horizontal">40sp</dimen>
+    <dimen name="item_card_text_padding">10sp</dimen>
+    <dimen name="item_card_margin">20sp</dimen>
+    <dimen name="item_card_elevation">5sp</dimen>
+    <dimen name="item_card_corner_radius">10sp</dimen>
+    <dimen name="item_card_padding">20sp</dimen>
+</resources>

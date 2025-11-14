@@ -1,0 +1,40 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        tools:context=".PdfReader.Activity.PdfReaderActivity">
+
+        <com.github.barteksc.pdfviewer.PDFView
+            android:id="@+id/pdfView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="-6dp"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:minHeight="?android:attr/actionBarSize"
+            app:backgroundTint="?colorOnBackground"
+            app:itemIconTint="?trackColor"
+            app:itemTextColor="?trackColor"
+            app:labelVisibilityMode="unlabeled"
+            app:menu="@menu/pdf_reader_menu" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

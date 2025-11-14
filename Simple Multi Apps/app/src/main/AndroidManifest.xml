@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@drawable/logo"
+        android:supportsRtl="false"
+        android:theme="@style/OneTheme"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:supportsRtl"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainApp.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainApp.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".StopWatch.StopWatchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RandomImgGenerating.RandomImgGeneratingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RandomImgGenerating.ImageInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CandyCrushGame.CandyCrushGameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MultipleDelete.MultiDeleteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BloggerApp.Activity.PageDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BloggerApp.Activity.PagesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BloggerApp.Activity.PostDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BloggerApp.Activity.BloggerAppActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".JokeApp.JokeAppActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LiveTV.Activity.CategoriesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LiveTV.Activity.CategoryDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LiveTV.Activity.LiveTVDetailsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LiveTV.Activity.LiveTVActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NewsApp.Activity.NewsAppActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NewsApp.Activity.NewsAppDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VideoPlayer.Activity.VideoPlayerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VideoPlayer.Activity.PlayerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VideoPlayer.Activity.VideoFolderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WebApp.WebAppActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WebApp.WebViewActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".PdfReader.Activity.PdfReaderActivity"
+            android:documentLaunchMode="intoExisting" />
+        <activity
+            android:name=".PdfReader.Activity.PdfReaderIntroActivity"
+            android:label="@string/intro"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+
+        <activity
+            android:name=".Wordpress.Activity.WordpressFavoritesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Wordpress.Activity.WordpressActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Wordpress.Activity.WordpressDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.WpToAndroidApp" />
+    </application>
+
+</manifest>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/item_card_margin"
+    android:layout_marginTop="@dimen/item_card_margin"
+    android:layout_marginRight="@dimen/item_card_margin"
+    android:background="@android:color/transparent"
+    android:elevation="@dimen/item_card_elevation"
+    android:paddingTop="@dimen/item_card_padding"
+    android:paddingBottom="@dimen/item_card_padding"
+    app:cardCornerRadius="@dimen/item_card_corner_radius">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?colorOnBackground"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/item_margin_horizontal"
+            android:layout_marginTop="@dimen/item_margin_top">
+
+            <RelativeLayout
+                android:id="@+id/about_app"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/about_us"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?colorError"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/phone"
+                    android:layout_width="@dimen/item_contact_size"
+                    android:layout_height="@dimen/item_contact_size"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_phone"
+                    app:tint="?tickColor" />
+
+                <ImageView
+                    android:id="@+id/email"
+                    android:layout_width="@dimen/item_contact_size"
+                    android:layout_height="@dimen/item_contact_size"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/email" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/item_margin_top">
+
+            <TextView
+                android:id="@+id/close"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="?tickColor"
+                android:gravity="center"
+                android:padding="@dimen/item_card_text_padding"
+                android:text="Close"
+                android:textColor="@color/white"
+                android:textSize="@dimen/item_card_text_size"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
