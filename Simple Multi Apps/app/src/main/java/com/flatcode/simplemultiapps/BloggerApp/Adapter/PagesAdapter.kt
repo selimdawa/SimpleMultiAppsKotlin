@@ -38,7 +38,7 @@ class PagesAdapter(private val context: Context, var pages: ArrayList<Page>) :
         val title = list.title
         val updated = list.updated
         val url = list.url
-        val document = Jsoup.parse(content)
+        val document = Jsoup.parse(content!!)
 
         try {
             val elements = document.select("img")

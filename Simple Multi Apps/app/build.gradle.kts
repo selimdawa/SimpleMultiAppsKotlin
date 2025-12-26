@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
 }
 
@@ -12,8 +12,8 @@ android {
         applicationId = "com.flatcode.simplemultiapps"
         minSdk = 24
         targetSdk = 36
-        versionCode = 5
-        versionName = "1.26"
+        versionCode = 6
+        versionName = "1.30"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,11 +38,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
     }
     buildFeatures {
         dataBinding = true
@@ -50,38 +52,39 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.17.0")
-    implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("androidx.preference:preference-ktx:1.2.1")           //Shared Preference
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.3.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.preference.ktx)           //Shared Preference
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
     //Layout
-    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("com.google.android.material:material:1.13.0")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.cardview:cardview:1.0.0")
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.material)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.cardview)
     //Pdf Reader
-    implementation("com.github.paolorotolo:appintro:v5.1.0")
-    implementation("com.github.barteksc:android-pdf-viewer:3.2.0-beta.1")
-    implementation("com.github.franmontiel:AttributionPresenter:1.0.1")
-    implementation("io.github.tonnyl:whatsnew:0.1.7")
+    implementation(libs.appintro)
+    implementation(libs.android.pdf.viewer)
+    implementation(libs.attributionpresenter)
+    implementation(libs.whatsnew)
     //Image
-    implementation("de.hdodenhof:circleimageview:3.1.0")                //Circle Image
-    implementation("com.github.bumptech.glide:glide:5.0.5")            //Glide Image
+    implementation(libs.circleimageview)                //Circle Image
+    implementation(libs.glide)                          //Glide Image
     //noinspection KaptUsageInsteadOfKsp
-    kapt("com.github.bumptech.glide:compiler:5.0.5")                   //Glide Compiler
+    kapt(libs.compiler)                                 //Glide Compiler
     //Multi delete demo
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation(libs.androidx.lifecycle.extensions)
     //Others
-    implementation("org.jsoup:jsoup:1.21.2")
+    implementation(libs.jsoup)
     //noinspection GradleDependency
-    implementation("com.google.android.exoplayer:exoplayer:2.14.2")     //Video Player
-    implementation("com.android.volley:volley:1.2.1")
+    implementation(libs.exoplayer)     //Video Player
+    implementation(libs.volley)
     //News & Wordpress
-    implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
     //Wordpress
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("com.google.code.gson:gson:2.13.2")
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.gson)
 }
