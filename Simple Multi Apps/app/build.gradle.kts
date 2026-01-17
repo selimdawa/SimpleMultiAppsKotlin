@@ -6,7 +6,9 @@ plugins {
 
 android {
     namespace = "com.flatcode.simplemultiapps"
-    compileSdk = 36
+    compileSdk {
+        version = release(36)
+    }
 
     defaultConfig {
         applicationId = "com.flatcode.simplemultiapps"
