@@ -5,6 +5,7 @@ import androidx.preference.PreferenceManager
 import com.flatcode.simplemultiapps.R
 
 object THEME {
+
     fun setThemeOfApp(context: Context) {
         val sharedPreferences = PreferenceManager
             .getDefaultSharedPreferences(context.applicationContext)
@@ -26,22 +27,20 @@ object THEME {
             context.setTheme(R.style.Base_Theme_EightTheme)
         } else if (sharedPreferences.getString("color_option", "NINE") == "NINE") {
             context.setTheme(R.style.Base_Theme_NineTheme)
-        } else if (sharedPreferences.getString("color_option", "TEEN") == "TEEN") {
-            context.setTheme(R.style.Base_Theme_TeenTheme)
-        }/* else if (sharedPreferences.getString("color_option", "NIGHT_ONE") == "NIGHT_ONE") {
-            context.setTheme(R.style.OneNightTheme)
-        } else if (sharedPreferences.getString("color_option", "NIGHT_TWO") == "NIGHT_TWO") {
-            context.setTheme(R.style.TwoNightTheme)
-        } else if (sharedPreferences.getString("color_option", "NIGHT_THREE") == "NIGHT_THREE") {
-            context.setTheme(R.style.ThreeNightTheme)
-        } else if (sharedPreferences.getString("color_option", "NIGHT_FOUR") == "NIGHT_FOUR") {
-            context.setTheme(R.style.FourNightTheme)
-        } else if (sharedPreferences.getString("color_option", "NIGHT_FIVE") == "NIGHT_FIVE") {
-            context.setTheme(R.style.FiveNightTheme)
-        } else if (sharedPreferences.getString("color_option", "NIGHT_SIX") == "NIGHT_SIX") {
-            context.setTheme(R.style.SixNightTheme)
-        } else if (sharedPreferences.getString("color_option", "NIGHT_SEVEN") == "NIGHT_SEVEN") {
-            context.setTheme(R.style.SevenNightTheme)
-        }*/
+        } else if (sharedPreferences.getString("color_option", "GRADUAL_ONE") == "GRADUAL_ONE") {
+            context.setTheme(R.style.Base_Theme_GradientOneTheme)
+        } else if (sharedPreferences.getString("color_option", "GRADUAL_TWO") == "GRADUAL_TWO") {
+            context.setTheme(R.style.Base_Theme_GradientTwoTheme)
+        } else if (sharedPreferences.getString("color_option", "GRADUAL_THREE") == "GRADUAL_THREE") {
+            context.setTheme(R.style.Base_Theme_GradientThreeTheme)
+        } else if (sharedPreferences.getString("color_option", "GRADUAL_FOUR") == "GRADUAL_FOUR") {
+            context.setTheme(R.style.Base_Theme_GradientFourTheme)
+        } else if (sharedPreferences.getString("color_option", "GRADUAL_FIVE") == "GRADUAL_FIVE") {
+            context.setTheme(R.style.Base_Theme_GradientFiveTheme)
+        } else if (sharedPreferences.getString("color_option", "GRADUAL_SIX") == "GRADUAL_SIX") {
+            context.setTheme(R.style.Base_Theme_GradientSixTheme)
+        } else if (sharedPreferences.getString("color_option", "GRADUAL_SEVEN") == "GRADUAL_SEVEN") {
+        context.setTheme(R.style.Base_Theme_GradientSevenTheme)
+            }
     }
 }
