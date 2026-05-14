@@ -1,10 +1,11 @@
-package com.flatcode.simplemultiapps.MultipleDelete
+package com.flatcode.simplemultiapps.MultipleDelete.Activity
 
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.flatcode.simplemultiapps.MultipleDelete.Adapter.MultiDeleteAdapter
 import com.flatcode.simplemultiapps.Unit.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityMultiDeleteBinding
 

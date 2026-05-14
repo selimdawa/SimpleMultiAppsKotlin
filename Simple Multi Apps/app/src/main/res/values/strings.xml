@@ -23,6 +23,9 @@
     <string name="candy_crush_game">Candy Crush Game</string>
     //Joke
     <string name="joke">Joke</string>
+    <string name="programming">Programming</string>
+    <string name="first_line">First Line"</string>
+    <string name="second_line">Second Line"</string>
     //Stop Watch
     <string name="stop_watch">Stop Watch</string>
     //Random Img Generating
@@ -43,10 +46,6 @@
     <string name="load_more">Load More</string>
     <string name="labels">Labels</string>
     <string name="comments">Comments</string>
-    //Joke App
-    <string name="programming">Programming</string>
-    <string name="first_line">First Line"</string>
-    <string name="second_line">Second Line"</string>
     //News App
     <string name="news_app">News App</string>
     <string name="copy">Copy</string>
