@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.JokeApp
+package com.flatcode.simplemultiapps.JokeApp.Fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,8 @@ import com.android.volley.Request
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.flatcode.simplemultiapps.JokeApp.Adapter.JokeAdapter
+import com.flatcode.simplemultiapps.JokeApp.Model.Joke
 import com.flatcode.simplemultiapps.R
 import org.json.JSONException
 import org.json.JSONObject

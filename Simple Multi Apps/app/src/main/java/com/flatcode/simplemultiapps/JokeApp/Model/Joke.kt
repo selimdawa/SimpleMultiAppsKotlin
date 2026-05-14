@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.JokeApp
+package com.flatcode.simplemultiapps.JokeApp.Model
 
 class Joke {
     var category: String? = null

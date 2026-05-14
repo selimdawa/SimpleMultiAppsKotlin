@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.JokeApp
+package com.flatcode.simplemultiapps.JokeApp.Adapter
 
 import android.content.Context
 import android.graphics.Color

@@ -19,21 +19,26 @@
     <string name="corner_four">Gradual 4</string>
     <string name="corner_five">Gradual 5</string>
     <string name="corner_six">Gradual 6</string>
-    //Needed
+    //Candy Crush
+    <string name="candy_crush_game">Candy Crush Game</string>
+    //Joke
+    <string name="joke">Joke</string>
+    //Stop Watch
+    <string name="stop_watch">Stop Watch</string>
+    //Random Img Generating
+    <string name="random_img_generating">Random Img Generating</string>
+    //Web App
+    <string name="web_app">Web App</string>
+    //Live TV
+    <string name="live_tv">Live TV</string>
+    //Blogger
     <string name="none_display">There are no items to display</string>
     <string name="categories">Categories</string>
     <string name="post_details">Post Details</string>
     <string name="blogger_pages">Tip Top Pages</string>
     <string name="page_details">Page Details</string>
     <string name="blogger_name">Tip Top Blogger</string>
-    <string name="candy_crush_game">Candy Crush Game</string>
     <string name="image_info">Image Info</string>
-    <string name="random_img_generating">Random Img Generating</string>
-    <string name="stop_watch">Stop Watch</string>
-    <string name="joke">Joke</string>
-    <string name="web_app">Web App</string>
-    <string name="live_tv">Live TV</string>
-    //Blogger
     <string name="search">Search</string>
     <string name="load_more">Load More</string>
     <string name="labels">Labels</string>
