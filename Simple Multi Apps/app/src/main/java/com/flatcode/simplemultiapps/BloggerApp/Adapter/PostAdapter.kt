@@ -16,6 +16,7 @@ import com.flatcode.simplemultiapps.databinding.ItemBloggerBinding
 import org.jsoup.Jsoup
 import java.text.MessageFormat
 import java.text.SimpleDateFormat
+import kotlin.collections.get
 
 class PostAdapter(private val context: Context, var posts: ArrayList<Post>) :
     RecyclerView.Adapter<PostAdapter.ViewHolder>() {

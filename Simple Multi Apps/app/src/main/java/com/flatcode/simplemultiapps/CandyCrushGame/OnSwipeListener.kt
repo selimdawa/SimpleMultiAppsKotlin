@@ -2,13 +2,11 @@ package com.flatcode.simplemultiapps.CandyCrushGame
 
 import android.content.Context
 import android.view.GestureDetector
-import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import kotlin.math.abs
 
-open class OnSwipeListener(context: Context?) : OnTouchListener {
+open class OnSwipeListener(context: Context?) : View.OnTouchListener {
 
     var gestureDetector: GestureDetector
 
@@ -16,7 +14,7 @@ open class OnSwipeListener(context: Context?) : OnTouchListener {
         return gestureDetector.onTouchEvent(event)
     }
 
-    private inner class GestureListener : SimpleOnGestureListener() {
+    private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             return true
         }

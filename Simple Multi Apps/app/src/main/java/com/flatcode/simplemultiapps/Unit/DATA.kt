@@ -25,7 +25,7 @@ object DATA {
     var myInstagram = "https://www.instagram.com" // Instagram here
     var mySite = "https://www.google.com" // WebSite here
     var myMobileNumber = "+963994683386" // Mobile Number here
-    var myEmail = "sndthelast@gmail.com" // Email here
+    var myEmail = "selimdawa@gmail.com" // Email here
     var aboutUs = "About Here" // About here
     var WEB_NAME = "webName"
     var WEBSITE = "website"

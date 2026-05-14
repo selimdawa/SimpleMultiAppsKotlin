@@ -1,0 +1,108 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.OneTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/basic_night</item>
+        <item name="colorAccent">@color/basic_night</item>
+        <item name="color">@color/white</item>
+        <item name="background">@color/basic_night</item>
+        <item name="tickColor">@color/basic_night</item>
+        <item name="trackColor">@color/basic_night</item>
+        <item name="colorOnBackground">@color/dark</item>
+        <item name="colorError">@color/white</item>
+        <item name="colorOnError">@color/dark</item>
+    </style>
+
+    <style name="Base.Theme.TwoTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/night_corner_one</item>
+        <item name="colorAccent">@color/night_corner_one</item>
+        <item name="color">@color/white</item>
+        <item name="background">@drawable/corner_one</item>
+        <item name="tickColor">@color/night_corner_one</item>
+        <item name="trackColor">@color/night_corner_one_2</item>
+        <item name="colorOnBackground">@color/dark</item>
+        <item name="colorError">@color/white</item>
+        <item name="colorOnError">@color/white</item>
+    </style>
+
+    <style name="Base.Theme.ThreeTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/night_corner_two</item>
+        <item name="colorAccent">@color/night_corner_two</item>
+        <item name="color">@color/white</item>
+        <item name="background">@drawable/corner_two</item>
+        <item name="tickColor">@color/night_corner_two</item>
+        <item name="trackColor">@color/night_corner_two_2</item>
+        <item name="colorOnBackground">@color/dark</item>
+        <item name="colorError">@color/white</item>
+        <item name="colorOnError">@color/white</item>
+    </style>
+
+    <style name="Base.AppCompat.FourTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/night_corner_three</item>
+        <item name="colorAccent">@color/night_corner_three</item>
+        <item name="color">@color/white</item>
+        <item name="background">@drawable/corner_three</item>
+        <item name="tickColor">@color/night_corner_three</item>
+        <item name="trackColor">@color/night_corner_three_2</item>
+        <item name="colorOnBackground">@color/dark</item>
+        <item name="colorError">@color/white</item>
+        <item name="colorOnError">@color/white</item>
+    </style>
+
+    <style name="Base.Theme.FiveTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/night_corner_four</item>
+        <item name="colorAccent">@color/night_corner_four</item>
+        <item name="color">@color/white</item>
+        <item name="background">@drawable/corner_four</item>
+        <item name="tickColor">@color/night_corner_four</item>
+        <item name="trackColor">@color/night_corner_four_2</item>
+        <item name="colorOnBackground">@color/dark</item>
+        <item name="colorError">@color/white</item>
+        <item name="colorOnError">@color/white</item>
+    </style>
+
+    <style name="Base.Theme.SixTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!--  <item name="android:windowFullscreen">true</item>  -->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/night_corner_five</item>
+        <item name="colorAccent">@color/night_corner_five</item>
+        <item name="color">@color/white</item>
+        <item name="background">@drawable/corner_five</item>
+        <item name="tickColor">@color/night_corner_five</item>
+        <item name="trackColor">@color/night_corner_five_2</item>
+        <item name="colorOnBackground">@color/dark</item>
+        <item name="colorError">@color/white</item>
+        <item name="colorOnError">@color/white</item>
+    </style>
+
+    <style name="Base.Theme.SevenTheme" parent="Theme.Material3.DayNight.NoActionBar">
+    <!--  <item name="android:windowFullscreen">true</item>  -->
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/night_corner_six</item>
+    <item name="colorAccent">@color/night_corner_six</item>
+    <item name="color">@color/white</item>
+    <item name="background">@drawable/corner_six</item>
+    <item name="tickColor">@color/night_corner_six</item>
+    <item name="trackColor">@color/night_corner_six_2</item>
+    <item name="colorOnBackground">@color/dark</item>
+    <item name="colorError">@color/white</item>
+    <item name="colorOnError">@color/white</item>
+    </style>
+
+</resources>

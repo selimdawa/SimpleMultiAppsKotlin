@@ -5,14 +5,14 @@ import com.flatcode.simplemultiapps.BloggerApp.Activity.PageDetailsActivity
 import com.flatcode.simplemultiapps.BloggerApp.Activity.PagesActivity
 import com.flatcode.simplemultiapps.BloggerApp.Activity.PostDetailsActivity
 import com.flatcode.simplemultiapps.CandyCrushGame.CandyCrushGameActivity
-import com.flatcode.simplemultiapps.JokeApp.JokeAppActivity
+import com.flatcode.simplemultiapps.JokeApp.Activity.JokeAppActivity
 import com.flatcode.simplemultiapps.LiveTV.Activity.CategoriesActivity
 import com.flatcode.simplemultiapps.LiveTV.Activity.CategoryDetailsActivity
 import com.flatcode.simplemultiapps.LiveTV.Activity.LiveTVActivity
 import com.flatcode.simplemultiapps.LiveTV.Activity.LiveTVDetailsActivity
 import com.flatcode.simplemultiapps.MainApp.MainActivity
 import com.flatcode.simplemultiapps.MainApp.SplashActivity
-import com.flatcode.simplemultiapps.MultipleDelete.MultiDeleteActivity
+import com.flatcode.simplemultiapps.MultipleDelete.Activity.MultiDeleteActivity
 import com.flatcode.simplemultiapps.NewsApp.Activity.NewsAppActivity
 import com.flatcode.simplemultiapps.NewsApp.Activity.NewsAppDetailsActivity
 import com.flatcode.simplemultiapps.PdfReader.Activity.PdfReaderActivity

@@ -16,6 +16,7 @@ import com.flatcode.simplemultiapps.databinding.ItemBloggerBinding
 import org.jsoup.Jsoup
 import java.text.MessageFormat
 import java.text.SimpleDateFormat
+import kotlin.collections.get
 
 class PagesAdapter(private val context: Context, var pages: ArrayList<Page>) :
     RecyclerView.Adapter<PagesAdapter.ViewHolder>() {

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.flatcode.simplemultiapps.JokeApp.Fragment.JokesFragment
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.Unit.DATA
 import com.flatcode.simplemultiapps.databinding.ItemJokeCategoryBinding
