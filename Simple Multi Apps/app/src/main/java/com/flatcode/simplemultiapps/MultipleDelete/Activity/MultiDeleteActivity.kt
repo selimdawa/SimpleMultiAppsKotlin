@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.flatcode.simplemultiapps.MultipleDelete.Adapter.MultiDeleteAdapter
+import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.Unit.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityMultiDeleteBinding
 
@@ -25,26 +26,7 @@ class MultiDeleteActivity : AppCompatActivity() {
         setContentView(view)
 
         //Add values in array list
-        arrayList.addAll(
-            listOf(
-                "one",
-                "two",
-                "three",
-                "four",
-                "five",
-                "sex",
-                "seven",
-                "eight",
-                "nine",
-                "ten",
-                "eleven",
-                "twelve",
-                "thirteen",
-                "fourteen",
-                "fifteen"
-            )
-        )
-
+        arrayList.addAll(getResources().getStringArray(R.array.values))
         //Set layout manager
         binding!!.recyclerView.layoutManager = LinearLayoutManager(context)
         //Initialize adapter

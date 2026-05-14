@@ -26,6 +26,22 @@
     <string name="programming">Programming</string>
     <string name="first_line">First Line"</string>
     <string name="second_line">Second Line"</string>
+    <string-array name="values">
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+        <item>Five</item>
+        <item>Sex</item>
+        <item>Seven</item>
+        <item>Eight</item>
+        <item>Nine</item>
+        <item>Ten</item>
+        <item>Eleven</item>
+        <item>Twelve</item>
+        <item>Thirteen</item>
+        <item>Fourteen</item>
+        <item>Fifteen</item>
+    </string-array>
     //Stop Watch
     <string name="stop_watch">Stop Watch</string>
     //Random Img Generating
