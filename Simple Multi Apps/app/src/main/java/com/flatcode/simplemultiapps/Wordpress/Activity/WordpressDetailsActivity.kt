@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.Unit.CLASS
+import com.flatcode.simplemultiapps.Unit.THEME
 import com.flatcode.simplemultiapps.Wordpress.Model.Media
 import com.flatcode.simplemultiapps.Wordpress.Sqlite.PostDB
 import com.flatcode.simplemultiapps.Wordpress.Util.InternetConnection
@@ -37,7 +38,7 @@ class WordpressDetailsActivity : AppCompatActivity() {
     var isItemSelected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //THEME.setThemeOfApp(context)
+        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         binding = ActivityWordpressDetailsBinding.inflate(layoutInflater)
         val view = binding!!.root
