@@ -5,10 +5,10 @@ appintro = "v5.1.0"
 attributionpresenter = "1.0.1"
 cardview = "1.0.0"
 circleimageview = "3.1.0"
-compiler = "5.0.7"
 #noinspection GradleDependency
 exoplayer = "2.14.2"
 glide = "5.0.7"
+glideKsp = "5.0.7"
 gson = "2.14.0"
 jsoup = "1.22.2"
 kotlin = "2.3.21"
@@ -27,6 +27,7 @@ retrofit = "3.0.0"
 swiperefreshlayout = "1.2.0"
 volley = "1.2.1"
 whatsnew = "0.1.7"
+ksp = "2.3.7"
 
 [libraries]
 android-pdf-viewer = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "androidPdfViewer" }
@@ -38,11 +39,11 @@ androidx-preference-ktx = { module = "androidx.preference:preference-ktx", versi
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
 appintro = { module = "com.github.paolorotolo:appintro", version.ref = "appintro" }
 attributionpresenter = { module = "com.github.franmontiel:AttributionPresenter", version.ref = "attributionpresenter" }
-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoplayer" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-ksp = { module = "com.github.bumptech.glide:ksp", version.ref = "glideKsp" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -59,3 +60,4 @@ whatsnew = { module = "io.github.tonnyl:whatsnew", version.ref = "whatsnew" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
