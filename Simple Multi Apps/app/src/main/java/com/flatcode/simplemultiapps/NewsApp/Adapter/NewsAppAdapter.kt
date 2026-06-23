@@ -11,30 +11,39 @@ import com.flatcode.simplemultiapps.databinding.ItemNewsBinding
 
 class NewsAppAdapter(
     private val context: Context,
-    var headlines: List<NewsHeadlines?>?,
-    private val listener: SelectListener,
-) : RecyclerView.Adapter<NewsAppViewHolder>() {
+    private val headlines: List<NewsHeadlines?>?,
+    private val listener: SelectListener
+) : RecyclerView.Adapter<NewsAppAdapter.ViewHolder>() {
 
-    private var binding: ItemNewsBinding? = null
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsAppViewHolder {
-        binding = ItemNewsBinding.inflate(LayoutInflater.from(context), parent, false)
-        return NewsAppViewHolder(binding!!.root)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemNewsBinding.inflate(LayoutInflater.from(context), parent, false)
+        return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: NewsAppViewHolder, position: Int) {
-        val list = headlines!![position]
-        val content = list!!.title
-        val source = list.source!!.name
-        val urlToImage = list.urlToImage
-
-        if (content != null) holder.content.text = content
-        if (source != null) holder.source.text = source
-        if (urlToImage != null) VOID.Glide(context, urlToImage, holder.image)
-        holder.card.setOnClickListener { listener.onNewsClicked(list) }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        headlines?.get(position)?.let { item ->
+            holder.bind(item)
+        }
     }
 
-    override fun getItemCount(): Int {
-        return headlines!!.size
+    override fun getItemCount(): Int = headlines?.size ?: 0
+
+    inner class ViewHolder(private val binding: ItemNewsBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: NewsHeadlines) {
+            binding.content.text = item.title
+            binding.source.text = item.source?.name ?: ""
+
+            item.urlToImage.let { url ->
+                VOID.Glide(context, url, binding.image)
+            }
+
+            binding.card.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.onNewsClicked(item)
+                }
+            }
+        }
     }
 }
