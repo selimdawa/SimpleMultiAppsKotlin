@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.ksp)
 }
 
@@ -73,8 +72,6 @@ dependencies {
     //Layout
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
-    implementation(libs.androidx.legacy.support.v4)
-    implementation(libs.androidx.cardview)
     //Image
     implementation(libs.circleimageview)                //Circle Image
     implementation(libs.glide)                          //Glide Image
@@ -87,7 +84,6 @@ dependencies {
     //Multi delete demo
     implementation(libs.androidx.lifecycle.extensions)
     //Video Player
-    //noinspection GradleDependency
     implementation(libs.exoplayer)
     implementation(libs.volley)
     //News & Wordpress
@@ -98,4 +94,5 @@ dependencies {
     implementation(libs.gson)
     //Other's
     implementation(libs.jsoup)
+    ksp(libs.kotlin.metadata.jvm)                       //Kotlin
 }
