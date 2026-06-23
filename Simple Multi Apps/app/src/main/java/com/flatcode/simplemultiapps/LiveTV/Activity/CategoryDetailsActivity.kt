@@ -1,6 +1,7 @@
 package com.flatcode.simplemultiapps.LiveTV.Activity
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.LiveTV.Adapter.ChannelAdapter
@@ -16,64 +17,76 @@ import org.json.JSONObject
 
 class CategoryDetailsActivity : AppCompatActivity() {
 
-    private var binding: ActivityLiveTvCategoryDetailsBinding? = null
-    var adapter: ChannelAdapter? = null
-    var channels: MutableList<Channel>? = null
-    var dataService: ChannelDataService? = null
+    private var _binding: ActivityLiveTvCategoryDetailsBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var adapter: ChannelAdapter
+    private val channels = ArrayList<Channel>()
+    private var dataService: ChannelDataService? = null
     var context: Context = this@CategoryDetailsActivity
-    var categoryName: String? = null
-    var category: Category? = null
-    var url: String? = null
+    private var categoryName: String? = null
+    private var category: Category? = null
+    private var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityLiveTvCategoryDetailsBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
+        _binding = ActivityLiveTvCategoryDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        channels = ArrayList()
         dataService = ChannelDataService(this)
         categoryName = intent.getStringExtra("categoryName")
 
-        if (categoryName == null || categoryName == "") {
-            category = intent.getSerializableExtra("category") as Category?
-            binding!!.toolbar.nameSpace.text = category!!.name
-            url =
-                "http://" + DATA.IP_LIVE_TV + "/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=" + category!!.name
+        val extractedName = if (categoryName.isNullOrEmpty()) {
+            @Suppress("DEPRECATION")
+            category = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getSerializableExtra("category", Category::class.java)
+            } else {
+                intent.getSerializableExtra("category") as? Category
+            }
+            category?.name
         } else {
-            binding!!.toolbar.nameSpace.text = categoryName
-            url =
-                "http://" + DATA.IP_LIVE_TV + "/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=" + categoryName
+            categoryName
         }
-        adapter = ChannelAdapter(channels!!, "details")
-        binding!!.recyclerView.adapter = adapter
-        binding!!.toolbar.back.setOnClickListener { onBackPressed() }
-        dataService!!.getChannelData(url, object : OnDataResponse {
+
+        binding.toolbar.nameSpace.text = extractedName.orEmpty()
+        url = "http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=$extractedName"
+
+        adapter = ChannelAdapter("details")
+        binding.recyclerView.adapter = adapter
+        binding.toolbar.back.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+
+        dataService?.getChannelData(url, object : OnDataResponse {
             override fun onResponse(response: JSONObject) {
                 for (i in 0 until response.length()) {
                     try {
                         val channelData = response.getJSONObject(i.toString())
-                        val c = Channel()
-                        c.id = channelData.getInt("id")
-                        c.name = channelData.getString("name")
-                        c.description = channelData.getString("description")
-                        c.thumbnail = channelData.getString("thumbnail")
-                        c.live_url = channelData.getString("live_url")
-                        c.facebook = channelData.getString("facebook")
-                        c.twitter = channelData.getString("twitter")
-                        c.youtube = channelData.getString("youtube")
-                        c.website = channelData.getString("website")
-                        c.category = channelData.getString("category")
-                        channels!!.add(c)
-                        adapter!!.notifyDataSetChanged()
+                        val c = Channel(
+                            id = channelData.getInt("id"),
+                            name = channelData.getString("name"),
+                            description = channelData.getString("description"),
+                            thumbnail = channelData.getString("thumbnail"),
+                            liveUrl = channelData.getString("live_url"),
+                            facebook = channelData.getString("facebook"),
+                            twitter = channelData.getString("twitter"),
+                            youtube = channelData.getString("youtube"),
+                            website = channelData.getString("website"),
+                            category = channelData.getString("category")
+                        )
+                        channels.add(c)
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
                 }
+                adapter.submitList(ArrayList(channels))
             }
 
             override fun onError(error: String?) {}
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

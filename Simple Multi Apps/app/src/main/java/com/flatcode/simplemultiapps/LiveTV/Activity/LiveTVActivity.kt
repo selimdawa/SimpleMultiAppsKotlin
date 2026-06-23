@@ -21,83 +21,109 @@ import org.json.JSONObject
 
 class LiveTVActivity : AppCompatActivity() {
 
-    private var binding: ActivityLiveTvBinding? = null
-    var bigSliderAdapter: ChannelAdapter? = null
-    var newsChannelAdapter: ChannelAdapter? = null
-    var sportsChannelAdapter: ChannelAdapter? = null
-    var enterChannelAdapter: ChannelAdapter? = null
-    var channelList: MutableList<Channel>? = null
-    var newsChannels: MutableList<Channel>? = null
-    var sportsChannel: MutableList<Channel>? = null
-    var enterChannel: MutableList<Channel>? = null
-    var service: ChannelDataService? = null
+    private var _binding: ActivityLiveTvBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var bigSliderAdapter: ChannelAdapter
+    private lateinit var newsChannelAdapter: ChannelAdapter
+    private lateinit var sportsChannelAdapter: ChannelAdapter
+    private lateinit var enterChannelAdapter: ChannelAdapter
+
+    private val channelList = ArrayList<Channel>()
+    private val newsChannels = ArrayList<Channel>()
+    private val sportsChannel = ArrayList<Channel>()
+    private val enterChannel = ArrayList<Channel>()
+
+    private var service: ChannelDataService? = null
     var context: Context = this@LiveTVActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityLiveTvBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
+        _binding = ActivityLiveTvBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        binding!!.toolbar.nameSpace.setText(R.string.live_tv)
-        channelList = ArrayList()
+        binding.toolbar.nameSpace.setText(R.string.live_tv)
         service = ChannelDataService(this)
 
-        binding!!.bigSliderList.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        bigSliderAdapter = ChannelAdapter(channelList!!, "slider")
-        binding!!.bigSliderList.adapter = bigSliderAdapter
-        getSliderData("http://" + DATA.IP_LIVE_TV + "/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&channels=all")
-        getNewsChannels("http://" + DATA.IP_LIVE_TV + "/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=News")
-        getSportsChannel("http://" + DATA.IP_LIVE_TV + "/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=Sports")
-        getEnterChannel("http://" + DATA.IP_LIVE_TV + "/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=Entertainment")
-        binding!!.toolbar.categories.setOnClickListener {
-            VOID.Intent1(
-                context,
-                CLASS.LIVE_TV_CATEGORIES
-            )
+        setupRecyclerViews()
+        setupClickListeners()
+        loadAllChannels()
+    }
+
+    private fun setupRecyclerViews() {
+        binding.bigSliderList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        bigSliderAdapter = ChannelAdapter("slider")
+        binding.bigSliderList.adapter = bigSliderAdapter
+
+        binding.newsChannelList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        newsChannelAdapter = ChannelAdapter("details")
+        binding.newsChannelList.adapter = newsChannelAdapter
+
+        binding.sportsChannelList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        sportsChannelAdapter = ChannelAdapter("details")
+        binding.sportsChannelList.adapter = sportsChannelAdapter
+
+        binding.enterChannelList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        enterChannelAdapter = ChannelAdapter("details")
+        binding.enterChannelList.adapter = enterChannelAdapter
+    }
+
+    private fun setupClickListeners() {
+        binding.toolbar.categories.setOnClickListener {
+            VOID.Intent1(context, CLASS.LIVE_TV_CATEGORIES)
         }
-        binding!!.more.setOnClickListener { v: View ->
-            val i = Intent(v.context, CLASS.LIVE_TV_CATEGORIES_DETAILS)
-            i.putExtra("categoryName", "News")
-            v.context.startActivity(i)
+        binding.more.setOnClickListener { v: View ->
+            startCategoryDetailActivity(v.context, "News")
         }
-        binding!!.more2.setOnClickListener { v: View ->
-            val i = Intent(v.context, CLASS.LIVE_TV_CATEGORIES_DETAILS)
-            i.putExtra("categoryName", "Sports")
-            v.context.startActivity(i)
+        binding.more2.setOnClickListener { v: View ->
+            startCategoryDetailActivity(v.context, "Sports")
         }
-        binding!!.more3.setOnClickListener { v: View ->
-            val i = Intent(v.context, CLASS.LIVE_TV_CATEGORIES_DETAILS)
-            i.putExtra("categoryName", "Entertainment")
-            v.context.startActivity(i)
+        binding.more3.setOnClickListener { v: View ->
+            startCategoryDetailActivity(v.context, "Entertainment")
         }
     }
 
+    private fun startCategoryDetailActivity(ctx: Context, categoryName: String) {
+        val i = Intent(ctx, CLASS.LIVE_TV_CATEGORIES_DETAILS)
+        i.putExtra("categoryName", categoryName)
+        ctx.startActivity(i)
+    }
+
+    private fun loadAllChannels() {
+        getSliderData("http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&channels=all")
+        getNewsChannels("http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=News")
+        getSportsChannel("http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=Sports")
+        getEnterChannel("http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=Entertainment")
+    }
+
+    private fun parseChannel(channelData: JSONObject): Channel {
+        return Channel(
+            id = channelData.getInt("id"),
+            name = channelData.getString("name"),
+            description = channelData.getString("description"),
+            thumbnail = channelData.getString("thumbnail"),
+            liveUrl = channelData.getString("live_url"),
+            facebook = channelData.getString("facebook"),
+            twitter = channelData.getString("twitter"),
+            youtube = channelData.getString("youtube"),
+            website = channelData.getString("website"),
+            category = channelData.getString("category")
+        )
+    }
+
     fun getSliderData(url: String?) {
-        service!!.getChannelData(url, object : OnDataResponse {
+        service?.getChannelData(url, object : OnDataResponse {
             override fun onResponse(response: JSONObject) {
                 for (i in 0 until response.length()) {
                     try {
                         val channelData = response.getJSONObject(i.toString())
-                        val c = Channel()
-                        c.id = channelData.getInt("id")
-                        c.name = channelData.getString("name")
-                        c.description = channelData.getString("description")
-                        c.thumbnail = channelData.getString("thumbnail")
-                        c.live_url = channelData.getString("live_url")
-                        c.facebook = channelData.getString("facebook")
-                        c.twitter = channelData.getString("twitter")
-                        c.youtube = channelData.getString("youtube")
-                        c.website = channelData.getString("website")
-                        c.category = channelData.getString("category")
-                        channelList!!.add(c)
-                        bigSliderAdapter!!.notifyDataSetChanged()
+                        channelList.add(parseChannel(channelData))
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
                 }
+                bigSliderAdapter.submitList(ArrayList(channelList))
             }
 
             override fun onError(error: String?) {}
@@ -105,35 +131,17 @@ class LiveTVActivity : AppCompatActivity() {
     }
 
     fun getNewsChannels(url: String?) {
-        newsChannels = ArrayList()
-        binding!!.newsChannelList.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        newsChannelAdapter = ChannelAdapter(newsChannels!!, "category")
-        binding!!.newsChannelList.adapter = newsChannelAdapter
-        service!!.getChannelData(url, object : OnDataResponse {
+        service?.getChannelData(url, object : OnDataResponse {
             override fun onResponse(response: JSONObject) {
                 for (i in 0 until response.length()) {
                     try {
                         val channelData = response.getJSONObject(i.toString())
-                        val c = Channel()
-                        c.id = channelData.getInt("id")
-                        c.name = channelData.getString("name")
-                        c.description = channelData.getString("description")
-                        c.thumbnail = channelData.getString("thumbnail")
-                        c.live_url = channelData.getString("live_url")
-                        c.facebook = channelData.getString("facebook")
-                        c.twitter = channelData.getString("twitter")
-                        c.youtube = channelData.getString("youtube")
-                        c.website = channelData.getString("website")
-                        c.category = channelData.getString("category")
-                        newsChannels!!.add(c)
-                        newsChannelAdapter!!.notifyDataSetChanged()
-
-                        //Log.d(TAG, "onResponse: " + c.toString());
+                        newsChannels.add(parseChannel(channelData))
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
                 }
+                newsChannelAdapter.submitList(ArrayList(newsChannels))
             }
 
             override fun onError(error: String?) {}
@@ -141,34 +149,17 @@ class LiveTVActivity : AppCompatActivity() {
     }
 
     fun getSportsChannel(url: String?) {
-        sportsChannel = ArrayList()
-        binding!!.sportsChannelList.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        sportsChannelAdapter = ChannelAdapter(sportsChannel!!, "category")
-        binding!!.sportsChannelList.adapter = sportsChannelAdapter
-        service!!.getChannelData(url, object : OnDataResponse {
+        service?.getChannelData(url, object : OnDataResponse {
             override fun onResponse(response: JSONObject) {
-                //Log.d(TAG, "onResponse: sports" + response.toString());
                 for (i in 0 until response.length()) {
                     try {
                         val channelData = response.getJSONObject(i.toString())
-                        val c = Channel()
-                        c.id = channelData.getInt("id")
-                        c.name = channelData.getString("name")
-                        c.description = channelData.getString("description")
-                        c.thumbnail = channelData.getString("thumbnail")
-                        c.live_url = channelData.getString("live_url")
-                        c.facebook = channelData.getString("facebook")
-                        c.twitter = channelData.getString("twitter")
-                        c.youtube = channelData.getString("youtube")
-                        c.website = channelData.getString("website")
-                        c.category = channelData.getString("category")
-                        sportsChannel!!.add(c)
-                        sportsChannelAdapter!!.notifyDataSetChanged()
+                        sportsChannel.add(parseChannel(channelData))
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
                 }
+                sportsChannelAdapter.submitList(ArrayList(sportsChannel))
             }
 
             override fun onError(error: String?) {}
@@ -176,36 +167,25 @@ class LiveTVActivity : AppCompatActivity() {
     }
 
     fun getEnterChannel(url: String?) {
-        enterChannel = ArrayList()
-        binding!!.enterChannelList.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        enterChannelAdapter = ChannelAdapter(enterChannel!!, "category")
-        binding!!.enterChannelList.adapter = enterChannelAdapter
-        service!!.getChannelData(url, object : OnDataResponse {
+        service?.getChannelData(url, object : OnDataResponse {
             override fun onResponse(response: JSONObject) {
                 for (i in 0 until response.length()) {
                     try {
                         val channelData = response.getJSONObject(i.toString())
-                        val c = Channel()
-                        c.id = channelData.getInt("id")
-                        c.name = channelData.getString("name")
-                        c.description = channelData.getString("description")
-                        c.thumbnail = channelData.getString("thumbnail")
-                        c.live_url = channelData.getString("live_url")
-                        c.facebook = channelData.getString("facebook")
-                        c.twitter = channelData.getString("twitter")
-                        c.youtube = channelData.getString("youtube")
-                        c.website = channelData.getString("website")
-                        c.category = channelData.getString("category")
-                        enterChannel!!.add(c)
-                        enterChannelAdapter!!.notifyDataSetChanged()
+                        enterChannel.add(parseChannel(channelData))
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
                 }
+                enterChannelAdapter.submitList(ArrayList(enterChannel))
             }
 
             override fun onError(error: String?) {}
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

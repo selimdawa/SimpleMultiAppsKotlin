@@ -16,46 +16,55 @@ import org.json.JSONObject
 
 class CategoriesActivity : AppCompatActivity() {
 
-    private var binding: ActivityLiveTvCategoriesBinding? = null
-    var categoryAdapter: CategoryAdapter? = null
-    var categoryList: MutableList<Category>? = null
-    var dataService: ChannelDataService? = null
+    private var _binding: ActivityLiveTvCategoriesBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var categoryAdapter: CategoryAdapter
+    private val categoryList = ArrayList<Category>()
+    private var dataService: ChannelDataService? = null
     var context: Context = this@CategoriesActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityLiveTvCategoriesBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
+        _binding = ActivityLiveTvCategoriesBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        binding!!.toolbar.nameSpace.setText(R.string.categories)
+        binding.toolbar.nameSpace.setText(R.string.categories)
         dataService = ChannelDataService(this)
-        categoryList = ArrayList()
-        categoryAdapter = CategoryAdapter(context, categoryList!!)
-        binding!!.recyclerView.adapter = categoryAdapter
 
-        binding!!.toolbar.back.setOnClickListener { onBackPressed() }
-        dataService!!.getChannelData("http://" + DATA.IP_LIVE_TV + "/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&categories=all",
+        categoryAdapter = CategoryAdapter()
+        binding.recyclerView.adapter = categoryAdapter
+
+        binding.toolbar.back.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+
+        dataService?.getChannelData(
+            "http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&categories=all",
             object : OnDataResponse {
                 override fun onResponse(response: JSONObject) {
                     for (i in 0 until response.length()) {
                         try {
                             val categoryData = response.getJSONObject(i.toString())
                             val category = Category(
-                                categoryData.getInt("id"),
-                                categoryData.getString("name"),
-                                categoryData.getString("image_url")
+                                id = categoryData.getInt("id"),
+                                name = categoryData.getString("name"),
+                                imageUrl = categoryData.getString("image_url")
                             )
-                            categoryList!!.add(category)
-                            categoryAdapter!!.notifyDataSetChanged()
+                            categoryList.add(category)
                         } catch (e: JSONException) {
                             e.printStackTrace()
                         }
                     }
+                    categoryAdapter.submitList(ArrayList(categoryList))
                 }
 
                 override fun onError(error: String?) {}
-            })
+            }
+        )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
