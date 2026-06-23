@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
@@ -57,7 +59,7 @@ class MultiDeleteAdapter(
 
                     override fun onPrepareActionMode(actionMode: ActionMode, menu: Menu): Boolean {
                         isEnable = true
-                        ClickItem(holder)
+                        clickItem(holder)
                         val lifecycleOwner = activity as? LifecycleOwner
                         lifecycleOwner?.let { owner ->
                             mainViewModel?.text?.observe(owner) { s ->
@@ -73,11 +75,18 @@ class MultiDeleteAdapter(
                     ): Boolean {
                         when (menuItem.itemId) {
                             R.id.menu_delete -> {
-                                for (s in selectList) {
-                                    arrayList.remove(s)
+                                val iterator = selectList.iterator()
+                                while (iterator.hasNext()) {
+                                    val s = iterator.next()
+                                    val index = arrayList.indexOf(s)
+                                    if (index != -1) {
+                                        arrayList.removeAt(index)
+                                        notifyItemRemoved(index)
+                                    }
                                 }
-                                if (arrayList.size == 0) {
-                                    tvEmpty.visibility = View.VISIBLE
+                                selectList.clear()
+                                if (arrayList.isEmpty()) {
+                                    tvEmpty.isVisible = true
                                 }
                                 actionMode.finish()
                             }
@@ -92,7 +101,7 @@ class MultiDeleteAdapter(
                                     selectList.addAll(arrayList)
                                 }
                                 mainViewModel?.setText(selectList.size.toString())
-                                notifyDataSetChanged()
+                                notifyItemRangeChanged(0, arrayList.size)
                             }
                         }
                         return true
@@ -102,31 +111,31 @@ class MultiDeleteAdapter(
                         isEnable = false
                         isSelectAll = false
                         selectList.clear()
-                        notifyDataSetChanged()
+                        notifyItemRangeChanged(0, arrayList.size)
                     }
                 }
                 (v.context as AppCompatActivity).startActionMode(callback)
             } else {
-                ClickItem(holder)
+                clickItem(holder)
             }
             true
         }
 
         holder.itemView.setOnClickListener {
             if (isEnable) {
-                ClickItem(holder)
+                clickItem(holder)
             } else {
                 Toast.makeText(
-                    activity, "You Clicked " + arrayList[holder.adapterPosition], Toast.LENGTH_SHORT
+                    activity, "You Clicked " + arrayList[holder.bindingAdapterPosition], Toast.LENGTH_SHORT
                 ).show()
             }
         }
 
         if (isSelectAll) {
-            binding.checkBox.visibility = View.VISIBLE
+            binding.checkBox.isVisible = true
             holder.itemView.setBackgroundColor(Color.LTGRAY)
         } else {
-            binding.checkBox.visibility = View.GONE
+            binding.checkBox.isGone = true
             holder.itemView.setBackgroundColor(Color.TRANSPARENT)
         }
     }
@@ -135,16 +144,16 @@ class MultiDeleteAdapter(
         return arrayList.size
     }
 
-    private fun ClickItem(holder: ViewHolder) {
-        val s = arrayList[holder.adapterPosition]
+    private fun clickItem(holder: ViewHolder) {
+        val s = arrayList[holder.bindingAdapterPosition]
         val binding = holder.binding
 
-        if (binding.checkBox.visibility == View.GONE) {
-            binding.checkBox.visibility = View.VISIBLE
+        if (binding.checkBox.isGone) {
+            binding.checkBox.isVisible = true
             holder.itemView.setBackgroundColor(Color.LTGRAY)
             selectList.add(s)
         } else {
-            binding.checkBox.visibility = View.GONE
+            binding.checkBox.isGone = true
             holder.itemView.setBackgroundColor(Color.TRANSPARENT)
             selectList.remove(s)
         }
