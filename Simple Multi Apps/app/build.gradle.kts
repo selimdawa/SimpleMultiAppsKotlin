@@ -58,6 +58,7 @@ android {
     }
     buildFeatures {
         dataBinding = true
+        viewBinding = true
     }
 }
 
@@ -75,7 +76,7 @@ dependencies {
     //Image
     implementation(libs.circleimageview)                //Circle Image
     implementation(libs.glide)                          //Glide Image
-    ksp(libs.glide.ksp)                                //Glide Compiler
+    ksp(libs.glide.ksp)                                 //Glide Compiler
     //Pdf Reader
     implementation(libs.appintro)
     implementation(libs.android.pdf.viewer)

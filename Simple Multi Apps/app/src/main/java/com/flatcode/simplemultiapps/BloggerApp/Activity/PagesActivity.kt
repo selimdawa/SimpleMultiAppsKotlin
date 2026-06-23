@@ -20,7 +20,9 @@ import org.json.JSONObject
 
 class PagesActivity : AppCompatActivity() {
 
-    private var binding: ActivityBloggerPagesBinding? = null
+    private var _binding: ActivityBloggerPagesBinding? = null
+    private val binding get() = _binding!!
+
     private var pages: ArrayList<Page>? = null
     private var adapter: PagesAdapter? = null
     var context: Context = this@PagesActivity
@@ -28,13 +30,12 @@ class PagesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityBloggerPagesBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
+        _binding = ActivityBloggerPagesBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        binding!!.toolbar.nameSpace.setText(R.string.blogger_pages)
-        binding!!.toolbar.back.visibility = View.VISIBLE
-        binding!!.toolbar.back.setOnClickListener { onBackPressed() }
+        binding.toolbar.nameSpace.setText(R.string.blogger_pages)
+        binding.toolbar.back.visibility = View.VISIBLE
+        binding.toolbar.back.setOnClickListener { onBackPressed() }
 
         loadPages()
     }
@@ -79,8 +80,9 @@ class PagesActivity : AppCompatActivity() {
                     }
                 }
                 adapter = PagesAdapter(context, pages!!)
-                binding!!.recyclerView.adapter = adapter
+                binding.recyclerView.adapter = adapter
             } catch (e: Exception) {
+                Toast.makeText(context, DATA.EMPTY + e.message, Toast.LENGTH_SHORT).show()
             }
         }) { error: VolleyError ->
             dialog.dismiss()
@@ -88,5 +90,10 @@ class PagesActivity : AppCompatActivity() {
         }
         val requestQueue = Volley.newRequestQueue(context)
         requestQueue.add(stringRequest)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

@@ -2,10 +2,7 @@ package com.flatcode.simplemultiapps.BloggerApp.Adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.BloggerApp.Model.Comment
 import com.flatcode.simplemultiapps.R
@@ -17,11 +14,9 @@ import java.text.SimpleDateFormat
 class CommentAdapter(private val context: Context, var comments: ArrayList<Comment>) :
     RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
-    private var binding: ItemBloggerCommentBinding? = null
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemBloggerCommentBinding.inflate(LayoutInflater.from(context), parent, false)
-        return ViewHolder(binding!!.root)
+        val binding = ItemBloggerCommentBinding.inflate(LayoutInflater.from(context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -39,18 +34,18 @@ class CommentAdapter(private val context: Context, var comments: ArrayList<Comme
             val date = dateFormat.parse(published)
             formattedDate = dateFormat2.format(date)
         } catch (e: Exception) {
-            formattedDate = published!!
+            formattedDate = published ?: DATA.EMPTY
             e.printStackTrace()
         }
 
-        holder.name.text = name
-        holder.date.text = formattedDate
-        holder.comment.text = comment
+        holder.binding.name.text = name
+        holder.binding.date.text = formattedDate
+        holder.binding.comment.text = comment
 
         try {
-            VOID.Glide(context, image, holder.image)
+            VOID.Glide(context, image, holder.binding.image)
         } catch (e: Exception) {
-            holder.image.setImageResource(R.drawable.ic_person)
+            holder.binding.image.setImageResource(R.drawable.ic_person)
         }
     }
 
@@ -58,17 +53,5 @@ class CommentAdapter(private val context: Context, var comments: ArrayList<Comme
         return comments.size
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var name: TextView
-        var date: TextView
-        var comment: TextView
-        var image: ImageView
-
-        init {
-            name = binding!!.name
-            date = binding!!.date
-            comment = binding!!.comment
-            image = binding!!.image
-        }
-    }
+    inner class ViewHolder(val binding: ItemBloggerCommentBinding) : RecyclerView.ViewHolder(binding.root)
 }

@@ -20,11 +20,12 @@ import com.flatcode.simplemultiapps.databinding.ActivityPostDetailsBinding
 import org.json.JSONObject
 import java.text.MessageFormat
 import java.text.SimpleDateFormat
-import javax.xml.transform.OutputKeys
 
 class PostDetailsActivity : AppCompatActivity() {
 
-    private var binding: ActivityPostDetailsBinding? = null
+    private var _binding: ActivityPostDetailsBinding? = null
+    private val binding get() = _binding!!
+
     private var postId: String? = null
     private var list: ArrayList<Label>? = null
     private var adapter: LabelAdapter? = null
@@ -35,15 +36,14 @@ class PostDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityPostDetailsBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
+        _binding = ActivityPostDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         postId = intent.getStringExtra("postId")
 
-        binding!!.toolbar.nameSpace.setText(R.string.post_details)
-        binding!!.toolbar.back.visibility = View.VISIBLE
-        binding!!.toolbar.back.setOnClickListener { onBackPressed() }
+        binding.toolbar.nameSpace.setText(R.string.post_details)
+        binding.toolbar.back.visibility = View.VISIBLE
+        binding.toolbar.back.setOnClickListener { onBackPressed() }
 
         loadPostDetails()
     }
@@ -70,11 +70,11 @@ class PostDetailsActivity : AppCompatActivity() {
                     formattedDate = published
                     e.printStackTrace()
                 }
-                binding!!.title.text = title
-                binding!!.publishInfo.text =
+                binding.title.text = title
+                binding.publishInfo.text =
                     MessageFormat.format("By {0}{1}{2}", displayName, DATA.SPACE, formattedDate)
-                binding!!.webView.loadDataWithBaseURL(
-                    null, content, "text/html", OutputKeys.ENCODING, null
+                binding.webView.loadDataWithBaseURL(
+                    null, content, "text/html", "UTF-8", null
                 )
                 try {
                     list = ArrayList()
@@ -86,7 +86,7 @@ class PostDetailsActivity : AppCompatActivity() {
                         list!!.add(label1)
                     }
                     adapter = LabelAdapter(context, list!!)
-                    binding!!.recyclerLabels.adapter = adapter
+                    binding.recyclerLabels.adapter = adapter
                 } catch (e: Exception) {
                 }
                 loadComments()
@@ -132,8 +132,13 @@ class PostDetailsActivity : AppCompatActivity() {
                 comments!!.add(comment)
             }
             commentAdapter = CommentAdapter(context, comments!!)
-            binding!!.recyclerComments.adapter = commentAdapter
+            binding.recyclerComments.adapter = commentAdapter
         } catch (e: Exception) {
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

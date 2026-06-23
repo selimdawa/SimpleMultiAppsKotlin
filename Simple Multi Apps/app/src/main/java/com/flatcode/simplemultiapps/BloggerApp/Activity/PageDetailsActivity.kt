@@ -16,26 +16,26 @@ import com.flatcode.simplemultiapps.databinding.ActivityPageDetailsBinding
 import org.json.JSONObject
 import java.text.MessageFormat
 import java.text.SimpleDateFormat
-import javax.xml.transform.OutputKeys
 
 class PageDetailsActivity : AppCompatActivity() {
 
-    private var binding: ActivityPageDetailsBinding? = null
+    private var _binding: ActivityPageDetailsBinding? = null
+    private val binding get() = _binding!!
+
     var pageId: String? = null
     var context: Context = this@PageDetailsActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityPageDetailsBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
+        _binding = ActivityPageDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         pageId = intent.getStringExtra("pageId")
 
-        binding!!.toolbar.nameSpace.text = getString(R.string.page_details)
-        binding!!.toolbar.back.visibility = View.VISIBLE
-        binding!!.toolbar.back.setOnClickListener { onBackPressed() }
+        binding.toolbar.nameSpace.text = getString(R.string.page_details)
+        binding.toolbar.back.visibility = View.VISIBLE
+        binding.toolbar.back.setOnClickListener { onBackPressed() }
 
         loadPageDetails()
     }
@@ -59,14 +59,14 @@ class PageDetailsActivity : AppCompatActivity() {
                     val date = dateFormat.parse(published)
                     formattedDate = dateFormat2.format(date)
                 } catch (e: Exception) {
-                    formattedDate = published
+                    formattedDate = published ?: DATA.EMPTY
                     e.printStackTrace()
                 }
-                binding!!.title.text = title
-                binding!!.publishInfo.text =
+                binding.title.text = title
+                binding.publishInfo.text =
                     MessageFormat.format("By {0}{1}{2}", displayName, DATA.SPACE, formattedDate)
-                binding!!.webView.loadDataWithBaseURL(
-                    null, content, "text/html", OutputKeys.ENCODING, null
+                binding.webView.loadDataWithBaseURL(
+                    null, content, "text/html", "UTF-8", null
                 )
             } catch (e: Exception) {
                 Toast.makeText(context, DATA.EMPTY + e.message, Toast.LENGTH_SHORT).show()
@@ -76,5 +76,10 @@ class PageDetailsActivity : AppCompatActivity() {
         }
         val requestQueue = Volley.newRequestQueue(context)
         requestQueue.add(stringRequest)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

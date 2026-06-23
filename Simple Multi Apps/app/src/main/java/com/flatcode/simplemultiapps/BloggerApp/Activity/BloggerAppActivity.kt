@@ -23,7 +23,9 @@ import org.json.JSONObject
 
 class BloggerAppActivity : AppCompatActivity() {
 
-    private var binding: ActivityBloggerAppBinding? = null
+    private var _binding: ActivityBloggerAppBinding? = null
+    private val binding get() = _binding!!
+
     private var url = DATA.EMPTY
     private var nextToken = DATA.EMPTY
     private var isSearch = false
@@ -35,17 +37,16 @@ class BloggerAppActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityBloggerAppBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
+        _binding = ActivityBloggerAppBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        binding!!.toolbar.nameSpace.text = getString(R.string.blogger_name)
-        binding!!.toolbar.close.setOnClickListener { onBackPressed() }
-        binding!!.toolbar.pages.setOnClickListener { VOID.Intent1(context, CLASS.BLOGGER_PAGES) }
+        binding.toolbar.nameSpace.text = getString(R.string.blogger_name)
+        binding.toolbar.close.setOnClickListener { onBackPressed() }
+        binding.toolbar.pages.setOnClickListener { VOID.Intent1(context, CLASS.BLOGGER_PAGES) }
 
-        binding!!.toolbar.search.setOnClickListener {
-            binding!!.toolbar.toolbar.visibility = View.GONE
-            binding!!.toolbar.toolbarSearch.visibility = View.VISIBLE
+        binding.toolbar.search.setOnClickListener {
+            binding.toolbar.toolbar.visibility = View.GONE
+            binding.toolbar.toolbarSearch.visibility = View.VISIBLE
             DATA.searchStatus = true
         }
 
@@ -55,20 +56,20 @@ class BloggerAppActivity : AppCompatActivity() {
         posts!!.clear()
         loadPosts()
 
-        binding!!.loadMore.setOnClickListener {
-            val query = binding!!.toolbar.textSearch.text.toString().trim { it <= ' ' }
+        binding.loadMore.setOnClickListener {
+            val query = binding.toolbar.textSearch.text.toString().trim { it <= ' ' }
             if (TextUtils.isEmpty(query)) {
                 loadPosts()
             } else {
                 searchPosts(query)
             }
         }
-        binding!!.toolbar.postSearch.setOnClickListener {
+        binding.toolbar.postSearch.setOnClickListener {
             nextToken = DATA.EMPTY
             url = DATA.EMPTY
             posts = ArrayList()
             posts!!.clear()
-            val query = binding!!.toolbar.textSearch.text.toString().trim { it <= ' ' }
+            val query = binding.toolbar.textSearch.text.toString().trim { it <= ' ' }
             if (TextUtils.isEmpty(query)) {
                 loadPosts()
             } else {
@@ -120,7 +121,6 @@ class BloggerAppActivity : AppCompatActivity() {
                         val selfLink = jsonObject1.getString("selfLink")
                         val authorName =
                             jsonObject1.getJSONObject("author").getString("displayName")
-                        //String image = jsonObject1.getJSONObject("author").getString("image");
                         val post = Post(
                             DATA.EMPTY + authorName, DATA.EMPTY + content,
                             DATA.EMPTY + id, DATA.EMPTY + published,
@@ -133,7 +133,7 @@ class BloggerAppActivity : AppCompatActivity() {
                     }
                 }
                 adapter = PostAdapter(context, posts!!)
-                binding!!.recyclerView.adapter = adapter
+                binding.recyclerView.adapter = adapter
                 dialog!!.dismiss()
             } catch (e: Exception) {
                 Toast.makeText(context, DATA.EMPTY + e.message, Toast.LENGTH_SHORT).show()
@@ -183,12 +183,11 @@ class BloggerAppActivity : AppCompatActivity() {
                         val selfLink = jsonObject1.getString("selfLink")
                         val authorName =
                             jsonObject1.getJSONObject("author").getString("displayName")
-                        val image = jsonObject1.getJSONObject("author").getString("image")
                         val post = Post(
                             DATA.EMPTY + authorName, DATA.EMPTY + content,
-                            DATA.EMPTY + id, DATA.EMPTY + published, DATA.EMPTY
-                                    + selfLink, DATA.EMPTY + title, DATA.EMPTY + updated,
-                            DATA.EMPTY + url
+                            DATA.EMPTY + id, DATA.EMPTY + published,
+                            DATA.EMPTY + selfLink, DATA.EMPTY + title,
+                            DATA.EMPTY + updated, DATA.EMPTY + url
                         )
                         posts!!.add(post)
                     } catch (e: Exception) {
@@ -196,7 +195,7 @@ class BloggerAppActivity : AppCompatActivity() {
                     }
                 }
                 adapter = PostAdapter(context, posts!!)
-                binding!!.recyclerView.adapter = adapter
+                binding.recyclerView.adapter = adapter
                 dialog!!.dismiss()
             } catch (e: Exception) {
                 Toast.makeText(context, DATA.EMPTY + e.message, Toast.LENGTH_SHORT).show()
@@ -209,12 +208,8 @@ class BloggerAppActivity : AppCompatActivity() {
         requestQueue.add(stringRequest)
     }
 
-    override fun onBackPressed() {
-        if (DATA.searchStatus) {
-            binding!!.toolbar.toolbar.visibility = View.VISIBLE
-            binding!!.toolbar.toolbarSearch.visibility = View.GONE
-            DATA.searchStatus = false
-            binding!!.toolbar.textSearch.setText(DATA.EMPTY)
-        } else super.onBackPressed()
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
