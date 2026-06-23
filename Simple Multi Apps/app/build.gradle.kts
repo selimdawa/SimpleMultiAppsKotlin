@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.google.ksp)
 }
 
 android {
@@ -71,7 +70,6 @@ dependencies {
     //Image
     implementation(libs.circleimageview)                //Circle Image
     implementation(libs.glide)                          //Glide Image
-    ksp(libs.glide.ksp)                                 //Glide Compiler
     //Pdf Reader
     implementation(libs.appintro)
     implementation(libs.android.pdf.viewer)

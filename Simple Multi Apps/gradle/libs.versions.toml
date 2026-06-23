@@ -7,7 +7,6 @@ circleimageview = "3.1.0"
 #noinspection GradleDependency
 exoplayer = "2.14.2"
 glide = "5.0.7"
-glideKsp = "5.0.7"
 gson = "2.14.0"
 jsoup = "1.22.2"
 coreKtx = "1.19.0"
@@ -24,7 +23,6 @@ retrofit = "3.0.0"
 swiperefreshlayout = "1.2.0"
 volley = "1.2.1"
 whatsnew = "0.1.7"
-ksp = "2.3.8"
 
 [libraries]
 android-pdf-viewer = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "androidPdfViewer" }
@@ -38,7 +36,6 @@ circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circ
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoplayer" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
-glide-ksp = { module = "com.github.bumptech.glide:ksp", version.ref = "glideKsp" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -54,4 +51,3 @@ whatsnew = { module = "io.github.tonnyl:whatsnew", version.ref = "whatsnew" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
