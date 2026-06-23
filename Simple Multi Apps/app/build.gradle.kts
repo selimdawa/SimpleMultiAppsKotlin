@@ -51,11 +51,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
-        }
-    }
     buildFeatures {
         dataBinding = true
         viewBinding = true
@@ -95,5 +90,4 @@ dependencies {
     implementation(libs.gson)
     //Other's
     implementation(libs.jsoup)
-    ksp(libs.kotlin.metadata.jvm)                       //Kotlin
 }
