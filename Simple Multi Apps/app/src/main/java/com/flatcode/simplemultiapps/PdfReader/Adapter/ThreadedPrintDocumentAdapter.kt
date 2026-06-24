@@ -9,7 +9,8 @@ import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import java.util.concurrent.Executors
 
-abstract class ThreadedPrintDocumentAdapter(private val ctxt: Context?) : PrintDocumentAdapter() {
+abstract class ThreadedPrintDocumentAdapter(private val context: Context?) :
+    PrintDocumentAdapter() {
 
     private val threadPool = Executors.newFixedThreadPool(1)
 
@@ -20,7 +21,7 @@ abstract class ThreadedPrintDocumentAdapter(private val ctxt: Context?) : PrintD
 
     abstract fun buildWriteJob(
         pages: Array<PageRange>?, destination: ParcelFileDescriptor?,
-        cancellationSignal: CancellationSignal?, callback: WriteResultCallback?, ctxt: Context?,
+        cancellationSignal: CancellationSignal?, callback: WriteResultCallback?, context: Context?,
     ): WriteJob
 
     override fun onLayout(
@@ -36,7 +37,7 @@ abstract class ThreadedPrintDocumentAdapter(private val ctxt: Context?) : PrintD
         pages: Array<PageRange>, destination: ParcelFileDescriptor,
         cancellationSignal: CancellationSignal, callback: WriteResultCallback,
     ) {
-        threadPool.submit(buildWriteJob(pages, destination, cancellationSignal, callback, ctxt))
+        threadPool.submit(buildWriteJob(pages, destination, cancellationSignal, callback, context))
     }
 
     override fun onFinish() {
@@ -47,12 +48,12 @@ abstract class ThreadedPrintDocumentAdapter(private val ctxt: Context?) : PrintD
     abstract class LayoutJob internal constructor(
         var oldAttributes: PrintAttributes?, var newAttributes: PrintAttributes?,
         var cancellationSignal: CancellationSignal?,
-        var callback: LayoutResultCallback?, var extras: Bundle?,
+        var callback: LayoutResultCallback?,
     ) : Runnable
 
     abstract class WriteJob internal constructor(
-        var pages: Array<PageRange>?, var destination: ParcelFileDescriptor?,
+        var destination: ParcelFileDescriptor?,
         var cancellationSignal: CancellationSignal?,
-        var callback: WriteResultCallback?, var ctxt: Context?,
+        var callback: WriteResultCallback?,
     ) : Runnable
 }

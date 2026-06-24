@@ -1,26 +1,31 @@
 package com.flatcode.simplemultiapps.PdfReader
 
-import android.net.wifi.WifiConfiguration.AuthAlgorithm.strings
-import android.os.AsyncTask
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.flatcode.simplemultiapps.PdfReader.Activity.PdfReaderActivity
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.Unit.VOID
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
-import java.lang.ref.WeakReference
 import java.net.HttpURLConnection
 import java.net.URL
 import javax.net.ssl.SSLException
 
-class DownloadPDFFile(activity: PdfReaderActivity) : AsyncTask<String?, Void?, Any?>() {
+class DownloadPDFFile(private val activity: PdfReaderActivity) {
 
-    private val mainActivityWR: WeakReference<PdfReaderActivity>
+    fun execute(url: String) {
+        activity.lifecycleScope.launch {
+            val result = doInBackground(url)
+            onPostExecute(result)
+        }
+    }
 
-    override fun doInBackground(vararg params: String?): Any? {
-        val url = strings[0]
+    private suspend fun doInBackground(url: String): Any = withContext(Dispatchers.IO) {
         var httpConnection: HttpURLConnection? = null
-        return try {
+        try {
             httpConnection = URL(url).openConnection() as HttpURLConnection
             httpConnection.connect()
             val responseCode = httpConnection.responseCode
@@ -30,6 +35,9 @@ class DownloadPDFFile(activity: PdfReaderActivity) : AsyncTask<String?, Void?, A
                 Log.e("DownloadPDFFile", "Error during http request, response code : $responseCode")
                 responseCode
             }
+        } catch (e: SSLException) {
+            Log.e("DownloadPDFFile", "SSL Error cannot get file at URL : $url", e)
+            e
         } catch (e: IOException) {
             Log.e("DownloadPDFFile", "Error cannot get file at URL : $url", e)
             e
@@ -38,42 +46,30 @@ class DownloadPDFFile(activity: PdfReaderActivity) : AsyncTask<String?, Void?, A
         }
     }
 
-    override fun onPostExecute(result: Any?) {
-        val activity = mainActivityWR.get()
-        if (activity != null) {
-            activity.hideProgressBar()
-            when (result) {
-                null -> {
-                    Toast.makeText(
-                        activity,
-                        R.string.toast_generic_download_error,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+    private fun onPostExecute(result: Any?) {
+        activity.hideProgressBar()
+        when (result) {
+            is Int -> {
+                Toast.makeText(activity, R.string.toast_http_code_error, Toast.LENGTH_LONG).show()
+            }
 
-                is Int -> {
-                    Toast.makeText(activity, R.string.toast_http_code_error, Toast.LENGTH_LONG)
-                        .show()
-                }
+            is SSLException -> {
+                Toast.makeText(activity, R.string.toast_ssl_error, Toast.LENGTH_LONG).show()
+            }
 
-                is SSLException -> {
-                    Toast.makeText(activity, R.string.toast_ssl_error, Toast.LENGTH_LONG).show()
-                }
+            is IOException -> {
+                Toast.makeText(activity, R.string.toast_generic_download_error, Toast.LENGTH_LONG)
+                    .show()
+            }
 
-                is IOException -> {
-                    Toast.makeText(
-                        activity, R.string.toast_generic_download_error, Toast.LENGTH_LONG
-                    ).show()
-                }
+            is ByteArray -> {
+                activity.saveToFileAndDisplay(result)
+            }
 
-                is ByteArray -> {
-                    activity.saveToFileAndDisplay(result as ByteArray?)
-                }
+            else -> {
+                Toast.makeText(activity, R.string.toast_generic_download_error, Toast.LENGTH_LONG)
+                    .show()
             }
         }
-    }
-
-    init {
-        mainActivityWR = WeakReference(activity)
     }
 }

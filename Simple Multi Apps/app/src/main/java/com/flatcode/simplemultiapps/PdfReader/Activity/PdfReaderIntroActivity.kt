@@ -10,24 +10,27 @@ import com.github.paolorotolo.appintro.AppIntroFragment
 import com.github.paolorotolo.appintro.model.SliderPage
 
 class PdfReaderIntroActivity : AppIntro() {
-    var bg = Color.parseColor("#000000")
+
+    private val backgroundColor = Color.parseColor("#000000")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //getSupportActionBar().hide();
-        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        val one = SliderPage()
-        one.title = getString(R.string.title_permission)
-        one.description = getString(R.string.description__permission)
-        one.imageDrawable = R.drawable.patterns_permissions
-        one.bgColor = bg
-        addSlide(AppIntroFragment.newInstance(one))
+
+        val sliderPage = SliderPage().apply {
+            title = getString(R.string.title_permission)
+            description = getString(R.string.description__permission)
+            imageDrawable = R.drawable.patterns_permissions
+            bgColor = backgroundColor
+        }
+
+        addSlide(AppIntroFragment.newInstance(sliderPage))
+
         askForPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
-        //}
+
         showSkipButton(false)
-        showStatusBar(false)
     }
 
-    override fun onDonePressed(currentFragment: Fragment) {
+    override fun onDonePressed(currentFragment: Fragment?) {
         super.onDonePressed(currentFragment)
         finish()
     }

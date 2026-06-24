@@ -14,8 +14,8 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
-class PdfDocumentAdapter(ctxt: Context?, private val documentUri: Uri) :
-    ThreadedPrintDocumentAdapter(ctxt) {
+class PdfDocumentAdapter(context: Context?, private val documentUri: Uri) :
+    ThreadedPrintDocumentAdapter(context) {
 
     override fun buildLayoutJob(
         oldAttributes: PrintAttributes?,
@@ -23,24 +23,24 @@ class PdfDocumentAdapter(ctxt: Context?, private val documentUri: Uri) :
         cancellationSignal: CancellationSignal?,
         callback: LayoutResultCallback?, extras: Bundle?,
     ): LayoutJob {
-        return PdfLayoutJob(oldAttributes, newAttributes, cancellationSignal, callback, extras)
+        return PdfLayoutJob(oldAttributes, newAttributes, cancellationSignal, callback)
     }
 
     override fun buildWriteJob(
         pages: Array<PageRange>?,
         destination: ParcelFileDescriptor?,
         cancellationSignal: CancellationSignal?,
-        callback: WriteResultCallback?, ctxt: Context?,
+        callback: WriteResultCallback?, context: Context?,
     ): WriteJob {
-        return PdfWriteJob(pages, destination, cancellationSignal, callback, ctxt)
+        return PdfWriteJob(destination, cancellationSignal, callback, context)
     }
 
     private class PdfLayoutJob(
         oldAttributes: PrintAttributes?,
         newAttributes: PrintAttributes?,
         cancellationSignal: CancellationSignal?,
-        callback: LayoutResultCallback?, extras: Bundle?,
-    ) : LayoutJob(oldAttributes, newAttributes, cancellationSignal, callback, extras) {
+        callback: LayoutResultCallback?,
+    ) : LayoutJob(oldAttributes, newAttributes, cancellationSignal, callback) {
         override fun run() {
             if (cancellationSignal!!.isCanceled) {
                 callback!!.onLayoutCancelled()
@@ -55,15 +55,18 @@ class PdfDocumentAdapter(ctxt: Context?, private val documentUri: Uri) :
     }
 
     private inner class PdfWriteJob(
-        pages: Array<PageRange>?, destination: ParcelFileDescriptor?,
+        destination: ParcelFileDescriptor?,
         cancellationSignal: CancellationSignal?,
-        callback: WriteResultCallback?, ctxt: Context?,
-    ) : WriteJob(pages, destination, cancellationSignal, callback, ctxt) {
+        callback: WriteResultCallback?, jobContext: Context?,
+    ) : WriteJob(destination, cancellationSignal, callback) {
+
+        private val finalContext = jobContext
+
         override fun run() {
             var `in`: InputStream? = null
             var out: OutputStream? = null
             try {
-                `in` = ctxt!!.contentResolver.openInputStream(documentUri)
+                `in` = finalContext!!.contentResolver.openInputStream(documentUri)
                 out = FileOutputStream(destination!!.fileDescriptor)
                 val buf = ByteArray(16384)
                 var size: Int
