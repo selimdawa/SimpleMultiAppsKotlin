@@ -1,47 +1,55 @@
 package com.flatcode.simplemultiapps.RandomImgGenerating
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.R
+import com.flatcode.simplemultiapps.Unit.DATA
 import com.flatcode.simplemultiapps.Unit.THEME
 import com.flatcode.simplemultiapps.Unit.VOID
 import com.flatcode.simplemultiapps.databinding.ActivityImageInfoBinding
 
 class ImageInfoActivity : AppCompatActivity() {
 
-    private var binding: ActivityImageInfoBinding? = null
-    var context: Context = this@ImageInfoActivity
+    private var _binding: ActivityImageInfoBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
+        THEME.setThemeOfApp(this)
         super.onCreate(savedInstanceState)
-        binding = ActivityImageInfoBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
 
-        binding!!.toolbar.nameSpace.text = getString(R.string.image_info)
-        val data = intent
+        _binding = ActivityImageInfoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // set the data to ui
-        binding!!.catName.text = data.getStringExtra("name")
-        binding!!.catOrigin.text = data.getStringExtra("origin")
-        binding!!.catDescription.text = data.getStringExtra("desc")
-        binding!!.catTemperament.text = data.getStringExtra("temp")
+        binding.toolbar.nameSpace.text = getString(R.string.image_info)
 
-        VOID.Glide(context, data.getStringExtra("imageUrl"), binding!!.catImage)
+        binding.catName.text = intent.getStringExtra(DATA.KEY_NAME) ?: DATA.UNKNOWN
+        binding.catOrigin.text = intent.getStringExtra(DATA.KEY_ORIGIN) ?: DATA.UNKNOWN
+        binding.catDescription.text = intent.getStringExtra(DATA.KEY_DESC) ?: DATA.UNKNOWN
+        binding.catTemperament.text = intent.getStringExtra(DATA.KEY_TEMP) ?: DATA.UNKNOWN
 
-        binding!!.wikiBtn.setOnClickListener {
-            val catUri = Uri.parse(data.getStringExtra("wikiUrl"))
-            val browser = Intent(Intent.ACTION_VIEW, catUri)
-            startActivity(browser)
+        VOID.Glide(this, intent.getStringExtra(DATA.KEY_IMAGE_URL), binding.catImage)
+
+        binding.wikiBtn.setOnClickListener {
+            val wikiUrl = intent.getStringExtra(DATA.KEY_WIKI_URL)
+            if (!wikiUrl.isNullOrEmpty()) {
+                val browser = Intent(Intent.ACTION_VIEW, Uri.parse(wikiUrl))
+                startActivity(browser)
+            }
         }
-        binding!!.moreInfoBtn.setOnClickListener {
-            val catUri = Uri.parse(data.getStringExtra("moreLink"))
-            val browser = Intent(Intent.ACTION_VIEW, catUri)
-            startActivity(browser)
+
+        binding.moreInfoBtn.setOnClickListener {
+            val moreLink = intent.getStringExtra(DATA.KEY_MORE_LINK)
+            if (!moreLink.isNullOrEmpty()) {
+                val browser = Intent(Intent.ACTION_VIEW, Uri.parse(moreLink))
+                startActivity(browser)
+            }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

@@ -2,13 +2,14 @@ package com.flatcode.simplemultiapps.Unit
 
 object DATA {
     //Database
-    var EMPTY = ""
-    var SPACE = " "
-    var IMAGE = "image"
-    var TITLE = "title"
-    var NULL = "null"
-    var DOT = "."
-    var DATA = "data"
+    const val EMPTY = ""
+    const val SPACE = " "
+    const val IMAGE = "image"
+    const val TITLE = "title"
+    const val NULL = "null"
+    const val DOT = "."
+    const val DATA = "data"
+    const val UNKNOWN = "Unknown"
     var searchStatus = false
 
     //Shared
@@ -38,4 +39,21 @@ object DATA {
     var IP_LIVE_TV = "192.168.1.2" // IP My Computer
     var NEWS_API = "07f40de92d3644908496e8f9677ee838"
     var JOKE_URL = "https://v2.jokeapi.dev/joke/"
+
+    //Random Img Generating
+    const val KEY_NAME = "name"
+    const val KEY_ORIGIN = "origin"
+    const val KEY_DESC = "desc"
+    const val KEY_TEMP = "temp"
+    const val KEY_WIKI_URL = "wikiUrl"
+    const val KEY_MORE_LINK = "moreLink"
+    const val KEY_IMAGE_URL = "imageUrl"
+    const val JSON_URL = "url"
+    const val JSON_BREEDS = "breeds"
+    const val JSON_NAME = "name"
+    const val JSON_ORIGIN = "origin"
+    const val JSON_DESCRIPTION = "description"
+    const val JSON_TEMPERAMENT = "temperament"
+    const val JSON_WIKIPEDIA_URL = "wikipedia_url"
+    const val JSON_VCAHOSPITALS_URL = "vcahospitals_url"
 }
