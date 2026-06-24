@@ -16,7 +16,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.print.PrintManager
 import android.provider.OpenableColumns
 import android.util.Log

@@ -1,6 +1,6 @@
 [versions]
 agp = "9.2.1"
-androidPdfViewer = "3.2.0-beta.1"
+androidPdfViewer = "3.2.0-beta06"
 appintro = "v5.1.0"
 attributionpresenter = "1.0.1"
 circleimageview = "3.1.0"
@@ -25,7 +25,7 @@ volley = "1.2.1"
 whatsnew = "0.1.7"
 
 [libraries]
-android-pdf-viewer = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "androidPdfViewer" }
+android-pdf-viewer = { module = "io.github.oothp:android-pdf-viewer", version.ref = "androidPdfViewer" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-extensions = { module = "androidx.lifecycle:lifecycle-extensions", version.ref = "lifecycleExtensions" }
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
