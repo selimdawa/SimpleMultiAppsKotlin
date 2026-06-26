@@ -1,7 +1,6 @@
 package com.flatcode.simplemultiapps.LiveTV.Adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -23,16 +22,15 @@ class CategoryAdapter : ListAdapter<Category, CategoryAdapter.ViewHolder>(Catego
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val model = getItem(position)
-        val binding = holder.binding
+        val model = getItem(position) ?: return
 
-        if (model != null) {
-            binding.name.text = model.name
-            VOID.Glide(binding.root.context, model.imageUrl, binding.image)
+        with(holder.binding) {
+            name.text = model.name
+            VOID.Glide(root.context, model.imageUrl, image)
 
-            binding.root.setOnClickListener { v: View ->
+            root.setOnClickListener {
                 VOID.IntentExtraChannel(
-                    v.context,
+                    root.context,
                     CLASS.LIVE_TV_CATEGORIES_DETAILS,
                     "category",
                     model

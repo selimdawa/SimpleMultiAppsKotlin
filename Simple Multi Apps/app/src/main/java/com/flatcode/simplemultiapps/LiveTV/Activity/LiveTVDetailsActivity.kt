@@ -18,11 +18,10 @@ import com.flatcode.simplemultiapps.LiveTV.Model.Channel
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.Unit.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityLiveTvDetailsBinding
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 
 class LiveTVDetailsActivity : AppCompatActivity() {
@@ -30,10 +29,11 @@ class LiveTVDetailsActivity : AppCompatActivity() {
     private var _binding: ActivityLiveTvDetailsBinding? = null
     private val binding get() = _binding!!
 
-    var fullScreen: ImageView? = null
-    var isFullScreen = false
-    var player: SimpleExoPlayer? = null
-    var context: Context = this@LiveTVDetailsActivity
+    private var fullScreen: ImageView? = null
+    private var isFullScreen = false
+    private var player: ExoPlayer? = null
+    private var liveChannelUrl: String? = null
+    val context: Context = this@LiveTVDetailsActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
@@ -51,13 +51,12 @@ class LiveTVDetailsActivity : AppCompatActivity() {
         if (channel != null) {
             binding.toolbar.nameSpace.text = channel.name
             binding.description.text = channel.description
+            liveChannelUrl = channel.liveUrl
 
             binding.facebookLink.setOnClickListener { openLink(channel.facebook) }
             binding.twitterLink.setOnClickListener { openLink(channel.twitter) }
             binding.youtubeLink.setOnClickListener { openLink(channel.youtube) }
             binding.websiteLink.setOnClickListener { openLink(channel.website) }
-
-            playChannel(channel.liveUrl)
         }
 
         binding.toolbar.back.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
@@ -92,60 +91,80 @@ class LiveTVDetailsActivity : AppCompatActivity() {
         }
     }
 
-    fun openLink(url: String?) {
+    private fun openLink(url: String?) {
         if (!url.isNullOrEmpty()) {
             val open = Intent(Intent.ACTION_VIEW, url.toUri())
             startActivity(open)
         }
     }
 
-    fun playChannel(liveUrl: String?) {
-        if (liveUrl.isNullOrEmpty()) return
+    private fun initializePlayer() {
+        val url = liveChannelUrl ?: return
 
-        player = SimpleExoPlayer.Builder(this).build()
-        binding.playerView.player = player
-        val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
-        val mediaSource = HlsMediaSource.Factory(dataSourceFactory).createMediaSource(
-            MediaItem.fromUri(liveUrl.toUri())
-        )
-        player?.setMediaSource(mediaSource)
-        player?.prepare()
-        player?.playWhenReady = true
-        player?.addListener(object : Player.Listener {
-            override fun onPlaybackStateChanged(state: Int) {
-                when (state) {
-                    Player.STATE_READY -> {
-                        binding.progressBar.visibility = View.GONE
-                        player?.playWhenReady = true
-                    }
-
-                    Player.STATE_BUFFERING -> {
-                        binding.progressBar.visibility = View.VISIBLE
-                        binding.playerView.keepScreenOn = true
-                    }
-
-                    else -> {
-                        binding.progressBar.visibility = View.GONE
-                        player?.playWhenReady = true
+        player = ExoPlayer.Builder(this).build().apply {
+            binding.playerView.player = this
+            val dataSourceFactory = DefaultHttpDataSource.Factory()
+            val mediaSource = HlsMediaSource.Factory(dataSourceFactory).createMediaSource(
+                MediaItem.fromUri(url.toUri())
+            )
+            setMediaSource(mediaSource)
+            prepare()
+            playWhenReady = true
+            addListener(object : Player.Listener {
+                override fun onPlaybackStateChanged(state: Int) {
+                    when (state) {
+                        Player.STATE_READY -> {
+                            binding.progressBar.visibility = View.GONE
+                        }
+                        Player.STATE_BUFFERING -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                            binding.playerView.keepScreenOn = true
+                        }
+                        else -> {
+                            binding.progressBar.visibility = View.GONE
+                        }
                     }
                 }
-            }
-        })
+            })
+        }
+    }
+
+    private fun releasePlayer() {
+        player?.let {
+            it.release()
+            player = null
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (Build.VERSION.SDK_INT > 23) {
+            initializePlayer()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        player?.seekToDefaultPosition()
-        player?.playWhenReady = true
+        if (Build.VERSION.SDK_INT <= 23 || player == null) {
+            initializePlayer()
+        }
     }
 
     override fun onPause() {
-        player?.playWhenReady = false
         super.onPause()
+        if (Build.VERSION.SDK_INT <= 23) {
+            releasePlayer()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (Build.VERSION.SDK_INT > 23) {
+            releasePlayer()
+        }
     }
 
     override fun onDestroy() {
-        player?.release()
         super.onDestroy()
         _binding = null
     }

@@ -3,6 +3,7 @@ package com.flatcode.simplemultiapps.LiveTV.Activity
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.LiveTV.Adapter.ChannelAdapter
 import com.flatcode.simplemultiapps.LiveTV.Model.Category
@@ -23,7 +24,7 @@ class CategoryDetailsActivity : AppCompatActivity() {
     private lateinit var adapter: ChannelAdapter
     private val channels = ArrayList<Channel>()
     private var dataService: ChannelDataService? = null
-    var context: Context = this@CategoryDetailsActivity
+    val context: Context = this@CategoryDetailsActivity
     private var categoryName: String? = null
     private var category: Category? = null
     private var url: String? = null
@@ -49,15 +50,24 @@ class CategoryDetailsActivity : AppCompatActivity() {
             categoryName
         }
 
-        binding.toolbar.nameSpace.text = extractedName.orEmpty()
+        with(binding.toolbar) {
+            nameSpace.text = extractedName.orEmpty()
+            back.visibility = View.VISIBLE
+            back.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        }
+
         url = "http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=$extractedName"
 
         adapter = ChannelAdapter("details")
         binding.recyclerView.adapter = adapter
-        binding.toolbar.back.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
+        loadChannels()
+    }
+
+    private fun loadChannels() {
         dataService?.getChannelData(url, object : OnDataResponse {
             override fun onResponse(response: JSONObject) {
+                channels.clear()
                 for (i in 0 until response.length()) {
                     try {
                         val channelData = response.getJSONObject(i.toString())
@@ -74,11 +84,10 @@ class CategoryDetailsActivity : AppCompatActivity() {
                             category = channelData.getString("category")
                         )
                         channels.add(c)
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+                    } catch (_: JSONException) {
                     }
                 }
-                adapter.submitList(ArrayList(channels))
+                adapter.submitList(channels)
             }
 
             override fun onError(error: String?) {}

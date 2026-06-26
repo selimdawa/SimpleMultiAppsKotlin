@@ -14,7 +14,7 @@ import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.Unit.CLASS
 import com.flatcode.simplemultiapps.Unit.VOID
 
-class ChannelAdapter(var type: String) :
+class ChannelAdapter(private val type: String) :
     ListAdapter<Channel, ChannelAdapter.ViewHolder>(ChannelDiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
@@ -31,14 +31,16 @@ class ChannelAdapter(var type: String) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val channel = getItem(position)
-        holder.name.text = channel.name
-        VOID.Glide(null, channel.thumbnail, holder.image)
+        val channel = getItem(position) ?: return
 
-        holder.itemView.setOnClickListener { v: View ->
-            val i = Intent(v.context, CLASS.LIVE_TV_DETAILS)
-            i.putExtra("channel", channel)
-            v.context.startActivity(i)
+        holder.name.text = channel.name
+        VOID.Glide(holder.itemView.context, channel.thumbnail, holder.image)
+
+        holder.itemView.setOnClickListener { view ->
+            val intent = Intent(view.context, CLASS.LIVE_TV_DETAILS).apply {
+                putExtra("channel", channel)
+            }
+            view.context.startActivity(intent)
         }
     }
 

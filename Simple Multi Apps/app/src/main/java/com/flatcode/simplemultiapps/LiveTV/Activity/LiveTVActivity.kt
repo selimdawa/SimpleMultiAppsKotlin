@@ -3,7 +3,6 @@ package com.flatcode.simplemultiapps.LiveTV.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.flatcode.simplemultiapps.LiveTV.Adapter.ChannelAdapter
@@ -35,7 +34,7 @@ class LiveTVActivity : AppCompatActivity() {
     private val enterChannel = ArrayList<Channel>()
 
     private var service: ChannelDataService? = null
-    var context: Context = this@LiveTVActivity
+    val context: Context = this@LiveTVActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
@@ -52,49 +51,59 @@ class LiveTVActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerViews() {
-        binding.bigSliderList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         bigSliderAdapter = ChannelAdapter("slider")
-        binding.bigSliderList.adapter = bigSliderAdapter
+        binding.bigSliderList.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = bigSliderAdapter
+        }
 
-        binding.newsChannelList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         newsChannelAdapter = ChannelAdapter("details")
-        binding.newsChannelList.adapter = newsChannelAdapter
+        binding.newsChannelList.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = newsChannelAdapter
+        }
 
-        binding.sportsChannelList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         sportsChannelAdapter = ChannelAdapter("details")
-        binding.sportsChannelList.adapter = sportsChannelAdapter
+        binding.sportsChannelList.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = sportsChannelAdapter
+        }
 
-        binding.enterChannelList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         enterChannelAdapter = ChannelAdapter("details")
-        binding.enterChannelList.adapter = enterChannelAdapter
+        binding.enterChannelList.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = enterChannelAdapter
+        }
     }
 
     private fun setupClickListeners() {
         binding.toolbar.categories.setOnClickListener {
             VOID.Intent1(context, CLASS.LIVE_TV_CATEGORIES)
         }
-        binding.more.setOnClickListener { v: View ->
-            startCategoryDetailActivity(v.context, "News")
+        binding.more.setOnClickListener {
+            startCategoryDetailActivity("News")
         }
-        binding.more2.setOnClickListener { v: View ->
-            startCategoryDetailActivity(v.context, "Sports")
+        binding.more2.setOnClickListener {
+            startCategoryDetailActivity("Sports")
         }
-        binding.more3.setOnClickListener { v: View ->
-            startCategoryDetailActivity(v.context, "Entertainment")
+        binding.more3.setOnClickListener {
+            startCategoryDetailActivity("Entertainment")
         }
     }
 
-    private fun startCategoryDetailActivity(ctx: Context, categoryName: String) {
-        val i = Intent(ctx, CLASS.LIVE_TV_CATEGORIES_DETAILS)
-        i.putExtra("categoryName", categoryName)
-        ctx.startActivity(i)
+    private fun startCategoryDetailActivity(categoryName: String) {
+        val intent = Intent(context, CLASS.LIVE_TV_CATEGORIES_DETAILS).apply {
+            putExtra("categoryName", categoryName)
+        }
+        startActivity(intent)
     }
 
     private fun loadAllChannels() {
-        getSliderData("http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&channels=all")
-        getNewsChannels("http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=News")
-        getSportsChannel("http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=Sports")
-        getEnterChannel("http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=Entertainment")
+        val baseUrl = "http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1"
+        getSliderData("$baseUrl&channels=all")
+        getNewsChannels("$baseUrl&cat=News")
+        getSportsChannel("$baseUrl&cat=Sports")
+        getEnterChannel("$baseUrl&cat=Entertainment")
     }
 
     private fun parseChannel(channelData: JSONObject): Channel {
@@ -112,72 +121,72 @@ class LiveTVActivity : AppCompatActivity() {
         )
     }
 
-    fun getSliderData(url: String?) {
+    private fun getSliderData(url: String) {
         service?.getChannelData(url, object : OnDataResponse {
             override fun onResponse(response: JSONObject) {
+                channelList.clear()
                 for (i in 0 until response.length()) {
                     try {
                         val channelData = response.getJSONObject(i.toString())
                         channelList.add(parseChannel(channelData))
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+                    } catch (_: JSONException) {
                     }
                 }
-                bigSliderAdapter.submitList(ArrayList(channelList))
+                bigSliderAdapter.submitList(channelList)
             }
 
             override fun onError(error: String?) {}
         })
     }
 
-    fun getNewsChannels(url: String?) {
+    private fun getNewsChannels(url: String) {
         service?.getChannelData(url, object : OnDataResponse {
             override fun onResponse(response: JSONObject) {
+                newsChannels.clear()
                 for (i in 0 until response.length()) {
                     try {
                         val channelData = response.getJSONObject(i.toString())
                         newsChannels.add(parseChannel(channelData))
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+                    } catch (_: JSONException) {
                     }
                 }
-                newsChannelAdapter.submitList(ArrayList(newsChannels))
+                newsChannelAdapter.submitList(newsChannels)
             }
 
             override fun onError(error: String?) {}
         })
     }
 
-    fun getSportsChannel(url: String?) {
+    private fun getSportsChannel(url: String) {
         service?.getChannelData(url, object : OnDataResponse {
             override fun onResponse(response: JSONObject) {
+                sportsChannel.clear()
                 for (i in 0 until response.length()) {
                     try {
                         val channelData = response.getJSONObject(i.toString())
                         sportsChannel.add(parseChannel(channelData))
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+                    } catch (_: JSONException) {
                     }
                 }
-                sportsChannelAdapter.submitList(ArrayList(sportsChannel))
+                sportsChannelAdapter.submitList(sportsChannel)
             }
 
             override fun onError(error: String?) {}
         })
     }
 
-    fun getEnterChannel(url: String?) {
+    private fun getEnterChannel(url: String) {
         service?.getChannelData(url, object : OnDataResponse {
             override fun onResponse(response: JSONObject) {
+                enterChannel.clear()
                 for (i in 0 until response.length()) {
                     try {
                         val channelData = response.getJSONObject(i.toString())
                         enterChannel.add(parseChannel(channelData))
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+                    } catch (_: JSONException) {
                     }
                 }
-                enterChannelAdapter.submitList(ArrayList(enterChannel))
+                enterChannelAdapter.submitList(enterChannel)
             }
 
             override fun onError(error: String?) {}
