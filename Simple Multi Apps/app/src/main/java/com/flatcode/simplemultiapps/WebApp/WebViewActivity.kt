@@ -1,6 +1,7 @@
 package com.flatcode.simplemultiapps.WebApp
 
 import android.content.Context
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -10,30 +11,39 @@ import com.flatcode.simplemultiapps.databinding.ActivityWebViewBinding
 
 class WebViewActivity : AppCompatActivity() {
 
-    private var binding: ActivityWebViewBinding? = null
-    var webName: String? = null
-    var context: Context = this@WebViewActivity
+    private var _binding: ActivityWebViewBinding? = null
+    private val binding get() = _binding!!
 
+    private var webName: String? = null
+    val context: Context = this@WebViewActivity
+
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityWebViewBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
+        _binding = ActivityWebViewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val data = intent
-        webName = data.getStringExtra(DATA.WEB_NAME)
+        webName = intent.getStringExtra(DATA.WEB_NAME)
 
-        binding!!.webView.settings.loadsImagesAutomatically = true
-        binding!!.webView.settings.javaScriptEnabled = true
-        binding!!.webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+        with(binding.webView) {
+            settings.loadsImagesAutomatically = true
+            settings.javaScriptEnabled = true
+            scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
 
-        when (webName) {
-            DATA.WEBSITE -> binding!!.webView.loadUrl(DATA.mySite)
-            DATA.INSTAGRAM -> binding!!.webView.loadUrl(DATA.myInstagram)
-            DATA.FACEBOOK -> binding!!.webView.loadUrl(DATA.myFacebook)
-            DATA.TWITTER -> binding!!.webView.loadUrl(DATA.myTwitter)
-            else -> binding!!.webView.loadUrl(DATA.mySite)
+            val url = when (webName) {
+                DATA.WEBSITE -> DATA.mySite
+                DATA.INSTAGRAM -> DATA.myInstagram
+                DATA.FACEBOOK -> DATA.myFacebook
+                DATA.TWITTER -> DATA.myTwitter
+                else -> DATA.mySite
+            }
+            loadUrl(url)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
