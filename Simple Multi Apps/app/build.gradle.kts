@@ -76,15 +76,18 @@ dependencies {
     implementation(libs.whatsnew)
     //Multi delete demo
     implementation(libs.androidx.lifecycle.extensions)
-    //Video Player
+    //Live TV
     implementation(libs.exoplayer)
-    implementation(libs.volley)
+    //Video Player
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
     //News & Wordpress
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     //Wordpress
     implementation(libs.androidx.swiperefreshlayout)
-    implementation(libs.gson)
     //Other's
     implementation(libs.jsoup)
+    implementation(libs.volley)
+    implementation(libs.gson)
 }

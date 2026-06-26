@@ -8,37 +8,40 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.Unit.THEME
 import com.flatcode.simplemultiapps.VideoPlayer.Adapter.VideoFolderAdapter
-import com.flatcode.simplemultiapps.VideoPlayer.VideoFiles
+import com.flatcode.simplemultiapps.VideoPlayer.Model.VideoFiles
 import com.flatcode.simplemultiapps.databinding.ActivityVideoFolderBinding
 
 class VideoFolderActivity : AppCompatActivity() {
 
-    private var binding: ActivityVideoFolderBinding? = null
+    private var _binding: ActivityVideoFolderBinding? = null
+    private val binding get() = _binding!!
+
     private val context: Context = this@VideoFolderActivity
-    var adapter: VideoFolderAdapter? = null
-    var myFolderName: String? = null
-    var list = ArrayList<VideoFiles?>()
+    private var adapter: VideoFolderAdapter? = null
+    private var myFolderName: String? = null
+    private var list = ArrayList<VideoFiles?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityVideoFolderBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
+        _binding = ActivityVideoFolderBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         myFolderName = intent.getStringExtra("folderName")
-        if (myFolderName != null) {
-            list = getAllVideos(context, myFolderName!!)
+        myFolderName?.let { folder ->
+            list = getAllVideos(context, folder)
         }
-        if (list.size > 0) {
+
+        if (list.isNotEmpty()) {
             adapter = VideoFolderAdapter(context, list)
-            binding!!.recyclerView.adapter = adapter
-            binding!!.recyclerView.layoutManager =
-                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            binding.recyclerView.apply {
+                adapter = this@VideoFolderActivity.adapter
+                layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            }
         }
     }
 
-    fun getAllVideos(context: Context, folderName: String): ArrayList<VideoFiles?> {
+    private fun getAllVideos(context: Context, folderName: String): ArrayList<VideoFiles?> {
         val tempVideoFiles = ArrayList<VideoFiles?>()
         val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
@@ -51,24 +54,41 @@ class VideoFolderActivity : AppCompatActivity() {
             MediaStore.Video.Media.DISPLAY_NAME,
             MediaStore.Video.Media.BUCKET_DISPLAY_NAME
         )
-        val selection = MediaStore.Video.Media.DATA + " like?"
+        val selection = "${MediaStore.Video.Media.DATA} LIKE ?"
         val selectionArgs = arrayOf("%$folderName%")
-        val cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                val id = cursor.getString(0)
-                val path = cursor.getString(1)
-                val title = cursor.getString(2)
-                val size = cursor.getString(3)
-                val dateAdded = cursor.getString(4)
-                val duration = cursor.getString(5)
-                val fileName = cursor.getString(6)
-                val bucket_name = cursor.getString(7)
-                val videoFiles = VideoFiles(id, path, title, fileName, size, dateAdded, duration)
-                if (folderName.endsWith(bucket_name)) tempVideoFiles.add(videoFiles)
+
+        context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            ?.use { cursor ->
+                val idIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
+                val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
+                val titleIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE)
+                val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)
+                val dateAddedIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)
+                val durationIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)
+                val displayNameIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)
+                val bucketIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME)
+
+                while (cursor.moveToNext()) {
+                    val id = cursor.getString(idIndex)
+                    val path = cursor.getString(dataIndex)
+                    val title = cursor.getString(titleIndex)
+                    val size = cursor.getString(sizeIndex)
+                    val dateAdded = cursor.getString(dateAddedIndex)
+                    val duration = cursor.getString(durationIndex)
+                    val fileName = cursor.getString(displayNameIndex)
+                    val bucketName = cursor.getString(bucketIndex)
+
+                    val videoFiles = VideoFiles(id, path, title, fileName, size, dateAdded, duration)
+                    if (folderName.endsWith(bucketName)) {
+                        tempVideoFiles.add(videoFiles)
+                    }
+                }
             }
-            cursor.close()
-        }
         return tempVideoFiles
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

@@ -1,6 +1,7 @@
 package com.flatcode.simplemultiapps.VideoPlayer.Activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -8,40 +9,53 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.Unit.THEME
-import com.flatcode.simplemultiapps.VideoPlayer.VideoFiles
+import com.flatcode.simplemultiapps.VideoPlayer.Fragment.FilesFragment
+import com.flatcode.simplemultiapps.VideoPlayer.Fragment.FolderFragment
+import com.flatcode.simplemultiapps.VideoPlayer.Model.VideoFiles
 import com.flatcode.simplemultiapps.databinding.ActivityVideoPlayerBinding
 
 class VideoPlayerActivity : AppCompatActivity() {
 
-    private var binding: ActivityVideoPlayerBinding? = null
+    private var _binding: ActivityVideoPlayerBinding? = null
+    private val binding get() = _binding!!
+
     private val context: Context = this@VideoPlayerActivity
+
+    private val videoPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
+            videoFiles = getAllVideos(context)
+            loadFolderFragment()
+        } else {
+            Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityVideoPlayerBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
+        _binding = ActivityVideoPlayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        permission()
-        binding!!.bottomNavView.setOnNavigationItemSelectedListener { item: MenuItem ->
+        checkAndRequestPermissions()
+
+        binding.bottomNavView.setOnItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.folders -> {
-                    val fragmentTransaction = supportFragmentManager.beginTransaction()
-                    fragmentTransaction.replace(R.id.constraint, FolderFragment())
-                    fragmentTransaction.commit()
+                    loadFolderFragment()
                     item.isChecked = true
                 }
-
                 R.id.files -> {
-                    val fragmentTransaction2 = supportFragmentManager.beginTransaction()
-                    fragmentTransaction2.replace(R.id.constraint, FilesFragment())
-                    fragmentTransaction2.commit()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.constraint, FilesFragment())
+                        .commit()
                     item.isChecked = true
                 }
             }
@@ -49,50 +63,29 @@ class VideoPlayerActivity : AppCompatActivity() {
         }
     }
 
-    private fun permission() {
+    @SuppressLint("InlinedApi")
+    private fun checkAndRequestPermissions() {
         val videoPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Manifest.permission.READ_MEDIA_VIDEO // Used for API 33 up to API 36+
+            Manifest.permission.READ_MEDIA_VIDEO
         } else {
-            Manifest.permission.READ_EXTERNAL_STORAGE // Fallback for API 32 and below
+            Manifest.permission.READ_EXTERNAL_STORAGE
         }
 
-        //Check and request the permission
-        if (ContextCompat.checkSelfPermission(applicationContext, videoPermission) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this@VideoPlayerActivity,
-                arrayOf(videoPermission),
-                REQUEST_CODE_PERMISSION
-            )
+        if (ContextCompat.checkSelfPermission(this, videoPermission) != PackageManager.PERMISSION_GRANTED) {
+            videoPermissionLauncher.launch(videoPermission)
         } else {
             videoFiles = getAllVideos(context)
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.constraint, FolderFragment())
-            fragmentTransaction.commit()
+            loadFolderFragment()
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults: IntArray,
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSION) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
-                val fragmentTransaction = supportFragmentManager.beginTransaction()
-                fragmentTransaction.replace(R.id.constraint, FolderFragment())
-                fragmentTransaction.commit()
-                permission()
-            } else {
-                ActivityCompat.requestPermissions(
-                    this@VideoPlayerActivity,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    REQUEST_CODE_PERMISSION
-                )
-            }
-        }
+    private fun loadFolderFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.constraint, FolderFragment())
+            .commit()
     }
 
-    fun getAllVideos(context: Context): ArrayList<VideoFiles?> {
+    private fun getAllVideos(context: Context): ArrayList<VideoFiles?> {
         val tempVideoFiles = ArrayList<VideoFiles?>()
         val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
@@ -104,30 +97,47 @@ class VideoPlayerActivity : AppCompatActivity() {
             MediaStore.Video.Media.DURATION,
             MediaStore.Video.Media.DISPLAY_NAME
         )
-        val cursor = context.contentResolver
-            .query(uri, projection, null, null, null)
-        if (cursor != null) {
+
+        context.contentResolver.query(uri, projection, null, null, null)?.use { cursor ->
+            val idIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
+            val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
+            val titleIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE)
+            val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)
+            val dateAddedIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)
+            val durationIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)
+            val displayNameIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)
+
             while (cursor.moveToNext()) {
-                val id = cursor.getString(0)
-                val path = cursor.getString(1)
-                val title = cursor.getString(2)
-                val size = cursor.getString(3)
-                val dateAdded = cursor.getString(4)
-                val duration = cursor.getString(5)
-                val fileName = cursor.getString(6)
-                val videoFiles = VideoFiles(id, path, title, fileName, size, dateAdded, duration)
-                val slashFirstIndex = path.lastIndexOf("/")
-                val subString = path.substring(0, slashFirstIndex)
-                if (!folderList!!.contains(subString)) folderList!!.add(subString)
-                tempVideoFiles.add(videoFiles)
+                val id = cursor.getString(idIndex)
+                val path = cursor.getString(dataIndex)
+                val title = cursor.getString(titleIndex)
+                val size = cursor.getString(sizeIndex)
+                val dateAdded = cursor.getString(dateAddedIndex)
+                val duration = cursor.getString(durationIndex)
+                val fileName = cursor.getString(displayNameIndex)
+
+                val videoFilesInstance = VideoFiles(id, path, title, fileName, size, dateAdded, duration)
+
+                val parentFolder = path.substringBeforeLast('/', "")
+                if (parentFolder.isNotEmpty()) {
+                    folderList?.let { list ->
+                        if (!list.contains(parentFolder)) {
+                            list.add(parentFolder)
+                        }
+                    }
+                }
+                tempVideoFiles.add(videoFilesInstance)
             }
-            cursor.close()
         }
         return tempVideoFiles
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
     companion object {
-        private const val REQUEST_CODE_PERMISSION = 123
         var videoFiles: ArrayList<VideoFiles?>? = ArrayList()
         var folderList: ArrayList<String>? = ArrayList()
     }

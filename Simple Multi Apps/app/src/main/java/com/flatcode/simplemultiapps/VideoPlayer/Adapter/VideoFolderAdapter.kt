@@ -3,62 +3,54 @@ package com.flatcode.simplemultiapps.VideoPlayer.Adapter
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.flatcode.simplemultiapps.Unit.CLASS
 import com.flatcode.simplemultiapps.Unit.VOID
-import com.flatcode.simplemultiapps.VideoPlayer.VideoFiles
+import com.flatcode.simplemultiapps.VideoPlayer.Model.VideoFiles
 import com.flatcode.simplemultiapps.databinding.ItemVideoBinding
 import java.io.File
 
 class VideoFolderAdapter(
     private val context: Context,
-    private var folderVideoFiles: ArrayList<VideoFiles?>,
-) :
-    RecyclerView.Adapter<VideoFolderAdapter.ViewHolder>() {
-
-    private var binding: ItemVideoBinding? = null
+    private val folderVideoFiles: ArrayList<VideoFiles?>,
+) : RecyclerView.Adapter<VideoFolderAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemVideoBinding.inflate(LayoutInflater.from(context), parent, false)
-        return ViewHolder(binding!!.root)
+        val binding =
+            ItemVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.name.text = folderVideoFiles[position]!!.title
-        holder.duration.text = folderVideoFiles[position]!!.duration
+        val currentVideo = folderVideoFiles[position] ?: return
 
-        Glide.with(context).load(File(folderVideoFiles[position]!!.path!!)).into(holder.image)
-        val duration = VOID.convertDuration(folderVideoFiles[position]!!.duration!!.toLong())
-        holder.duration.text = duration
+        with(holder.binding) {
+            name.text = currentVideo.title
 
-        holder.itemView.setOnClickListener {
-            val intent = Intent(context, CLASS.VIDEO_PLAY)
-            intent.putExtra("position", position)
-            intent.putExtra("sender", "FolderIsSending")
-            context.startActivity(intent)
+            val durationMs = currentVideo.duration?.toLongOrNull() ?: 0L
+            duration.text = VOID.convertDuration(durationMs)
+
+            currentVideo.path?.let { path ->
+                Glide.with(context)
+                    .load(File(path))
+                    .into(image)
+            }
+
+            root.setOnClickListener {
+                val intent = Intent(context, CLASS.VIDEO_PLAY).apply {
+                    putExtra("position", position)
+                    putExtra("sender", "FolderIsSending")
+                }
+                context.startActivity(intent)
+            }
         }
     }
 
-    override fun getItemCount(): Int {
-        return folderVideoFiles.size
-    }
+    override fun getItemCount(): Int = folderVideoFiles.size
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var image: ImageView
-        var name: TextView
-        var duration: TextView
-
-        init {
-            image = binding!!.image
-            name = binding!!.name
-            duration = binding!!.duration
-        }
-    }
+    class ViewHolder(val binding: ItemVideoBinding) : RecyclerView.ViewHolder(binding.root)
 
     companion object {
         var folderVideoFile: ArrayList<VideoFiles?>? = null
