@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.NewsApp.Model.NewsHeadlines
 import com.flatcode.simplemultiapps.NewsApp.SelectListener
+import com.flatcode.simplemultiapps.Unit.DATA
 import com.flatcode.simplemultiapps.Unit.VOID
 import com.flatcode.simplemultiapps.databinding.ItemNewsBinding
 
@@ -16,34 +17,29 @@ class NewsAppAdapter(
 ) : RecyclerView.Adapter<NewsAppAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemNewsBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = ItemNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        headlines?.get(position)?.let { item ->
-            holder.bind(item)
-        }
-    }
+        val item = headlines?.get(position) ?: return
 
-    override fun getItemCount(): Int = headlines?.size ?: 0
+        with(holder.binding) {
+            content.text = item.title
+            source.text = item.source?.name ?: DATA.EMPTY
 
-    inner class ViewHolder(private val binding: ItemNewsBinding) : RecyclerView.ViewHolder(binding.root) {
+            VOID.Glide(context, item.urlToImage, image)
 
-        fun bind(item: NewsHeadlines) {
-            binding.content.text = item.title
-            binding.source.text = item.source?.name ?: ""
-
-            item.urlToImage.let { url ->
-                VOID.Glide(context, url, binding.image)
-            }
-
-            binding.card.setOnClickListener {
-                val position = bindingAdapterPosition
-                if (position != RecyclerView.NO_POSITION) {
+            card.setOnClickListener {
+                val currentPos = holder.bindingAdapterPosition
+                if (currentPos != RecyclerView.NO_POSITION) {
                     listener.onNewsClicked(item)
                 }
             }
         }
     }
+
+    override fun getItemCount(): Int = headlines?.size ?: 0
+
+    class ViewHolder(val binding: ItemNewsBinding) : RecyclerView.ViewHolder(binding.root)
 }

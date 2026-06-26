@@ -1,29 +1,29 @@
 package com.flatcode.simplemultiapps.NewsApp.Activity
 
 import android.content.Context
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.BundleCompat
 import com.flatcode.simplemultiapps.NewsApp.Model.NewsHeadlines
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.Unit.DATA
 import com.flatcode.simplemultiapps.Unit.THEME
 import com.flatcode.simplemultiapps.Unit.VOID
 import com.flatcode.simplemultiapps.databinding.ActivityNewsAppDetailsBinding
-import java.io.Serializable
 
 class NewsAppDetailsActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityNewsAppDetailsBinding
+    private var _binding: ActivityNewsAppDetailsBinding? = null
+    private val binding get() = _binding!!
+
     private var headlines: NewsHeadlines? = null
     private val context: Context = this@NewsAppDetailsActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityNewsAppDetailsBinding.inflate(layoutInflater)
+        _binding = ActivityNewsAppDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -32,29 +32,28 @@ class NewsAppDetailsActivity : AppCompatActivity() {
             }
         })
 
-        headlines = intent.serializable(DATA.DATA)
+        intent.extras?.let { bundle ->
+            headlines = BundleCompat.getSerializable(bundle, DATA.DATA, NewsHeadlines::class.java)
+        }
+
         binding.nameSpace.setText(R.string.post_details)
         binding.back.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
         headlines?.let { data ->
-            binding.title.text = data.title
-            binding.author.text = data.author
-            binding.time.text = data.publishedAt
-            binding.detail.text = data.description
-            binding.content.text = data.content
-
-            data.urlToImage.let { url ->
-                VOID.Glide(context, url, binding.image)
+            with(binding) {
+                title.text = data.title
+                author.text = data.author
+                time.text = data.publishedAt
+                detail.text = data.description
+                content.text = data.content
             }
+
+            VOID.Glide(context, data.urlToImage, binding.image)
         }
     }
-}
 
-inline fun <reified T : Serializable> Intent.serializable(key: String): T? {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        getSerializableExtra(key, T::class.java)
-    } else {
-        @Suppress("DEPRECATION")
-        getSerializableExtra(key) as? T
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

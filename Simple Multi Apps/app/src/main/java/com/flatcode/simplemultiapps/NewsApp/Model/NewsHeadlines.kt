@@ -3,13 +3,13 @@ package com.flatcode.simplemultiapps.NewsApp.Model
 import com.flatcode.simplemultiapps.Unit.DATA
 import java.io.Serializable
 
-class NewsHeadlines : Serializable {
-    var source: Source? = null
-    var author = DATA.EMPTY
-    var title = DATA.EMPTY
-    var description = DATA.EMPTY
-    var url = DATA.EMPTY
-    var urlToImage = DATA.EMPTY
-    var publishedAt = DATA.EMPTY
-    var content = DATA.EMPTY
-}
+data class NewsHeadlines(
+    var source: Source? = null,
+    var author: String = DATA.EMPTY,
+    var title: String = DATA.EMPTY,
+    var description: String = DATA.EMPTY,
+    var url: String = DATA.EMPTY,
+    var urlToImage: String = DATA.EMPTY,
+    var publishedAt: String = DATA.EMPTY,
+    var content: String = DATA.EMPTY
+) : Serializable

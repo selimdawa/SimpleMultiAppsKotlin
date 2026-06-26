@@ -23,15 +23,33 @@ import com.flatcode.simplemultiapps.databinding.ActivityNewsAppBinding
 
 class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListener {
 
-    private lateinit var binding: ActivityNewsAppBinding
+    private var _binding: ActivityNewsAppBinding? = null
+    private val binding get() = _binding!!
+
     private val context: Context = this@NewsAppActivity
     private var adapter: NewsAppAdapter? = null
     private var progressDialog: AlertDialog? = null
 
+    private val listener = object : OnFetchDataListener<NewsApiResponse> {
+        override fun onFetchData(list: List<NewsHeadlines?>?, message: String?) {
+            progressDialog?.dismiss()
+            if (list.isNullOrEmpty()) {
+                Toast.makeText(context, "No data found!", Toast.LENGTH_SHORT).show()
+            } else {
+                showNews(list)
+            }
+        }
+
+        override fun onError(message: String?) {
+            progressDialog?.dismiss()
+            Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityNewsAppBinding.inflate(layoutInflater)
+        _binding = ActivityNewsAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -40,55 +58,36 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
             }
         })
 
-        binding.toolbar.back.visibility = View.VISIBLE
-        binding.toolbar.back.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+        with(binding.toolbar) {
+            back.visibility = View.VISIBLE
+            back.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+            nameSpace.setText(R.string.news_app)
         }
-        binding.toolbar.nameSpace.setText(R.string.news_app)
 
         setupProgressDialog()
 
         binding.search.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 updateProgressDialog("Fetching news Articles of $query")
-                val manger = RequestManger(context)
-                manger.getNewsHeadlines(listener, "general", query)
+                RequestManger(context).getNewsHeadlines(listener, "general", query)
                 return true
             }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                return false
-            }
+            override fun onQueryTextChange(newText: String): Boolean = false
         })
 
-        binding.linearSwitchUser.business.setOnClickListener(this)
-        binding.linearSwitchUser.entertainment.setOnClickListener(this)
-        binding.linearSwitchUser.general.setOnClickListener(this)
-        binding.linearSwitchUser.health.setOnClickListener(this)
-        binding.linearSwitchUser.science.setOnClickListener(this)
-        binding.linearSwitchUser.sports.setOnClickListener(this)
-        binding.linearSwitchUser.technology.setOnClickListener(this)
-
-        val manger = RequestManger(context)
-        manger.getNewsHeadlines(listener, "general", null)
-    }
-
-    private val listener: OnFetchDataListener<NewsApiResponse> =
-        object : OnFetchDataListener<NewsApiResponse> {
-            override fun onFetchData(list: List<NewsHeadlines?>?, message: String?) {
-                progressDialog?.dismiss()
-                if (list.isNullOrEmpty()) {
-                    Toast.makeText(context, "No data found! ", Toast.LENGTH_SHORT).show()
-                } else {
-                    showNews(list)
-                }
-            }
-
-            override fun onError(message: String?) {
-                progressDialog?.dismiss()
-                Toast.makeText(context, "Error! ", Toast.LENGTH_SHORT).show()
-            }
+        with(binding.linearSwitchUser) {
+            business.setOnClickListener(this@NewsAppActivity)
+            entertainment.setOnClickListener(this@NewsAppActivity)
+            general.setOnClickListener(this@NewsAppActivity)
+            health.setOnClickListener(this@NewsAppActivity)
+            science.setOnClickListener(this@NewsAppActivity)
+            sports.setOnClickListener(this@NewsAppActivity)
+            technology.setOnClickListener(this@NewsAppActivity)
         }
+
+        RequestManger(context).getNewsHeadlines(listener, "general", null)
+    }
 
     private fun showNews(list: List<NewsHeadlines?>?) {
         adapter = NewsAppAdapter(context, list, this)
@@ -110,8 +109,7 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
         val button = view as TextView
         val category = button.text.toString()
         updateProgressDialog("Fetching news Articles of $category")
-        val manger = RequestManger(context)
-        manger.getNewsHeadlines(listener, category, null)
+        RequestManger(context).getNewsHeadlines(listener, category, null)
     }
 
     private fun setupProgressDialog() {
@@ -125,5 +123,10 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
     private fun updateProgressDialog(message: String) {
         progressDialog?.setMessage(message)
         progressDialog?.show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
