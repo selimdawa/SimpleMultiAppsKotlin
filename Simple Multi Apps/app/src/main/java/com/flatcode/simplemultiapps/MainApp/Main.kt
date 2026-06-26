@@ -1,17 +1,8 @@
 package com.flatcode.simplemultiapps.MainApp
 
-class Main {
-    var title: String? = null
-    var image = 0
-    var number = 0
+data class Main(
+    var image: Int = 0,
+    var title: String? = null,
+    var number: Int = 0,
     var c: Class<*>? = null
-
-    constructor()
-
-    constructor(image: Int, title: String?, number: Int, c: Class<*>?) {
-        this.image = image
-        this.number = number
-        this.title = title
-        this.c = c
-    }
-}
+)

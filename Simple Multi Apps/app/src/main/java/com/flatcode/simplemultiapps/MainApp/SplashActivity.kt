@@ -12,20 +12,21 @@ import com.flatcode.simplemultiapps.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
 
-    private var binding: ActivitySplashBinding? = null
-    var context: Context = this@SplashActivity
+    private var _binding: ActivitySplashBinding? = null
+    private val binding get() = _binding!!
 
-    var time_per_second = 2
-    var time_final = time_per_millis * time_per_second
+    val context: Context = this@SplashActivity
+
+    private val timePerSecond = 2
+    private val timeFinal = TIME_PER_MILLIS * timePerSecond
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivitySplashBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
+        _binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        Handler(Looper.getMainLooper()).postDelayed({ launch() }, time_final.toLong())
+        Handler(Looper.getMainLooper()).postDelayed({ launch() }, timeFinal.toLong())
     }
 
     private fun launch() {
@@ -33,7 +34,12 @@ class SplashActivity : AppCompatActivity() {
         finish()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
     companion object {
-        const val time_per_millis = 1000
+        const val TIME_PER_MILLIS = 1000
     }
 }

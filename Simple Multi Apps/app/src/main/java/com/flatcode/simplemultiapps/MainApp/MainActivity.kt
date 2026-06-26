@@ -16,71 +16,60 @@ import com.flatcode.simplemultiapps.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
-    private var binding: ActivityMainBinding? = null
-    var list: MutableList<Main>? = null
-    var adapter: MainAdapter? = null
-    var context: Context = this@MainActivity
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
+
+    private val list = ArrayList<Main>()
+    private var adapter: MainAdapter? = null
+    val context: Context = this@MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         PreferenceManager.getDefaultSharedPreferences(baseContext)
             .registerOnSharedPreferenceChangeListener(this)
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Color Mode ----------------------------- Start
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.settings, SettingsFragment())
             .commit()
-        // Color Mode -------------------------------- End
 
-        binding!!.recyclerView.setHasFixedSize(true)
-        list = ArrayList()
-        adapter = MainAdapter(context, list!!)
-        binding!!.recyclerView.adapter = adapter
+        binding.recyclerView.setHasFixedSize(true)
+        adapter = MainAdapter(context, list)
+        binding.recyclerView.adapter = adapter
 
-        IdeaPosts(1, 1, 1, 2, 4, 1, 4, 2, 2, 3, 2, 3)
+        ideaPosts(1, 1, 1, 2, 4, 1, 4, 2, 2, 3, 2, 3)
     }
 
-    private fun IdeaPosts(
-        I1: Int, I2: Int, I3: Int, I4: Int, I5: Int, I6: Int,
-        I7: Int, I8: Int, I9: Int, I10: Int, I11: Int, I12: Int,
+    private fun ideaPosts(
+        i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, i6: Int,
+        i7: Int, i8: Int, i9: Int, i10: Int, i11: Int, i12: Int
     ) {
-        list!!.clear()
-        val item1 = Main(R.drawable.ic_stop_watch, "Stop Watch", I1, CLASS.STOP_WATCH)
-        val item2 = Main(R.drawable.ic_candy_cruch, "Candy Crush Game", I2, CLASS.CANDY_CRUSH_GAME)
-        val item3 = Main(R.drawable.ic_multi_delete, "Multiple Delete", I3, CLASS.MULTIPLE_DELETE)
-        val item4 =
-            Main(R.drawable.ic_random, "Random Img Generating", I4, CLASS.RANDOM_IMG_GENERATING)
-        val item5 = Main(R.drawable.ic_blogger, "Blogger App", I5, CLASS.BLOGGER_APP)
-        val item6 = Main(R.drawable.ic_joke, "Joke App", I6, CLASS.JOKE_APP)
-        val item7 = Main(R.drawable.ic_live_tv, "Live TV", I7, CLASS.LIVE_TV)
-        val item8 = Main(R.drawable.ic_news, "News App", I8, CLASS.NEWS_APP)
-        val item9 = Main(R.drawable.ic_pdf_reader, "Pdf Reader", I9, CLASS.PDF_READER)
-        val item10 = Main(R.drawable.ic_video_player, "Video Player", I10, CLASS.VIDEO_PLAYER)
-        val item11 = Main(R.drawable.ic_web, "Web App", I11, CLASS.WEB_APP)
-        val item12 = Main(R.drawable.ic_wordpress, "Wordpress Blog", I12, CLASS.WORDPRESS)
-        list!!.add(item1)
-        list!!.add(item2)
-        list!!.add(item3)
-        list!!.add(item4)
-        list!!.add(item5)
-        list!!.add(item6)
-        list!!.add(item7)
-        list!!.add(item8)
-        list!!.add(item9)
-        list!!.add(item10)
-        list!!.add(item11)
-        list!!.add(item12)
-        adapter!!.notifyDataSetChanged()
-        binding!!.bar.visibility = View.GONE
-        binding!!.recyclerView.visibility = View.VISIBLE
+        list.clear()
+        list.addAll(
+            listOf(
+                Main(R.drawable.ic_stop_watch, "Stop Watch", i1, CLASS.STOP_WATCH),
+                Main(R.drawable.ic_candy_cruch, "Candy Crush Game", i2, CLASS.CANDY_CRUSH_GAME),
+                Main(R.drawable.ic_multi_delete, "Multiple Delete", i3, CLASS.MULTIPLE_DELETE),
+                Main(R.drawable.ic_random, "Random Img Generating", i4, CLASS.RANDOM_IMG_GENERATING),
+                Main(R.drawable.ic_blogger, "Blogger App", i5, CLASS.BLOGGER_APP),
+                Main(R.drawable.ic_joke, "Joke App", i6, CLASS.JOKE_APP),
+                Main(R.drawable.ic_live_tv, "Live TV", i7, CLASS.LIVE_TV),
+                Main(R.drawable.ic_news, "News App", i8, CLASS.NEWS_APP),
+                Main(R.drawable.ic_pdf_reader, "Pdf Reader", i9, CLASS.PDF_READER),
+                Main(R.drawable.ic_video_player, "Video Player", i10, CLASS.VIDEO_PLAYER),
+                Main(R.drawable.ic_web, "Web App", i11, CLASS.WEB_APP),
+                Main(R.drawable.ic_wordpress, "Wordpress Blog", i12, CLASS.WORDPRESS)
+            )
+        )
+        adapter?.notifyItemRangeInserted(0, list.size)
+
+        binding.bar.visibility = View.GONE
+        binding.recyclerView.visibility = View.VISIBLE
     }
 
-    // Color Mode ----------------------------- Start
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key == "color_option") {
             recreate()
@@ -98,7 +87,14 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         if (requestCode == SETTINGS_CODE) {
             recreate()
         }
-    } // Color Mode -------------------------------- End
+    }
+
+    override fun onDestroy() {
+        PreferenceManager.getDefaultSharedPreferences(baseContext)
+            .unregisterOnSharedPreferenceChangeListener(this)
+        super.onDestroy()
+        _binding = null
+    }
 
     companion object {
         private const val SETTINGS_CODE = 234
