@@ -10,9 +10,13 @@ import com.flatcode.simplemultiapps.Unit.DATA
 import com.flatcode.simplemultiapps.Unit.VOID
 import com.flatcode.simplemultiapps.databinding.ItemBloggerCommentBinding
 import java.text.SimpleDateFormat
+import java.util.Locale
 
 class CommentAdapter(private val context: Context, var comments: ArrayList<Comment>) :
     RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
+
+    private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
+    private val outputDateFormat = SimpleDateFormat("dd/MM/yyyy K:mm a", Locale.ENGLISH)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemBloggerCommentBinding.inflate(LayoutInflater.from(context), parent, false)
@@ -20,38 +24,29 @@ class CommentAdapter(private val context: Context, var comments: ArrayList<Comme
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val list = comments[position]
-        val id = list.id
-        val name = list.name
-        val published = list.published
-        val comment = list.comment
-        val image = list.profileImage
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        val dateFormat2 = SimpleDateFormat("dd/MM/yyyy K:mm a")
-        var formattedDate = DATA.EMPTY
+        val currentComment = comments[position]
 
-        try {
-            val date = dateFormat.parse(published)
-            formattedDate = dateFormat2.format(date)
-        } catch (e: Exception) {
-            formattedDate = published ?: DATA.EMPTY
-            e.printStackTrace()
+        val formattedDate = try {
+            val date = inputDateFormat.parse(currentComment.published ?: DATA.EMPTY)
+            if (date != null) outputDateFormat.format(date) else currentComment.published ?: DATA.EMPTY
+        } catch (_: Exception) {
+            currentComment.published ?: DATA.EMPTY
         }
 
-        holder.binding.name.text = name
-        holder.binding.date.text = formattedDate
-        holder.binding.comment.text = comment
+        with(holder.binding) {
+            name.text = currentComment.name ?: DATA.EMPTY
+            date.text = formattedDate
+            comment.text = currentComment.comment ?: DATA.EMPTY
 
-        try {
-            VOID.Glide(context, image, holder.binding.image)
-        } catch (e: Exception) {
-            holder.binding.image.setImageResource(R.drawable.ic_person)
+            try {
+                VOID.Glide(context, currentComment.profileImage, image)
+            } catch (_: Exception) {
+                image.setImageResource(R.drawable.ic_person)
+            }
         }
     }
 
-    override fun getItemCount(): Int {
-        return comments.size
-    }
+    override fun getItemCount(): Int = comments.size
 
-    inner class ViewHolder(val binding: ItemBloggerCommentBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemBloggerCommentBinding) : RecyclerView.ViewHolder(binding.root)
 }

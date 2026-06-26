@@ -65,6 +65,7 @@
     <string name="load_more">Load More</string>
     <string name="labels">Labels</string>
     <string name="comments">Comments</string>
+    <string name="publish_info">By %1$s %2$s</string>
     //News App
     <string name="news_app">News App</string>
     <string name="copy">Copy</string>

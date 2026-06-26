@@ -18,8 +18,8 @@ import com.flatcode.simplemultiapps.Unit.DATA
 import com.flatcode.simplemultiapps.Unit.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityPostDetailsBinding
 import org.json.JSONObject
-import java.text.MessageFormat
 import java.text.SimpleDateFormat
+import java.util.Locale
 
 class PostDetailsActivity : AppCompatActivity() {
 
@@ -27,11 +27,14 @@ class PostDetailsActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private var postId: String? = null
-    private var list: ArrayList<Label>? = null
+    private val list = ArrayList<Label>()
     private var adapter: LabelAdapter? = null
-    private var comments: ArrayList<Comment>? = null
+    private val comments = ArrayList<Comment>()
     private var commentAdapter: CommentAdapter? = null
     private val context: Context = this@PostDetailsActivity
+
+    private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
+    private val outputDateFormat = SimpleDateFormat("dd/MM/yyyy K:mm a", Locale.ENGLISH)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
@@ -41,77 +44,70 @@ class PostDetailsActivity : AppCompatActivity() {
 
         postId = intent.getStringExtra("postId")
 
-        binding.toolbar.nameSpace.setText(R.string.post_details)
-        binding.toolbar.back.visibility = View.VISIBLE
-        binding.toolbar.back.setOnClickListener { onBackPressed() }
+        with(binding.toolbar) {
+            nameSpace.setText(R.string.post_details)
+            back.visibility = View.VISIBLE
+            back.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        }
 
         loadPostDetails()
     }
 
     private fun loadPostDetails() {
-        val url = ("https://www.googleapis.com/blogger/v3/blogs/" + DATA.BLOG_ID + "/posts/"
-                + postId + "?key=" + DATA.BLOGGER_API)
-        val stringRequest = StringRequest(Request.Method.GET, url, { response: String? ->
+        val url = "https://googleapis.com{DATA.BLOG_ID}/posts/$postId?key=${DATA.BLOGGER_API}"
+
+        val stringRequest = StringRequest(Request.Method.GET, url, { response ->
             try {
-                val jsonObject = response?.let { JSONObject(it) }
-                val id = jsonObject!!.getString("id")
+                val jsonObject = JSONObject(response ?: DATA.EMPTY)
                 val title = jsonObject.getString("title")
                 val content = jsonObject.getString("content")
                 val published = jsonObject.getString("published")
-                val url_ = jsonObject.getString("url")
                 val displayName = jsonObject.getJSONObject("author").getString("displayName")
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                val dateFormat2 = SimpleDateFormat("dd/MM/yyyy K:mm a")
-                var formattedDate = DATA.EMPTY
-                try {
-                    val date = dateFormat.parse(published)
-                    formattedDate = dateFormat2.format(date)
-                } catch (e: Exception) {
-                    formattedDate = published
-                    e.printStackTrace()
+
+                val formattedDate = try {
+                    val date = inputDateFormat.parse(published)
+                    if (date != null) outputDateFormat.format(date) else published
+                } catch (_: Exception) {
+                    published
                 }
+
                 binding.title.text = title
-                binding.publishInfo.text =
-                    MessageFormat.format("By {0}{1}{2}", displayName, DATA.SPACE, formattedDate)
-                binding.webView.loadDataWithBaseURL(
-                    null, content, "text/html", "UTF-8", null
-                )
+                binding.publishInfo.text = context.getString(R.string.publish_info, displayName, formattedDate)
+                binding.webView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
+
                 try {
-                    list = ArrayList()
-                    list!!.clear()
+                    list.clear()
                     val jsonArray = jsonObject.getJSONArray("labels")
                     for (i in 0 until jsonArray.length()) {
-                        val label = jsonArray.getString(i)
-                        val label1 = Label(label)
-                        list!!.add(label1)
+                        list.add(Label(jsonArray.getString(i)))
                     }
-                    adapter = LabelAdapter(context, list!!)
+                    adapter = LabelAdapter(context, list)
                     binding.recyclerLabels.adapter = adapter
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                 }
+
                 loadComments()
             } catch (e: Exception) {
-                Toast.makeText(context, DATA.EMPTY + e.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
             }
-        }) { error: VolleyError ->
-            Toast.makeText(context, DATA.EMPTY + error.message, Toast.LENGTH_SHORT).show()
+        }) { error ->
+            Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
         }
-        val requestQueue = Volley.newRequestQueue(context)
-        requestQueue.add(stringRequest)
+
+        Volley.newRequestQueue(context).add(stringRequest)
     }
 
     private fun loadComments() {
-        val url = ("https://www.googleapis.com/blogger/v3/blogs/" + DATA.BLOG_ID + "/posts/"
-                + postId + "/comments?key=" + DATA.BLOGGER_API)
+        val url = "https://googleapis.com{DATA.BLOG_ID}/posts/$postId/comments?key=${DATA.BLOGGER_API}"
+
         val stringRequest = StringRequest(Request.Method.GET, url,
-            { response: String -> onResponse(response) }) { _: VolleyError? -> }
-        val requestQueue = Volley.newRequestQueue(context)
-        requestQueue.add(stringRequest)
+            { response -> onResponse(response) }) { _: VolleyError? -> }
+
+        Volley.newRequestQueue(context).add(stringRequest)
     }
 
     private fun onResponse(response: String) {
-        comments = ArrayList()
-        comments!!.clear()
+        comments.clear()
         try {
             val jsonObject = JSONObject(response)
             val jsonArray = jsonObject.getJSONArray("items")
@@ -121,19 +117,14 @@ class PostDetailsActivity : AppCompatActivity() {
                 val published = jsonObject1.getString("published")
                 val content = jsonObject1.getString("content")
                 val displayName = jsonObject1.getJSONObject("author").getString("displayName")
-                val profileImage =
-                    "http:" + jsonObject1.getJSONObject("author").getJSONObject("image")
-                        .getString("url")
-                val comment = Comment(
-                    DATA.EMPTY + id, DATA.EMPTY + displayName,
-                    DATA.EMPTY + profileImage, DATA.EMPTY + published,
-                    DATA.EMPTY + content
-                )
-                comments!!.add(comment)
+                val profileImage = "http:${jsonObject1.getJSONObject("author").getJSONObject("image").getString("url")}"
+
+                val comment = Comment(id, displayName, profileImage, published, content)
+                comments.add(comment)
             }
-            commentAdapter = CommentAdapter(context, comments!!)
+            commentAdapter = CommentAdapter(context, comments)
             binding.recyclerComments.adapter = commentAdapter
-        } catch (e: Exception) {
+        } catch (_: Exception) {
         }
     }
 

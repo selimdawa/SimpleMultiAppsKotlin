@@ -1,13 +1,11 @@
 package com.flatcode.simplemultiapps.BloggerApp.Activity
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.flatcode.simplemultiapps.BloggerApp.Adapter.PagesAdapter
@@ -23,9 +21,9 @@ class PagesActivity : AppCompatActivity() {
     private var _binding: ActivityBloggerPagesBinding? = null
     private val binding get() = _binding!!
 
-    private var pages: ArrayList<Page>? = null
+    private val pages = ArrayList<Page>()
     private var adapter: PagesAdapter? = null
-    var context: Context = this@PagesActivity
+    val context: Context = this@PagesActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
@@ -33,27 +31,27 @@ class PagesActivity : AppCompatActivity() {
         _binding = ActivityBloggerPagesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.toolbar.nameSpace.setText(R.string.blogger_pages)
-        binding.toolbar.back.visibility = View.VISIBLE
-        binding.toolbar.back.setOnClickListener { onBackPressed() }
+        with(binding.toolbar) {
+            nameSpace.setText(R.string.blogger_pages)
+            back.visibility = View.VISIBLE
+            back.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        }
 
         loadPages()
     }
 
     private fun loadPages() {
-        val dialog = ProgressDialog(context)
-        dialog.setTitle("Please wait...")
-        dialog.setMessage("Loading Pages")
-        dialog.show()
-        val url =
-            "https://www.googleapis.com/blogger/v3/blogs/" + DATA.BLOG_ID + "/pages?key=" + DATA.BLOGGER_API
-        val stringRequest = StringRequest(Request.Method.GET, url, { response: String? ->
-            dialog.dismiss()
+        binding.progressBar.visibility = View.VISIBLE
+
+        val url = "https://googleapis.com{DATA.BLOG_ID}/pages?key=${DATA.BLOGGER_API}"
+
+        val stringRequest = StringRequest(Request.Method.GET, url, { response ->
+            binding.progressBar.visibility = View.GONE
             try {
-                val jsonObject = response?.let { JSONObject(it) }
-                val jsonArray = jsonObject!!.getJSONArray("items")
-                pages = ArrayList()
-                pages!!.clear()
+                val jsonObject = JSONObject(response ?: DATA.EMPTY)
+                val jsonArray = jsonObject.getJSONArray("items")
+                pages.clear()
+
                 for (i in 0 until jsonArray.length()) {
                     try {
                         val jsonObject1 = jsonArray.getJSONObject(i)
@@ -64,32 +62,28 @@ class PagesActivity : AppCompatActivity() {
                         val updated = jsonObject1.getString("updated")
                         val url_ = jsonObject1.getString("url")
                         val selfLink = jsonObject1.getString("selfLink")
-                        val displayName =
-                            jsonObject1.getJSONObject("author").getString("displayName")
-                        val image = jsonObject1.getJSONObject("author").getJSONObject("image")
-                            .getString("url")
+                        val displayName = jsonObject1.getJSONObject("author").getString("displayName")
+
                         val page = Page(
-                            DATA.EMPTY + displayName, DATA.EMPTY + content,
-                            DATA.EMPTY + id, DATA.EMPTY + published, DATA.EMPTY
-                                    + selfLink, DATA.EMPTY + title,
-                            DATA.EMPTY + updated, DATA.EMPTY + url_
+                            displayName, content, id, published,
+                            selfLink, title, updated, url_
                         )
-                        pages!!.add(page)
+                        pages.add(page)
                     } catch (e: Exception) {
-                        Toast.makeText(context, DATA.EMPTY + e.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
                     }
                 }
-                adapter = PagesAdapter(context, pages!!)
+                adapter = PagesAdapter(context, pages)
                 binding.recyclerView.adapter = adapter
             } catch (e: Exception) {
-                Toast.makeText(context, DATA.EMPTY + e.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
             }
-        }) { error: VolleyError ->
-            dialog.dismiss()
-            Toast.makeText(context, DATA.EMPTY + error.message, Toast.LENGTH_SHORT).show()
+        }) { error ->
+            binding.progressBar.visibility = View.GONE
+            Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
         }
-        val requestQueue = Volley.newRequestQueue(context)
-        requestQueue.add(stringRequest)
+
+        Volley.newRequestQueue(context).add(stringRequest)
     }
 
     override fun onDestroy() {

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.BloggerApp.Model.Label
+import com.flatcode.simplemultiapps.Unit.DATA
 import com.flatcode.simplemultiapps.databinding.ItemBloggerLabelBinding
 
 class LabelAdapter(private val context: Context, var labels: ArrayList<Label>) :
@@ -16,14 +17,14 @@ class LabelAdapter(private val context: Context, var labels: ArrayList<Label>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val list = labels[position]
-        val label = list.label
-        holder.binding.label.text = label
+        val currentLabel = labels[position]
+
+        with(holder.binding) {
+            label.text = currentLabel.label ?: DATA.EMPTY
+        }
     }
 
-    override fun getItemCount(): Int {
-        return labels.size
-    }
+    override fun getItemCount(): Int = labels.size
 
-    inner class ViewHolder(val binding: ItemBloggerLabelBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemBloggerLabelBinding) : RecyclerView.ViewHolder(binding.root)
 }
