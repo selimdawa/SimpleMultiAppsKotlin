@@ -16,7 +16,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
-import androidx.preference.PreferenceManager
 import android.print.PrintManager
 import android.provider.OpenableColumns
 import android.util.Log
@@ -32,22 +31,24 @@ import androidx.activity.result.contract.ActivityResultContracts.RequestPermissi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.core.os.BundleCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.github.barteksc.pdfviewer.PDFView.Configurator
-import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
-import com.github.barteksc.pdfviewer.util.Constants
-import com.github.barteksc.pdfviewer.util.FitPolicy
+import androidx.preference.PreferenceManager
 import com.flatcode.simplemultiapps.PdfReader.Adapter.PdfDocumentAdapter
 import com.flatcode.simplemultiapps.PdfReader.DownloadPDFFile
+import com.flatcode.simplemultiapps.PdfReader.ViewModel.PdfViewModel
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.Unit.CLASS
 import com.flatcode.simplemultiapps.Unit.DATA
 import com.flatcode.simplemultiapps.Unit.VOID
-import com.flatcode.simplemultiapps.PdfReader.ViewModel.PdfViewModel
-import com.flatcode.simplemultiapps.databinding.DialogPdfReaderPasswordBinding
 import com.flatcode.simplemultiapps.databinding.ActivityPdfReaderBinding
+import com.flatcode.simplemultiapps.databinding.DialogPdfReaderPasswordBinding
+import com.github.barteksc.pdfviewer.PDFView.Configurator
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
+import com.github.barteksc.pdfviewer.util.Constants
+import com.github.barteksc.pdfviewer.util.FitPolicy
 import com.shockwave.pdfium.PdfPasswordException
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -119,9 +120,9 @@ class PdfReaderActivity : AppCompatActivity() {
         val isFirstRun = prefManager!!.getBoolean(DATA.FIRST_INSTALL, true)
         if (isFirstRun) {
             startActivity(Intent(activity, CLASS.PDF_READER_INTRO))
-            val editor = prefManager!!.edit()
-            editor.putBoolean(DATA.FIRST_INSTALL, false)
-            editor.apply()
+            prefManager!!.edit {
+                putBoolean(DATA.FIRST_INSTALL, false)
+            }
         }
     }
 
@@ -238,10 +239,15 @@ class PdfReaderActivity : AppCompatActivity() {
     }
 
     private fun couldNotOpenFileDueToMissingPermission(e: Throwable): Boolean {
-        if (ContextCompat.checkSelfPermission(
-                activity, Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
-        ) return false
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val exceptionMessage = e.message
+            return e is FileNotFoundException && exceptionMessage != null && exceptionMessage.contains("Permission denied")
+        }
+
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            return false
+        }
+
         val exceptionMessage = e.message
         return e is FileNotFoundException && exceptionMessage != null && exceptionMessage.contains("Permission denied")
     }
@@ -293,20 +299,12 @@ class PdfReaderActivity : AppCompatActivity() {
                     controller.systemBarsBehavior =
                         WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
                 }
-            } else {
-                @Suppress("DEPRECATION")
-                viewBinding!!.pdfView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                        or View.SYSTEM_UI_FLAG_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
             }
         } else {
             isFullscreenToggled = false
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 window.insetsController?.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-            } else {
-                @Suppress("DEPRECATION")
-                viewBinding!!.pdfView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
             }
         }
     }
@@ -319,14 +317,11 @@ class PdfReaderActivity : AppCompatActivity() {
         pdfFileName = getFileName(uri)
         title = pdfFileName
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val taskDescription = TaskDescription.Builder()
                 .setLabel(pdfFileName)
                 .build()
             setTaskDescription(taskDescription)
-        } else {
-            @Suppress("DEPRECATION")
-            setTaskDescription(TaskDescription(pdfFileName))
         }
 
         val scheme = uri.scheme
@@ -360,7 +355,7 @@ class PdfReaderActivity : AppCompatActivity() {
     }
 
     private fun saveToDownloadFolderIfAllowed(fileContent: ByteArray?) {
-        if (VOID.canWriteToDownloadFolder(activity)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q || VOID.canWriteToDownloadFolder(activity)) {
             trySaveToDownloadFolder(fileContent, false)
         } else {
             saveToDownloadPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
