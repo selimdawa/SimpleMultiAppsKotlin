@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:background="#40000000"
                 android:padding="8dp"
-                android:text="CHANNEL NAME"
+                android:text="@string/channel_name"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:textStyle="bold"

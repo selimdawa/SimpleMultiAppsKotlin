@@ -104,7 +104,7 @@ class BloggerAppActivity : AppCompatActivity() {
                 val jsonObject = response?.let { JSONObject(it) }
                 nextToken = try {
                     jsonObject!!.getString("nextPageToken")
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     Toast.makeText(context, "Reached end of page...", Toast.LENGTH_SHORT).show()
                     "end"
                 }
@@ -166,7 +166,7 @@ class BloggerAppActivity : AppCompatActivity() {
                 val jsonObject = response?.let { JSONObject(it) }
                 nextToken = try {
                     jsonObject!!.getString("nextPageToken")
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     Toast.makeText(context, "Reached end of page...", Toast.LENGTH_SHORT).show()
                     "end"
                 }

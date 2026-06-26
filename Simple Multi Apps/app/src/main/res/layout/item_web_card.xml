@@ -79,7 +79,7 @@
                 android:background="?tickColor"
                 android:gravity="center"
                 android:padding="@dimen/item_card_text_padding"
-                android:text="Close"
+                android:text="@string/close"
                 android:textColor="@color/white"
                 android:textSize="@dimen/item_card_text_size"
                 android:textStyle="bold" />
