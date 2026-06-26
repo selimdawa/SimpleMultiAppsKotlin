@@ -2,7 +2,9 @@ package com.flatcode.simplemultiapps.JokeApp.Adapter
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -45,16 +47,21 @@ class JokeCategoriesAdapter(private val context: Context, var categories: List<S
                 notifyItemChanged(selectedPosition)
 
                 val endpoint = if (currentCategory == "Pun") "Programming" else currentCategory
-                val fragmentUrl = "${DATA.JOKE_URL}$endpoint?amount=10"
 
-                loadFragment(JokesFragment(fragmentUrl), root)
+                val fragment = JokesFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(JokesFragment.KEY_JOKES_URL, "${DATA.JOKE_URL}$endpoint?amount=10")
+                    }
+                }
+
+                loadFragment(fragment, root)
             }
         }
     }
 
     override fun getItemCount(): Int = categories.size
 
-    private fun loadFragment(fragment: Fragment, view: android.view.View) {
+    private fun loadFragment(fragment: Fragment, view: View) {
         val activity = view.context as? AppCompatActivity
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.fragment, fragment)

@@ -15,12 +15,12 @@ import com.flatcode.simplemultiapps.Unit.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityCandyCrashGameBinding
 import kotlin.math.floor
 
-class MainActivity : AppCompatActivity() {
+class CandyCrushGameActivity : AppCompatActivity() {
 
     private var _binding: ActivityCandyCrashGameBinding? = null
     private val binding get() = _binding!!
 
-    private val context: Context = this@MainActivity
+    private val context: Context = this@CandyCrushGameActivity
     var candies = intArrayOf(
         R.drawable.bluecandy, R.drawable.greencandy, R.drawable.redcandy,
         R.drawable.orangecandy, R.drawable.yellowcandy, R.drawable.purplecandy
