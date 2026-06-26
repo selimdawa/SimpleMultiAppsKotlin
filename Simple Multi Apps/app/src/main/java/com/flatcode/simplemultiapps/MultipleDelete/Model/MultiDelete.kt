@@ -1,12 +1,15 @@
 package com.flatcode.simplemultiapps.MultipleDelete.Model
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class MultiDelete : ViewModel() {
-    var text = MutableLiveData<String>()
+
+    private val _text = MutableLiveData<String>()
+    val text: LiveData<String> get() = _text
 
     fun setText(s: String) {
-        text.value = s
+        _text.value = s
     }
 }

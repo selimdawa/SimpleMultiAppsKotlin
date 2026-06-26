@@ -7,7 +7,6 @@ import android.view.ActionMode
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -24,34 +23,44 @@ import com.flatcode.simplemultiapps.databinding.ItemMultiDeleteBinding
 
 class MultiDeleteAdapter(
     private val context: Context,
-    var activity: Activity?,
+    private val activity: Activity?,
     var arrayList: ArrayList<String>,
-    var tvEmpty: TextView,
+    private val tvEmpty: TextView,
 ) : RecyclerView.Adapter<MultiDeleteAdapter.ViewHolder>() {
 
-    var mainViewModel: MultiDelete? = null
+    private val mainViewModel: MultiDelete? by lazy {
+        (activity as? FragmentActivity)?.let { ViewModelProvider(it)[MultiDelete::class.java] }
+    }
+
     var isEnable = false
     var isSelectAll = false
-    var selectList = ArrayList<String>()
+    val selectList = ArrayList<String>()
 
     class ViewHolder(val binding: ItemMultiDeleteBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemMultiDeleteBinding.inflate(LayoutInflater.from(context), parent, false)
-        val fragmentActivity = activity as? FragmentActivity
-        if (fragmentActivity != null) {
-            mainViewModel = ViewModelProvider(fragmentActivity)[MultiDelete::class.java]
-        }
+        val binding = ItemMultiDeleteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val binding = holder.binding
-        binding.text.text = arrayList[position]
+        val itemText = arrayList[position]
 
-        holder.itemView.setOnLongClickListener { v: View ->
+        with(holder.binding) {
+            text.text = itemText
+
+            if (isSelectAll || selectList.contains(itemText)) {
+                checkBox.isVisible = true
+                holder.itemView.setBackgroundColor(Color.LTGRAY)
+            } else {
+                checkBox.isGone = true
+                holder.itemView.setBackgroundColor(Color.TRANSPARENT)
+            }
+        }
+
+        holder.itemView.setOnLongClickListener { view ->
             if (!isEnable) {
-                val callback: ActionMode.Callback = object : ActionMode.Callback {
+                val callback = object : ActionMode.Callback {
                     override fun onCreateActionMode(actionMode: ActionMode, menu: Menu): Boolean {
                         actionMode.menuInflater.inflate(R.menu.multi_delete_menu, menu)
                         return true
@@ -60,25 +69,20 @@ class MultiDeleteAdapter(
                     override fun onPrepareActionMode(actionMode: ActionMode, menu: Menu): Boolean {
                         isEnable = true
                         clickItem(holder)
-                        val lifecycleOwner = activity as? LifecycleOwner
-                        lifecycleOwner?.let { owner ->
+
+                        (activity as? LifecycleOwner)?.let { owner ->
                             mainViewModel?.text?.observe(owner) { s ->
-                                actionMode.title = java.lang.String.format("%s Selected", s)
+                                actionMode.title = "$s Selected"
                             }
                         }
                         return true
                     }
 
-                    override fun onActionItemClicked(
-                        actionMode: ActionMode,
-                        menuItem: MenuItem
-                    ): Boolean {
+                    override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
                         when (menuItem.itemId) {
                             R.id.menu_delete -> {
-                                val iterator = selectList.iterator()
-                                while (iterator.hasNext()) {
-                                    val s = iterator.next()
-                                    val index = arrayList.indexOf(s)
+                                selectList.forEach { selectedItem ->
+                                    val index = arrayList.indexOf(selectedItem)
                                     if (index != -1) {
                                         arrayList.removeAt(index)
                                         notifyItemRemoved(index)
@@ -114,7 +118,7 @@ class MultiDeleteAdapter(
                         notifyItemRangeChanged(0, arrayList.size)
                     }
                 }
-                (v.context as AppCompatActivity).startActionMode(callback)
+                (view.context as? AppCompatActivity)?.startActionMode(callback)
             } else {
                 clickItem(holder)
             }
@@ -122,40 +126,35 @@ class MultiDeleteAdapter(
         }
 
         holder.itemView.setOnClickListener {
+            val currentPos = holder.bindingAdapterPosition
+            if (currentPos == RecyclerView.NO_POSITION) return@setOnClickListener
+
             if (isEnable) {
                 clickItem(holder)
             } else {
-                Toast.makeText(
-                    activity, "You Clicked " + arrayList[holder.bindingAdapterPosition], Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(context, "You Clicked ${arrayList[currentPos]}", Toast.LENGTH_SHORT).show()
             }
         }
-
-        if (isSelectAll) {
-            binding.checkBox.isVisible = true
-            holder.itemView.setBackgroundColor(Color.LTGRAY)
-        } else {
-            binding.checkBox.isGone = true
-            holder.itemView.setBackgroundColor(Color.TRANSPARENT)
-        }
     }
 
-    override fun getItemCount(): Int {
-        return arrayList.size
-    }
+    override fun getItemCount(): Int = arrayList.size
 
     private fun clickItem(holder: ViewHolder) {
-        val s = arrayList[holder.bindingAdapterPosition]
-        val binding = holder.binding
+        val currentPos = holder.bindingAdapterPosition
+        if (currentPos == RecyclerView.NO_POSITION) return
 
-        if (binding.checkBox.isGone) {
-            binding.checkBox.isVisible = true
-            holder.itemView.setBackgroundColor(Color.LTGRAY)
-            selectList.add(s)
-        } else {
-            binding.checkBox.isGone = true
-            holder.itemView.setBackgroundColor(Color.TRANSPARENT)
-            selectList.remove(s)
+        val itemText = arrayList[currentPos]
+
+        with(holder.binding) {
+            if (checkBox.isGone) {
+                checkBox.isVisible = true
+                holder.itemView.setBackgroundColor(Color.LTGRAY)
+                selectList.add(itemText)
+            } else {
+                checkBox.isGone = true
+                holder.itemView.setBackgroundColor(Color.TRANSPARENT)
+                selectList.remove(itemText)
+            }
         }
         mainViewModel?.setText(selectList.size.toString())
     }

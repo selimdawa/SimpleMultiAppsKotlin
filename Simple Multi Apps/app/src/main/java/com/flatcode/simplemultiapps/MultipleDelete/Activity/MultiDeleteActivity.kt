@@ -12,22 +12,33 @@ import com.flatcode.simplemultiapps.databinding.ActivityMultiDeleteBinding
 
 class MultiDeleteActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMultiDeleteBinding
-    var arrayList = ArrayList<String>()
-    var adapter: MultiDeleteAdapter? = null
-    var activity: Activity? = null
-    var context: Context = also { activity = it }
+    private var _binding: ActivityMultiDeleteBinding? = null
+    private val binding get() = _binding!!
+
+    private val arrayList = ArrayList<String>()
+    private var adapter: MultiDeleteAdapter? = null
+
+    private val activity: Activity = this@MultiDeleteActivity
+    private val context: Context = this@MultiDeleteActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-
-        binding = ActivityMultiDeleteBinding.inflate(layoutInflater)
+        _binding = ActivityMultiDeleteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         arrayList.addAll(resources.getStringArray(R.array.values))
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = MultiDeleteAdapter(context, activity, arrayList, binding.tvEmpty)
-        binding.recyclerView.adapter = adapter
+
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = MultiDeleteAdapter(context, activity, arrayList, binding.tvEmpty).also {
+                this@MultiDeleteActivity.adapter = it
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
