@@ -6,66 +6,80 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.flatcode.simplemultiapps.JokeApp.Adapter.JokeAdapter
 import com.flatcode.simplemultiapps.JokeApp.Model.Joke
-import com.flatcode.simplemultiapps.R
+import com.flatcode.simplemultiapps.databinding.FragmentJokesBinding
 import org.json.JSONException
-import org.json.JSONObject
 
-class JokesFragment(var jokesUrl: String) : Fragment() {
+class JokesFragment : Fragment() {
 
-    var jokesList: RecyclerView? = null
-    var adapter: JokeAdapter? = null
-    var jokes: MutableList<Joke>
+    private var _binding: FragmentJokesBinding? = null
+    private val binding get() = _binding!!
+
+    private val jokes = ArrayList<Joke>()
+    private var adapter: JokeAdapter? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_jokes, container, false)
-
-        jokesList = view.findViewById(R.id.jokesList)
-        adapter = JokeAdapter(context, jokes)
-        jokesList!!.layoutManager = LinearLayoutManager(context)
-        jokesList!!.adapter = adapter
-        getJokes(jokesUrl)
-
-        return view
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentJokesBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    fun getJokes(url: String?) {
-        // fetch jokes and populate the data
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        adapter = JokeAdapter(jokes)
+
+        binding.jokesList.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = this@JokesFragment.adapter
+        }
+
+        arguments?.getString(KEY_JOKES_URL)?.let { url ->
+            getJokes(url)
+        }
+    }
+
+    private fun getJokes(url: String) {
         val queue = Volley.newRequestQueue(requireContext())
-        val objectRequest =
-            JsonObjectRequest(Request.Method.GET, url, null, { response: JSONObject ->
-                try {
-                    val jokesArray = response.getJSONArray("jokes")
-                    for (i in 0 until response.getString("amount").toInt()) {
-                        val jokeData = jokesArray.getJSONObject(i)
-                        val j = Joke()
-                        j.type = (jokeData.getString("type"))
-                        if (jokeData.getString("type") == "single") {
-                            j.joke = (jokeData.getString("joke"))
+        val objectRequest = JsonObjectRequest(Request.Method.GET, url, null, { response ->
+            try {
+                val jokesArray = response.getJSONArray("jokes")
+                val amount = response.optInt("amount", jokesArray.length())
+
+                for (i in 0 until amount) {
+                    val jokeData = jokesArray.getJSONObject(i)
+                    val jokeType = jokeData.optString("type")
+
+                    val jokeObject = Joke().apply {
+                        type = jokeType
+                        if (jokeType == "single") {
+                            joke = jokeData.optString("joke")
                         } else {
-                            j.setup = (jokeData.getString("setup"))
-                            j.delivery = (jokeData.getString("delivery"))
+                            setup = jokeData.optString("setup")
+                            delivery = jokeData.optString("delivery")
                         }
-                        jokes.add(j)
-                        adapter!!.notifyDataSetChanged()
                     }
-                } catch (e: JSONException) {
-                    e.printStackTrace()
+                    jokes.add(jokeObject)
                 }
-            }) { _: VolleyError? -> }
+                adapter?.notifyItemRangeInserted(jokes.size - amount, amount)
+            } catch (_: JSONException) {
+            }
+        }, null)
+
         queue.add(objectRequest)
     }
 
-    init {
-        jokes = ArrayList()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    companion object {
+        const val KEY_JOKES_URL = "extra_jokes_url"
     }
 }

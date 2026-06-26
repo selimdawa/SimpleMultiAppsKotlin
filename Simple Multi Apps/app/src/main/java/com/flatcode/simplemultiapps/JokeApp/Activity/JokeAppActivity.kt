@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.JokeApp.Adapter.JokeCategoriesAdapter
 import com.flatcode.simplemultiapps.JokeApp.Fragment.JokesFragment
 import com.flatcode.simplemultiapps.R
@@ -13,37 +12,46 @@ import com.flatcode.simplemultiapps.databinding.ActivityJokeAppBinding
 
 class JokeAppActivity : AppCompatActivity() {
 
-    private var binding: ActivityJokeAppBinding? = null
-    var jokeList: RecyclerView? = null
-    var catAdapter: JokeCategoriesAdapter? = null
-    var context: Context = this@JokeAppActivity
+    private var _binding: ActivityJokeAppBinding? = null
+    private val binding get() = _binding!!
+
+    private var catAdapter: JokeCategoriesAdapter? = null
+    private val context: Context = this@JokeAppActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityJokeAppBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
 
-        binding!!.toolbar.nameSpace.setText(R.string.joke)
+        _binding = ActivityJokeAppBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val cats = ArrayList<String>()
-        cats.add("Any")
-        cats.add("Programming")
-        cats.add("Dark")
-        cats.add("Spooky")
-        cats.add("Misc")
-        cats.add("Pun")
-        cats.add("Christmas")
+        binding.toolbar.nameSpace.setText(R.string.joke)
 
-        binding!!.recyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        catAdapter = JokeCategoriesAdapter(context, cats)
-        binding!!.recyclerView.adapter = catAdapter
-        val manager = supportFragmentManager
-        val transaction = manager.beginTransaction().replace(
-            R.id.fragment, JokesFragment("https://v2.jokeapi.dev/joke/Any?amount=10")
-        )
-        transaction.commit()
+        val cats = listOf("Any", "Programming", "Dark", "Spooky", "Misc", "Pun", "Christmas")
+
+        with(binding.recyclerView) {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            catAdapter = JokeCategoriesAdapter(context, cats)
+            adapter = catAdapter
+        }
+
+        if (savedInstanceState == null) {
+            val fragment = JokesFragment().apply {
+                arguments = Bundle().apply {
+                    putString(
+                        JokesFragment.KEY_JOKES_URL,
+                        "https://v2.jokeapi.dev/joke/Any?amount=10"
+                    )
+                }
+            }
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment, fragment)
+                .commit()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

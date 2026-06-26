@@ -1,52 +1,37 @@
 package com.flatcode.simplemultiapps.JokeApp.Adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.JokeApp.Model.Joke
 import com.flatcode.simplemultiapps.databinding.ItemJokeBinding
 
 class JokeAdapter(
-    private val context: Context?,
-    jokes: List<Joke>,
-) : RecyclerView.Adapter<JokeAdapter.ViewHolder>() {
-    private var binding: ItemJokeBinding? = null
     var jokes: List<Joke>
+) : RecyclerView.Adapter<JokeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemJokeBinding.inflate(LayoutInflater.from(context), parent, false)
-        return ViewHolder(binding!!.root)
+        val binding = ItemJokeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (jokes[position].type == "single") {
-            holder.firstLine.text = jokes[position].joke
-            holder.secondLine.visibility = View.GONE
-        } else {
-            holder.firstLine.text = jokes[position].setup
-            holder.secondLine.visibility = View.VISIBLE
-            holder.secondLine.text = jokes[position].delivery
+        val jokeItem = jokes[position]
+
+        with(holder.binding) {
+            if (jokeItem.type == "single") {
+                firstLine.text = jokeItem.joke
+                secondLine.visibility = View.GONE
+            } else {
+                firstLine.text = jokeItem.setup
+                secondLine.visibility = View.VISIBLE
+                secondLine.text = jokeItem.delivery
+            }
         }
     }
 
-    override fun getItemCount(): Int {
-        return jokes.size
-    }
+    override fun getItemCount(): Int = jokes.size
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var firstLine: TextView
-        var secondLine: TextView
-
-        init {
-            firstLine = binding!!.firstLine
-            secondLine = binding!!.secondLine
-        }
-    }
-
-    init {
-        this.jokes = jokes
-    }
+    class ViewHolder(val binding: ItemJokeBinding) : RecyclerView.ViewHolder(binding.root)
 }
