@@ -12,10 +12,12 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.Unit.CLASS
+import com.flatcode.simplemultiapps.Unit.DATA
 import com.flatcode.simplemultiapps.Unit.THEME
 import com.flatcode.simplemultiapps.Wordpress.Model.Media
 import com.flatcode.simplemultiapps.Wordpress.Sqlite.PostDB
@@ -24,7 +26,6 @@ import com.flatcode.simplemultiapps.Wordpress.Util.PageView
 import com.flatcode.simplemultiapps.Wordpress.Util.WPApiService
 import com.flatcode.simplemultiapps.Wordpress.Util.WordPressClient
 import com.flatcode.simplemultiapps.databinding.ActivityWordpressDetailsBinding
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,75 +33,68 @@ import retrofit2.Response
 
 class WordpressDetailsActivity : AppCompatActivity() {
 
-    private var binding: ActivityWordpressDetailsBinding? = null
-    var context: Context = this@WordpressDetailsActivity
-    var parentView: View? = null
-    var isItemSelected = false
+    private var _binding: ActivityWordpressDetailsBinding? = null
+    private val binding get() = _binding!!
+
+    val context: Context = this@WordpressDetailsActivity
+    private var isItemSelected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        binding = ActivityWordpressDetailsBinding.inflate(layoutInflater)
-        val view = binding!!.root
-        setContentView(view)
+        _binding = ActivityWordpressDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        //Get Intent
-        val id = intent.getSerializableExtra("postId") as Int
-        val featuredMedia = intent.getSerializableExtra("featuredMedia") as Int
-        val title: String = intent.getSerializableExtra("postTitle").toString()
-        val contentPost: String = intent.getSerializableExtra("postContent").toString()
-            .replace("\\\\n".toRegex(), "<br>").replace("\\\\r".toRegex(), "")
+        val id = intent.getIntExtra("postId", 0)
+        val featuredMedia = intent.getIntExtra("featuredMedia", 0)
+        val title = intent.getStringExtra("postTitle").orEmpty()
+        val contentPost = intent.getStringExtra("postContent").orEmpty()
+            .replace("\\\\n".toRegex(), "<br>")
+            .replace("\\\\r".toRegex(), "")
             .replace("\\\\".toRegex(), "")
-        initToolbar(title, id)
-        PageView.initWebView(contentPost, context, binding!!.content.webview)
 
-        //Call Media
+        initToolbar(title, id)
+        PageView.initWebView(contentPost, context, binding.content.webview)
+
         if (InternetConnection.checkInternetConnection(applicationContext)) {
             val api: WPApiService = WordPressClient.apiService
-            val call: Call<Media?>? = api.getPostThumbnail(featuredMedia)
-            call!!.enqueue(object : Callback<Media?> {
+            api.getPostThumbnail(featuredMedia)?.enqueue(object : Callback<Media?> {
                 override fun onResponse(call: Call<Media?>, response: Response<Media?>) {
                     if (response.code() != 404) {
-                        val media: Media? = response.body()
-                        val mediaUrl: String =
-                            media!!.guid!!.get("rendered").toString().replace("\"", "")
-                        Glide.with(applicationContext).load(mediaUrl)
-                            .thumbnail(0.5f)
-                            .centerCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .into(binding!!.postBackdrop)
-                    } else {
+                        response.body()?.guid?.get("rendered")?.let { rendered ->
+                            val mediaUrl = rendered.toString().replace("\"", "")
+                            Glide.with(applicationContext)
+                                .load(mediaUrl)
+                                .thumbnail(0.5f)
+                                .centerCrop()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(binding.postBackdrop)
+                        }
                     }
                 }
 
                 override fun onFailure(call: Call<Media?>, t: Throwable) {}
             })
         } else {
-            Snackbar.make(parentView!!, "Can't connect to the Internet", Snackbar.LENGTH_INDEFINITE)
-                .show()
+            Snackbar.make(binding.root, "Can't connect to the Internet", Snackbar.LENGTH_INDEFINITE).show()
         }
-        binding!!.content.postTitle.text = title
+
+        binding.content.postTitle.text = title
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = intent.getIntExtra("postId", 0)
+        val title = intent.getStringExtra("postTitle").orEmpty()
+        val excerpt = intent.getStringExtra("postExcerpt").orEmpty()
 
-        //Get Intent
-        val id = intent.getSerializableExtra("postId") as Int
-        val title: String = intent.getSerializableExtra("postTitle").toString()
-        val excerpt: String = intent.getSerializableExtra("postExcerpt").toString()
-        val contentPost: String = intent.getSerializableExtra("postContent").toString()
-            .replace("\\\\n".toRegex(), "").replace("\\\\r".toRegex(), "")
-            .replace("\\\\".toRegex(), "")
-
-        //Toggle Navigation icon
         if (!isItemSelected) {
-            item.icon = resources.getDrawable(R.drawable.ic_heart_selected, theme)
+            item.icon = ContextCompat.getDrawable(context, R.drawable.ic_heart_selected)
             isItemSelected = true
-            PostDB.getInstance(applicationContext)!!.insert(id, title, excerpt, isItemSelected)
+            PostDB.getInstance(applicationContext)?.insert(id, title, excerpt, isItemSelected)
         } else {
-            item.icon = resources.getDrawable(R.drawable.ic_heart_unselected, theme)
+            item.icon = ContextCompat.getDrawable(context, R.drawable.ic_heart_unselected)
             isItemSelected = false
-            PostDB.getInstance(applicationContext)!!.delete(id)
+            PostDB.getInstance(applicationContext)?.delete(id)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -110,58 +104,44 @@ class WordpressDetailsActivity : AppCompatActivity() {
             view.loadUrl(request.url.toString())
             return true
         }
-
-        override fun onLoadResource(view: WebView, url: String) {
-            super.onLoadResource(view, url)
-        }
-
-        override fun onPageFinished(view: WebView, url: String) {
-            super.onPageFinished(view, url)
-        }
     }
 
     private fun initToolbar(title: String, id: Int) {
         window.statusBarColor = Color.TRANSPARENT
-        setSupportActionBar(binding!!.postToolbar)
-        initCollapsingToolbar(title)
-        isItemSelected = PostDB.getInstance(applicationContext)!!.getDbPostIsFav(id)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        binding!!.postToolbar.setNavigationOnClickListener { finish() }
-    }
+        setSupportActionBar(binding.postToolbar)
+        binding.postCollapsingToolbarLayout.title = title
 
-    //Init CollapsingToolbarLayout
-    private fun initCollapsingToolbar(title: String) {
-        val collapsingToolbar: CollapsingToolbarLayout =
-            findViewById<View>(R.id.post_collapsing_toolbarLayout) as CollapsingToolbarLayout
-        collapsingToolbar.title = title
+        isItemSelected = PostDB.getInstance(applicationContext)?.getDbPostIsFav(id) == true
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.postToolbar.setNavigationOnClickListener { finish() }
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.add_to_favorite_menu, menu)
-        if (isItemSelected) {
-            menu.findItem(R.id.add_as_favorite).icon =
-                resources.getDrawable(R.drawable.ic_heart_selected, theme)
-        } else {
-            menu.findItem(R.id.add_as_favorite).icon =
-                resources.getDrawable(R.drawable.ic_heart_unselected, theme)
-        }
+        val favoriteItem = menu.findItem(R.id.add_as_favorite)
+        val iconRes = if (isItemSelected) R.drawable.ic_heart_selected else R.drawable.ic_heart_unselected
+        favoriteItem.icon = ContextCompat.getDrawable(context, iconRes)
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     companion object {
         fun createIntent(
             context: Context?, id: Int, featuredMedia: Int, title: String?,
-            excerpt: String?, content: String?,
+            excerpt: String?, content: String?
         ): Intent {
-            val intent = Intent(context, CLASS.WORDPRESS_DETAILS)
-
-            intent.putExtra("postId", id)
-            intent.putExtra("featuredMedia", featuredMedia)
-            intent.putExtra("postExcerpt", excerpt)
-            intent.putExtra("postTitle", title)
-            intent.putExtra("postContent", content)
-            return intent
+            return Intent(context, CLASS.WORDPRESS_DETAILS).apply {
+                putExtra("postId", id)
+                putExtra("featuredMedia", featuredMedia)
+                putExtra("postExcerpt", excerpt)
+                putExtra("postTitle", title)
+                putExtra("postContent", content)
+            }
         }
     }
 }
