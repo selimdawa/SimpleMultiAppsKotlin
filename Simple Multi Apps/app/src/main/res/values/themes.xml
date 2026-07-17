@@ -313,4 +313,8 @@
         <item name="android:textColorHint">@color/white</item>
     </style>
 
+    <style name="ShapeAppearance.Circle" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+
 </resources>

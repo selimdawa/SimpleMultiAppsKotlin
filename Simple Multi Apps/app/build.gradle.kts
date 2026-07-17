@@ -67,7 +67,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
     //Image
-    implementation(libs.circleimageview)                //Circle Image
     implementation(libs.glide)                          //Glide Image
     //Pdf Reader
     implementation(libs.appintro)
