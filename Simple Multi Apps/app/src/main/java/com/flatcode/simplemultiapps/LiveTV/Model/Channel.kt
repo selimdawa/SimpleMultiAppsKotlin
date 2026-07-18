@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.LiveTV.Model
+package com.flatcode.simplemultiapps.livetv.model
 
 import java.io.Serializable
 

@@ -1,18 +1,18 @@
-package com.flatcode.simplemultiapps.Wordpress.Activity
+package com.flatcode.simplemultiapps.wordpress.activity
 
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.THEME
-import com.flatcode.simplemultiapps.Wordpress.Adapter.WordpressAdapter
-import com.flatcode.simplemultiapps.Wordpress.Model.Post
-import com.flatcode.simplemultiapps.Wordpress.Sqlite.PostDB
-import com.flatcode.simplemultiapps.Wordpress.Util.InternetConnection
-import com.flatcode.simplemultiapps.Wordpress.Util.WPApiService
-import com.flatcode.simplemultiapps.Wordpress.Util.WordPressClient
+import com.flatcode.simplemultiapps.utils.THEME
+import com.flatcode.simplemultiapps.wordpress.adapter.WordpressAdapter
+import com.flatcode.simplemultiapps.wordpress.model.Post
+import com.flatcode.simplemultiapps.wordpress.sqlite.PostDB
+import com.flatcode.simplemultiapps.wordpress.utils.WPApiService
+import com.flatcode.simplemultiapps.wordpress.utils.WordPressClient
 import com.flatcode.simplemultiapps.databinding.ActivityWordpressFavoritesBinding
+import com.flatcode.simplemultiapps.wordpress.utils.isNetworkAvailable
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,74 +20,74 @@ import retrofit2.Response
 
 class WordpressFavoritesActivity : AppCompatActivity() {
 
-    private var _binding: ActivityWordpressFavoritesBinding? = null
-    private val binding get() = _binding!!
-
-    val context: Context = this@WordpressFavoritesActivity
+    private lateinit var binding: ActivityWordpressFavoritesBinding
+    private val context: Context = this
     private var sqLitePostList: List<Post?>? = null
+    private var postList: List<Post?>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        _binding = ActivityWordpressFavoritesBinding.inflate(layoutInflater)
+        binding = ActivityWordpressFavoritesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        with(binding.toolbar) {
-            back.visibility = View.VISIBLE
-            back.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
-            nameSpace.setText(R.string.favorites)
+        binding.toolbar.back.visibility = View.VISIBLE
+        binding.toolbar.back.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
+        binding.toolbar.nameSpace.setText(R.string.favorites)
 
         sqLitePostList = PostDB.getInstance(applicationContext)?.allDbPosts
-        setFavListContent(withProgress = true, favPostList = sqLitePostList)
+        setFavListContent(true, sqLitePostList)
     }
 
     fun setFavListContent(withProgress: Boolean, favPostList: List<Post?>?) {
-        if (InternetConnection.checkInternetConnection(applicationContext)) {
+        if (isNetworkAvailable()) {
             val api: WPApiService = WordPressClient.apiService
             val call: Call<List<Post?>?>? = api.getPosts()
+
+            if (call == null) {
+                binding.progressBar.visibility = View.GONE
+                return
+            }
 
             if (withProgress) {
                 binding.progressBar.visibility = View.VISIBLE
             }
 
-            call?.enqueue(object : Callback<List<Post?>?> {
+            call.enqueue(object : Callback<List<Post?>?> {
                 override fun onResponse(
                     call: Call<List<Post?>?>, response: Response<List<Post?>?>
                 ) {
-                    if (withProgress) {
-                        binding.progressBar.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
+                    val myList = ArrayList<Post>()
+                    postList = response.body()
+
+                    val networkPosts = postList?.filterNotNull().orEmpty()
+                    val favoriteDbMap = favPostList?.filterNotNull().orEmpty().associateBy { it.wpPostId }
+
+                    for (post in networkPosts) {
+                        if (favoriteDbMap.containsKey(post.id)) {
+                            myList.add(post)
+                        }
                     }
 
-                    val serverPosts = response.body()?.filterNotNull().orEmpty()
-                    val favoriteIdsSet = favPostList?.filterNotNull()?.map { it.wpPostId }?.toSet().orEmpty()
-
-                    val matchedFavoritesList = serverPosts.filter { post ->
-                        post.id in favoriteIdsSet
-                    }
-
-                    binding.recyclerView.adapter = WordpressAdapter(context, matchedFavoritesList)
+                    binding.recyclerView.adapter = WordpressAdapter(applicationContext, myList)
                 }
 
                 override fun onFailure(call: Call<List<Post?>?>, t: Throwable) {
-                    if (withProgress) {
-                        binding.progressBar.visibility = View.GONE
-                    }
+                    binding.progressBar.visibility = View.GONE
                 }
             })
         } else {
-            Snackbar.make(binding.root, "Can't connect to the Internet", Snackbar.LENGTH_INDEFINITE).show()
+            binding.progressBar.visibility = View.GONE
+            Snackbar.make(binding.item, "Can't connect to the Internet", Snackbar.LENGTH_INDEFINITE).show()
         }
     }
 
     override fun onResume() {
         super.onResume()
         sqLitePostList = PostDB.getInstance(applicationContext)?.allDbPosts
-        setFavListContent(withProgress = true, favPostList = sqLitePostList)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+        setFavListContent(true, sqLitePostList)
     }
 }

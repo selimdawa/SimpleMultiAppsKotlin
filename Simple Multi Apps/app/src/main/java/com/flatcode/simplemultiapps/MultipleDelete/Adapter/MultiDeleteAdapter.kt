@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.MultipleDelete.Adapter
+package com.flatcode.simplemultiapps.multipledelete.adapter
 
 import android.app.Activity
 import android.content.Context
@@ -17,7 +17,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.MultipleDelete.Model.MultiDelete
+import com.flatcode.simplemultiapps.multipledelete.model.MultiDelete
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ItemMultiDeleteBinding
 

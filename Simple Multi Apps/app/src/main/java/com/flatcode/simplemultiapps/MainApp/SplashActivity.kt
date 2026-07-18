@@ -1,13 +1,13 @@
-package com.flatcode.simplemultiapps.MainApp
+package com.flatcode.simplemultiapps.mainapp
 
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import com.flatcode.simplemultiapps.Unit.CLASS
-import com.flatcode.simplemultiapps.Unit.THEME
-import com.flatcode.simplemultiapps.Unit.VOID
+import com.flatcode.simplemultiapps.utils.CLASS
+import com.flatcode.simplemultiapps.utils.THEME
+import com.flatcode.simplemultiapps.utils.VOID
 import com.flatcode.simplemultiapps.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {

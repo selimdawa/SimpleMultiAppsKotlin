@@ -1,11 +1,11 @@
-package com.flatcode.simplemultiapps.PdfReader
+package com.flatcode.simplemultiapps.pdfreader
 
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import com.flatcode.simplemultiapps.PdfReader.Activity.PdfReaderActivity
+import com.flatcode.simplemultiapps.pdfreader.activity.PdfReaderActivity
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.VOID
+import com.flatcode.simplemultiapps.utils.VOID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

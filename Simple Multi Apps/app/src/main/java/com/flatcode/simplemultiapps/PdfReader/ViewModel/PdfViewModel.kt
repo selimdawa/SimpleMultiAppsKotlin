@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.PdfReader.ViewModel
+package com.flatcode.simplemultiapps.pdfreader.viewmodel
 
 import androidx.lifecycle.ViewModel
 

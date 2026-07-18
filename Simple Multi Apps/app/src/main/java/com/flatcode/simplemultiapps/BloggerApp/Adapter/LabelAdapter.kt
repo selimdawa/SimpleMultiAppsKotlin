@@ -1,11 +1,11 @@
-package com.flatcode.simplemultiapps.BloggerApp.Adapter
+package com.flatcode.simplemultiapps.bloggerapp.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.BloggerApp.Model.Label
-import com.flatcode.simplemultiapps.Unit.DATA
+import com.flatcode.simplemultiapps.bloggerapp.model.Label
+import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.databinding.ItemBloggerLabelBinding
 
 class LabelAdapter(private val context: Context, var labels: ArrayList<Label>) :

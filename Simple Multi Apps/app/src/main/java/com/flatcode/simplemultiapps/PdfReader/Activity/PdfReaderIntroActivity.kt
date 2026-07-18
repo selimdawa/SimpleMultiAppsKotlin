@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.PdfReader.Activity
+package com.flatcode.simplemultiapps.pdfreader.activity
 
 import android.Manifest
 import android.graphics.Color

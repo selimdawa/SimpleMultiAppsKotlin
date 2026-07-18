@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.MainApp
+package com.flatcode.simplemultiapps.mainapp
 
 data class Main(
     var image: Int = 0,

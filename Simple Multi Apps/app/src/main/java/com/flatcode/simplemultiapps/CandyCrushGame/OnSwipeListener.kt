@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.CandyCrushGame
+package com.flatcode.simplemultiapps.candycrushgame
 
 import android.content.Context
 import android.view.GestureDetector

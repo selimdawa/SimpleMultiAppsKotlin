@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.MainApp
+package com.flatcode.simplemultiapps.mainapp
 
 import android.content.Context
 import android.content.Intent

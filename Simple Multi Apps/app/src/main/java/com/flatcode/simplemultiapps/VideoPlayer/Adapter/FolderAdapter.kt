@@ -1,12 +1,12 @@
-package com.flatcode.simplemultiapps.VideoPlayer.Adapter
+package com.flatcode.simplemultiapps.videoplayer.adapter
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.Unit.CLASS
-import com.flatcode.simplemultiapps.VideoPlayer.Model.VideoFiles
+import com.flatcode.simplemultiapps.utils.CLASS
+import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
 import com.flatcode.simplemultiapps.databinding.ItemVideoPlayerFolderBinding
 
 class FolderAdapter(

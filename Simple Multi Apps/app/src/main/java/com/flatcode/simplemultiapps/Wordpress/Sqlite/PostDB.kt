@@ -1,15 +1,15 @@
-package com.flatcode.simplemultiapps.Wordpress.Sqlite
+package com.flatcode.simplemultiapps.wordpress.sqlite
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
-import android.util.Log
-import com.flatcode.simplemultiapps.Wordpress.Model.Post
+import com.flatcode.simplemultiapps.wordpress.model.Post
 
 class PostDB private constructor(context: Context) {
+
+    private val dbHelper = TodoItemDbHelper(context.applicationContext)
 
     object PostItem : BaseColumns {
         const val TABLE_NAME = "post"
@@ -19,107 +19,98 @@ class PostDB private constructor(context: Context) {
         const val COLNAME_ISFAV = "isFavorite"
     }
 
-    private val dbHelper = TodoItemDbHelper(context.applicationContext)
-
-    inner class TodoItemDbHelper(context: Context) :
+    private class TodoItemDbHelper(context: Context) :
         SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
         override fun onCreate(db: SQLiteDatabase) {
             db.execSQL(SQL_CREATE_ENTRIES)
         }
-
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
     }
 
     val allDbPosts: List<Post>
         get() {
             val postList = ArrayList<Post>()
-            val db = dbHelper.readableDatabase
-
-            val projection = arrayOf(
-                BaseColumns._ID,
-                PostItem.COLNAME_POSTID,
-                PostItem.COLNAME_TITLE,
-                PostItem.COLNAME_EXCERPT,
-                PostItem.COLNAME_ISFAV
-            )
-
-            db.query(PostItem.TABLE_NAME, projection, null, null, null, null, null).use { cursor ->
-                val idIndex = cursor.getColumnIndexOrThrow(BaseColumns._ID)
-                val wpIdIndex = cursor.getColumnIndexOrThrow(PostItem.COLNAME_POSTID)
-                val titleIndex = cursor.getColumnIndexOrThrow(PostItem.COLNAME_TITLE)
-                val excerptIndex = cursor.getColumnIndexOrThrow(PostItem.COLNAME_EXCERPT)
-                val isFavIndex = cursor.getColumnIndexOrThrow(PostItem.COLNAME_ISFAV)
-
-                while (cursor.moveToNext()) {
-                    val tmpPost = Post(
-                        cursor.getInt(idIndex),
-                        cursor.getInt(wpIdIndex),
-                        cursor.getString(titleIndex),
-                        cursor.getString(excerptIndex),
-                        cursor.getInt(isFavIndex)
-                    )
-                    postList.add(tmpPost)
+            dbHelper.readableDatabase.use { db ->
+                db.query(
+                    PostItem.TABLE_NAME,
+                    arrayOf(BaseColumns._ID, PostItem.COLNAME_POSTID, PostItem.COLNAME_TITLE, PostItem.COLNAME_EXCERPT, PostItem.COLNAME_ISFAV),
+                    null, null, null, null, null
+                ).use { cursor ->
+                    while (cursor.moveToNext()) {
+                        postList.add(
+                            Post(
+                                sqLiteId = cursor.getInt(0),
+                                wpPostId = cursor.getInt(1),
+                                wpTitle = cursor.getString(2),
+                                wpExcerpt = cursor.getString(3),
+                                isFavorite = cursor.getInt(4) == 1
+                            )
+                        )
+                    }
                 }
             }
             return postList
         }
 
     fun getDbPostIsFav(postID: Int): Boolean {
-        val db = dbHelper.readableDatabase
         var isFavorite = false
-
-        val projection = arrayOf(PostItem.COLNAME_TITLE, PostItem.COLNAME_ISFAV)
-        val selection = "${PostItem.COLNAME_POSTID} = ?"
-        val selectionArgs = arrayOf(postID.toString())
-
-        db.query(PostItem.TABLE_NAME, projection, selection, selectionArgs, null, null, null).use { cursor ->
-            if (cursor.moveToFirst()) {
-                val titleIndex = cursor.getColumnIndexOrThrow(PostItem.COLNAME_TITLE)
-                val isFavIndex = cursor.getColumnIndexOrThrow(PostItem.COLNAME_ISFAV)
-
-                val title = cursor.getString(titleIndex)
-                isFavorite = cursor.getInt(isFavIndex) == 1
-
-                Log.d("SelectedItem", title.orEmpty())
+        dbHelper.readableDatabase.use { db ->
+            db.query(
+                PostItem.TABLE_NAME,
+                arrayOf(PostItem.COLNAME_ISFAV),
+                "${PostItem.COLNAME_POSTID} = ?",
+                arrayOf(postID.toString()),
+                null, null, null
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    isFavorite = cursor.getInt(0) == 1
+                }
             }
         }
         return isFavorite
     }
 
     fun insert(wpPostID: Int, wpTitle: String?, wpExcerpt: String?, isFavorite: Boolean): Long {
-        val db = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put(PostItem.COLNAME_POSTID, wpPostID)
-            put(PostItem.COLNAME_TITLE, wpTitle)
-            put(PostItem.COLNAME_EXCERPT, wpExcerpt)
-            put(PostItem.COLNAME_ISFAV, if (isFavorite) 1 else 0)
+        return dbHelper.writableDatabase.use { db ->
+            val values = ContentValues().apply {
+                put(PostItem.COLNAME_POSTID, wpPostID)
+                put(PostItem.COLNAME_TITLE, wpTitle)
+                put(PostItem.COLNAME_EXCERPT, wpExcerpt)
+                put(PostItem.COLNAME_ISFAV, if (isFavorite) 1 else 0)
+            }
+            db.insert(PostItem.TABLE_NAME, null, values)
         }
-        return db.insert(PostItem.TABLE_NAME, null, values)
     }
 
     fun update(post: Post): Int {
-        val db = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put(PostItem.COLNAME_TITLE, post.wpTitle)
-            put(PostItem.COLNAME_EXCERPT, post.wpExcerpt)
-            put(PostItem.COLNAME_ISFAV, post.isFavorite)
+        return dbHelper.writableDatabase.use { db ->
+            val values = ContentValues().apply {
+                put(PostItem.COLNAME_TITLE, post.wpTitle)
+                put(PostItem.COLNAME_EXCERPT, post.wpExcerpt)
+                put(PostItem.COLNAME_ISFAV, if (post.isFavorite) 1 else 0)
+            }
+            db.update(
+                PostItem.TABLE_NAME,
+                values,
+                "${BaseColumns._ID} = ?",
+                arrayOf(post.id.toString())
+            )
         }
-
-        val whereClause = "${BaseColumns._ID} = ?"
-        val whereArgs = arrayOf(post.id.toString())
-        return db.update(PostItem.TABLE_NAME, values, whereClause, whereArgs)
     }
 
     fun delete(postID: Int): Int {
-        val db = dbHelper.writableDatabase
-        val whereClause = "${PostItem.COLNAME_POSTID} = ?"
-        val whereArgs = arrayOf(postID.toString())
-        return db.delete(PostItem.TABLE_NAME, whereClause, whereArgs)
+        return dbHelper.writableDatabase.use { db ->
+            db.delete(
+                PostItem.TABLE_NAME,
+                "${PostItem.COLNAME_POSTID} = ?",
+                arrayOf(postID.toString())
+            )
+        }
     }
 
     companion object {
-        const val DATABASE_VERSION = 1
-        const val DATABASE_NAME = "Post.db"
+        private const val DATABASE_VERSION = 1
+        private const val DATABASE_NAME = "Post.db"
 
         @Volatile
         private var myInstance: PostDB? = null
@@ -133,9 +124,9 @@ class PostDB private constructor(context: Context) {
 
         private const val SQL_CREATE_ENTRIES = "CREATE TABLE ${PostItem.TABLE_NAME} (" +
                 "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "${PostItem.COLNAME_POSTID} INTEGER," +
+                "${PostItem.COLNAME_POSTID} INT," +
                 "${PostItem.COLNAME_TITLE} TEXT," +
                 "${PostItem.COLNAME_EXCERPT} TEXT," +
-                "${PostItem.COLNAME_ISFAV} INTEGER DEFAULT 0)"
+                "${PostItem.COLNAME_ISFAV} TINYINT(1))"
     }
 }

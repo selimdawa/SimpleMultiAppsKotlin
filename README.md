@@ -114,7 +114,6 @@ One | Two | Three
 --- | --- | --- | 
 ![](https://blogger.googleusercontent.com/img/a/AVvXsEj89LiGSZG6O6wSDMXsiZepZlmAAgyVC5j9ovLXARRPReU_FqRLbvI7GFG7eKg2ir5uof8ZdjE_dpjzdBe5KR0Nq9AFFDnTHOjpfm5Pf9pUf622D0_NeqM4erVYVkZINGIMM_2xR9X0HuFuZpu8Q2G248ek56IfAHneHWmaC1EpoDlPr7XUzyLwHx3Cxg) | ![](https://blogger.googleusercontent.com/img/a/AVvXsEjHNwES0U-v6dhtmqIYAAvTDDUK0rnyxmUwYJSve3G5tgvs0eL7idDgnYXJ1NLVPluVYIxRTQ3A74pi3PItqsOuOK2wkfPqHPnpm5NQ89XUY8ROM0Ch53pNzLjfTbU0n8YGfALadZ2s77ogclgwmEUW-aYnx-Ll-S2GFaWVCuTH2KLUYibEITyjIQUNrQ) | ![](https://blogger.googleusercontent.com/img/a/AVvXsEiKtm216aaeCyUy0NNG43p3Uwb2-qNylu1-o5o4Tec6bhvZVPIXtO_AJpVQ9M25RBOKr9x5pG7MGQ2hGiXI5WxvV0wP4E0JbrcJhe-5N6CXEEqKuBj5nPgP0AGJxvrnyw0KO5HzOFAtjfN5Nxgi5TiicGz-oANOMd5MtwNIDm4LCFYG-mH2OYqSmLdBtQ) | 
 
-- Note 1 ⛔ : In the WordPress Blog app - the malfunction is due to an API issue on the official website.
 - Note 2 ⛔ : In the Blogger App, change the API and ID to your blog's data.
 
 <a href='https://play.google.com/store/apps/details?id=com.flatcode.simplemultiapps'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="170px"/></a>

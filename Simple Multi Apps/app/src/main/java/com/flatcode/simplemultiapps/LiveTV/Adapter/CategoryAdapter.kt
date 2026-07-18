@@ -1,13 +1,13 @@
-package com.flatcode.simplemultiapps.LiveTV.Adapter
+package com.flatcode.simplemultiapps.livetv.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.LiveTV.Model.Category
-import com.flatcode.simplemultiapps.Unit.CLASS
-import com.flatcode.simplemultiapps.Unit.VOID
+import com.flatcode.simplemultiapps.livetv.model.Category
+import com.flatcode.simplemultiapps.utils.CLASS
+import com.flatcode.simplemultiapps.utils.VOID
 import com.flatcode.simplemultiapps.databinding.ItemLiveTvCategoryBinding
 
 class CategoryAdapter : ListAdapter<Category, CategoryAdapter.ViewHolder>(CategoryDiffCallback()) {
@@ -26,7 +26,7 @@ class CategoryAdapter : ListAdapter<Category, CategoryAdapter.ViewHolder>(Catego
 
         with(holder.binding) {
             name.text = model.name
-            VOID.Glide(root.context, model.imageUrl, image)
+            VOID.loadImage(root.context, model.imageUrl, image)
 
             root.setOnClickListener {
                 VOID.IntentExtraChannel(

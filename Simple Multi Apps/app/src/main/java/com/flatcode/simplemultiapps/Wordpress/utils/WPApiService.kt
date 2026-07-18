@@ -1,7 +1,7 @@
-package com.flatcode.simplemultiapps.Wordpress.Util
+package com.flatcode.simplemultiapps.wordpress.utils
 
-import com.flatcode.simplemultiapps.Wordpress.Model.Media
-import com.flatcode.simplemultiapps.Wordpress.Model.Post
+import com.flatcode.simplemultiapps.wordpress.model.Media
+import com.flatcode.simplemultiapps.wordpress.model.Post
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

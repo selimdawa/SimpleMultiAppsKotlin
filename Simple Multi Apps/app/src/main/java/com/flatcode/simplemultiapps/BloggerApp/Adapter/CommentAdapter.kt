@@ -1,13 +1,13 @@
-package com.flatcode.simplemultiapps.BloggerApp.Adapter
+package com.flatcode.simplemultiapps.bloggerapp.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.BloggerApp.Model.Comment
+import com.flatcode.simplemultiapps.bloggerapp.model.Comment
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.DATA
-import com.flatcode.simplemultiapps.Unit.VOID
+import com.flatcode.simplemultiapps.utils.DATA
+import com.flatcode.simplemultiapps.utils.VOID
 import com.flatcode.simplemultiapps.databinding.ItemBloggerCommentBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -39,7 +39,7 @@ class CommentAdapter(private val context: Context, var comments: ArrayList<Comme
             comment.text = currentComment.comment ?: DATA.EMPTY
 
             try {
-                VOID.Glide(context, currentComment.profileImage, image)
+                VOID.loadImage(context, currentComment.profileImage, image)
             } catch (_: Exception) {
                 image.setImageResource(R.drawable.ic_person)
             }

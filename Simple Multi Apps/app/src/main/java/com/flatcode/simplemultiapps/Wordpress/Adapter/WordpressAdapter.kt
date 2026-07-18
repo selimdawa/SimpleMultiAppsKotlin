@@ -1,23 +1,21 @@
-package com.flatcode.simplemultiapps.Wordpress.Adapter
+package com.flatcode.simplemultiapps.wordpress.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Wordpress.Activity.WordpressDetailsActivity
-import com.flatcode.simplemultiapps.Wordpress.Model.Post
 import com.flatcode.simplemultiapps.databinding.ItemWordpressBinding
+import com.flatcode.simplemultiapps.wordpress.activity.WordpressDetailsActivity
+import com.flatcode.simplemultiapps.wordpress.model.Post
 
 class WordpressAdapter(
-    private val context: Context,
-    private val posts: List<Post>
+    private val context: Context, private val posts: List<Post>
 ) : RecyclerView.Adapter<WordpressAdapter.PostViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        val binding = ItemWordpressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ItemWordpressBinding.inflate(inflater, parent, false)
         return PostViewHolder(binding)
     }
 
@@ -27,60 +25,61 @@ class WordpressAdapter(
 
     override fun getItemCount(): Int = posts.size
 
-    inner class PostViewHolder(val binding: ItemWordpressBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class PostViewHolder(private val binding: ItemWordpressBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(post: Post) {
-            val title = post.title?.get("rendered").toString().replace("\"", "")
-            val excerpt = post.excerpt?.get("rendered").toString().replace("\"", "")
+            val title = post.title?.rendered.orEmpty()
+            val excerpt = post.excerpt?.rendered.orEmpty()
 
             binding.title.text = HtmlCompat.fromHtml(title, HtmlCompat.FROM_HTML_MODE_LEGACY)
             binding.content.text = HtmlCompat.fromHtml(excerpt, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-            binding.root.setOnClickListener { view ->
-                val adapterPos = bindingAdapterPosition
-                if (adapterPos == RecyclerView.NO_POSITION) return@setOnClickListener
+            itemView.setOnClickListener {
+                val cleanTitle = post.title?.rendered.orEmpty()
+                var content = post.content?.rendered.orEmpty()
+                val cleanExcerpt = post.excerpt?.rendered.orEmpty()
 
-                val currentPost = posts[adapterPos]
-                val postTitle = currentPost.title?.get("rendered").toString().replace("\"", "")
-                val postExcerpt = currentPost.excerpt?.get("rendered").toString().replace("\"", "")
-                var postContent = currentPost.content?.get("rendered").toString().replace("\"", "")
+                content = contentFilter(content)
+                content = videoFilter(content)
 
-                postContent = contentFilter(postContent, "<ins", "</ins>")
-                postContent = videoFilter(postContent, "<iframe", "/iframe>")
+                val formattedTitle =
+                    HtmlCompat.fromHtml(cleanTitle, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
 
-                val formattedTitle = HtmlCompat.fromHtml(postTitle, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
-
-                val intent: Intent = WordpressDetailsActivity.createIntent(
-                    view.context,
-                    currentPost.id,
-                    currentPost.featured_media,
-                    formattedTitle,
-                    postExcerpt,
-                    postContent
+                val intent = WordpressDetailsActivity.createIntent(
+                    context, post.id, post.featuredMedia, formattedTitle, cleanExcerpt, content
                 )
-                view.context.startActivity(intent)
+                context.startActivity(intent)
             }
         }
 
-        private fun contentFilter(content: String, first: String, last: String): String {
+        private fun contentFilter(content: String): String {
+            val first = "<ins"
+            val last = "</ins>"
             val firstIndex = content.indexOf(first)
             val lastIndex = content.lastIndexOf(last)
-            if (firstIndex != -1 && lastIndex != -1 && lastIndex > firstIndex) {
-                val substringToRemove = content.substring(firstIndex, lastIndex + last.length)
-                return content.replace(substringToRemove, "")
+
+            return if (firstIndex != -1 && lastIndex != -1) {
+                val contentOutput = content.substring(firstIndex, lastIndex + last.length)
+                content.replace(contentOutput, "")
+            } else {
+                content
             }
-            return content
         }
 
-        private fun videoFilter(content: String, first: String, last: String): String {
+        private fun videoFilter(content: String): String {
+            val first = "<iframe"
+            val last = "/iframe>"
             val firstIndex = content.indexOf(first)
             val lastIndex = content.lastIndexOf(last)
-            if (firstIndex != -1 && lastIndex != -1 && lastIndex > firstIndex) {
+
+            return if (firstIndex != -1 && lastIndex != -1) {
                 val oldContentSubstring = content.substring(firstIndex, lastIndex + last.length)
                 val newContentSubstring = "<div class=\"videoWrapper\">$oldContentSubstring</div>"
-                return content.replace(oldContentSubstring, newContentSubstring)
+                content.replace(oldContentSubstring, newContentSubstring)
+            } else {
+                content
             }
-            return content
         }
     }
 }

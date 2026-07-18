@@ -1,12 +1,12 @@
-package com.flatcode.simplemultiapps.WebApp
+package com.flatcode.simplemultiapps.webapp
 
 import android.content.Context
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.flatcode.simplemultiapps.Unit.DATA
-import com.flatcode.simplemultiapps.Unit.THEME
+import com.flatcode.simplemultiapps.utils.DATA
+import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityWebViewBinding
 
 class WebViewActivity : AppCompatActivity() {

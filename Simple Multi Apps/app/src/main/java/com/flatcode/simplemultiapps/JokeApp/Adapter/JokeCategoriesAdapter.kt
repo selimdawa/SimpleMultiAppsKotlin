@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.JokeApp.Adapter
+package com.flatcode.simplemultiapps.jokeapp.adapter
 
 import android.content.Context
 import android.graphics.Color
@@ -9,9 +9,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.JokeApp.Fragment.JokesFragment
+import com.flatcode.simplemultiapps.jokeapp.fragment.JokesFragment
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.DATA
+import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.databinding.ItemJokeCategoryBinding
 
 class JokeCategoriesAdapter(private val context: Context, var categories: List<String>) :

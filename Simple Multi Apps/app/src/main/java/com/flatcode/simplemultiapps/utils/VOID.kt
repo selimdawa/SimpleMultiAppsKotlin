@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.Unit
+package com.flatcode.simplemultiapps.utils
 
 import android.Manifest
 import android.content.ClipData
@@ -9,8 +9,8 @@ import android.net.Uri
 import android.os.Build
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.flatcode.simplemultiapps.LiveTV.Model.Category
+import coil.load
+import com.flatcode.simplemultiapps.livetv.model.Category
 import com.flatcode.simplemultiapps.R
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -48,9 +48,12 @@ object VOID {
         context.startActivity(intent)
     }
 
-    fun Glide(context: Context?, Url: String?, Image: ImageView) {
+    fun loadImage(context: Context?, Url: String?, Image: ImageView) {
         try {
-            Glide.with(context!!).load(Url).placeholder(R.color.image_profile).into(Image)
+            Image.load(Url) {
+                placeholder(R.color.image_profile)
+                error(R.color.image_profile)
+            }
         } catch (e: Exception) {
             Image.setImageResource(R.color.image_profile)
         }

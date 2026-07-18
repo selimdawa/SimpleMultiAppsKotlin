@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.CandyCrushGame
+package com.flatcode.simplemultiapps.candycrushgame
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,7 +11,7 @@ import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.THEME
+import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityCandyCrashGameBinding
 import kotlin.math.floor
 

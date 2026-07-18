@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.BloggerApp.Model
+package com.flatcode.simplemultiapps.bloggerapp.model
 
 data class Label(
     var label: String? = null

@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.StopWatch
+package com.flatcode.simplemultiapps.stopwatch
 
 import android.content.Context
 import android.os.Bundle
@@ -9,7 +9,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.THEME
+import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityStopWatchBinding
 
 class StopWatchActivity : AppCompatActivity() {

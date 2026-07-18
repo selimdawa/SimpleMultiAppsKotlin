@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.VideoPlayer.Activity
+package com.flatcode.simplemultiapps.videoplayer.activity
 
 import android.content.Context
 import android.os.Build
@@ -15,10 +15,10 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
-import com.flatcode.simplemultiapps.Unit.THEME
-import com.flatcode.simplemultiapps.VideoPlayer.Adapter.VideoAdapter.Companion.videoFile
-import com.flatcode.simplemultiapps.VideoPlayer.Adapter.VideoFolderAdapter.Companion.folderVideoFile
-import com.flatcode.simplemultiapps.VideoPlayer.Model.VideoFiles
+import com.flatcode.simplemultiapps.utils.THEME
+import com.flatcode.simplemultiapps.videoplayer.adapter.VideoAdapter.Companion.videoFile
+import com.flatcode.simplemultiapps.videoplayer.adapter.VideoFolderAdapter.Companion.folderVideoFile
+import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
 import com.flatcode.simplemultiapps.databinding.ActivityPlayerBinding
 
 class PlayerActivity : AppCompatActivity() {

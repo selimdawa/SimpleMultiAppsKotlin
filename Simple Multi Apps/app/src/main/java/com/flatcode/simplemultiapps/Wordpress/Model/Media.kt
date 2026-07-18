@@ -1,9 +1,8 @@
-package com.flatcode.simplemultiapps.Wordpress.Model
+package com.flatcode.simplemultiapps.wordpress.model
 
-import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 
 class Media {
     @SerializedName("guid")
-    var guid: JsonObject? = null
+    var guid: Rendered? = null
 }

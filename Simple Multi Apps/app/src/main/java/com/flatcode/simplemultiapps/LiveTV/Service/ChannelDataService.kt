@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.LiveTV.Service
+package com.flatcode.simplemultiapps.livetv.service
 
 import android.content.Context
 import com.android.volley.Request

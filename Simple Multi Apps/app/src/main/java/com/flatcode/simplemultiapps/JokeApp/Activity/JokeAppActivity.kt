@@ -1,13 +1,13 @@
-package com.flatcode.simplemultiapps.JokeApp.Activity
+package com.flatcode.simplemultiapps.jokeapp.activity
 
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.flatcode.simplemultiapps.JokeApp.Adapter.JokeCategoriesAdapter
-import com.flatcode.simplemultiapps.JokeApp.Fragment.JokesFragment
+import com.flatcode.simplemultiapps.jokeapp.adapter.JokeCategoriesAdapter
+import com.flatcode.simplemultiapps.jokeapp.fragment.JokesFragment
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.THEME
+import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityJokeAppBinding
 
 class JokeAppActivity : AppCompatActivity() {

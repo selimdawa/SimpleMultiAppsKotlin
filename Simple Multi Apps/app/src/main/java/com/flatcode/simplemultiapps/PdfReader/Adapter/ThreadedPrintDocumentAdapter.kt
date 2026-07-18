@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.PdfReader.Adapter
+package com.flatcode.simplemultiapps.pdfreader.adapter
 
 import android.content.Context
 import android.os.Bundle

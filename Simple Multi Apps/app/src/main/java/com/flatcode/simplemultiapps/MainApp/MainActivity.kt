@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.MainApp
+package com.flatcode.simplemultiapps.mainapp
 
 import android.content.Context
 import android.content.Intent
@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.CLASS
-import com.flatcode.simplemultiapps.Unit.THEME
+import com.flatcode.simplemultiapps.utils.CLASS
+import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {

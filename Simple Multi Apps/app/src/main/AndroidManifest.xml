@@ -29,7 +29,7 @@
         tools:replace="android:supportsRtl"
         tools:targetApi="31">
         <activity
-            android:name=".MainApp.SplashActivity"
+            android:name=".mainapp.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -39,87 +39,87 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainApp.MainActivity"
+            android:name=".mainapp.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".StopWatch.StopWatchActivity"
+            android:name=".stopwatch.StopWatchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RandomImgGenerating.RandomImgGeneratingActivity"
+            android:name=".randomimggenerating.RandomImgGeneratingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RandomImgGenerating.ImageInfoActivity"
+            android:name=".randomimggenerating.ImageInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".CandyCrushGame.CandyCrushGameActivity"
+            android:name=".candycrushgame.CandyCrushGameActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MultipleDelete.Activity.MultiDeleteActivity"
+            android:name=".multipledelete.activity.MultiDeleteActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".BloggerApp.Activity.PageDetailsActivity"
+            android:name=".bloggerapp.activity.PageDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".BloggerApp.Activity.PagesActivity"
+            android:name=".bloggerapp.activity.PagesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".BloggerApp.Activity.PostDetailsActivity"
+            android:name=".bloggerapp.activity.PostDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".BloggerApp.Activity.BloggerAppActivity"
+            android:name=".bloggerapp.activity.BloggerAppActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".JokeApp.Activity.JokeAppActivity"
+            android:name=".jokeapp.activity.JokeAppActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LiveTV.Activity.CategoriesActivity"
+            android:name=".livetv.activity.CategoriesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LiveTV.Activity.CategoryDetailsActivity"
+            android:name=".livetv.activity.CategoryDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LiveTV.Activity.LiveTVDetailsActivity"
+            android:name=".livetv.activity.LiveTVDetailsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LiveTV.Activity.LiveTVActivity"
+            android:name=".livetv.activity.LiveTVActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NewsApp.Activity.NewsAppActivity"
+            android:name=".newsapp.activity.NewsAppActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NewsApp.Activity.NewsAppDetailsActivity"
+            android:name=".newsapp.activity.NewsAppDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".VideoPlayer.Activity.VideoPlayerActivity"
+            android:name=".videoplayer.activity.VideoPlayerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".VideoPlayer.Activity.PlayerActivity"
+            android:name=".videoplayer.activity.PlayerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".VideoPlayer.Activity.VideoFolderActivity"
+            android:name=".videoplayer.activity.VideoFolderActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".WebApp.WebAppActivity"
+            android:name=".webapp.WebAppActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".WebApp.WebViewActivity"
+            android:name=".webapp.WebViewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PdfReader.Activity.PdfReaderActivity"
+            android:name=".pdfreader.activity.PdfReaderActivity"
             android:documentLaunchMode="intoExisting" />
         <activity
-            android:name=".PdfReader.Activity.PdfReaderIntroActivity"
+            android:name=".pdfreader.activity.PdfReaderIntroActivity"
             android:label="@string/intro"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
-            android:name=".Wordpress.Activity.WordpressFavoritesActivity"
+            android:name=".wordpress.activity.WordpressFavoritesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Wordpress.Activity.WordpressActivity"
+            android:name=".wordpress.activity.WordpressActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Wordpress.Activity.WordpressDetailsActivity"
+            android:name=".wordpress.activity.WordpressDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.WpToAndroidApp" />
     </application>

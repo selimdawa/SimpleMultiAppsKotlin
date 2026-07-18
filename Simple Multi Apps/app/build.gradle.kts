@@ -67,7 +67,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
     //Image
-    implementation(libs.glide)                          //Glide Image
+    implementation(libs.coil)                          //Coil Image
     //Pdf Reader
     implementation(libs.appintro)
     implementation(libs.android.pdf.viewer)

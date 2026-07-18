@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.LiveTV.Activity
+package com.flatcode.simplemultiapps.livetv.activity
 
 import android.content.Context
 import android.content.Intent
@@ -14,9 +14,9 @@ import androidx.core.net.toUri
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.flatcode.simplemultiapps.LiveTV.Model.Channel
+import com.flatcode.simplemultiapps.livetv.model.Channel
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.THEME
+import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityLiveTvDetailsBinding
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem

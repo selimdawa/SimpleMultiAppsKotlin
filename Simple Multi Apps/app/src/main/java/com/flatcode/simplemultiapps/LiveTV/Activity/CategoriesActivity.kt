@@ -1,16 +1,16 @@
-package com.flatcode.simplemultiapps.LiveTV.Activity
+package com.flatcode.simplemultiapps.livetv.activity
 
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.flatcode.simplemultiapps.LiveTV.Adapter.CategoryAdapter
-import com.flatcode.simplemultiapps.LiveTV.Model.Category
-import com.flatcode.simplemultiapps.LiveTV.Service.ChannelDataService
-import com.flatcode.simplemultiapps.LiveTV.Service.ChannelDataService.OnDataResponse
+import com.flatcode.simplemultiapps.livetv.adapter.CategoryAdapter
+import com.flatcode.simplemultiapps.livetv.model.Category
+import com.flatcode.simplemultiapps.livetv.service.ChannelDataService
+import com.flatcode.simplemultiapps.livetv.service.ChannelDataService.OnDataResponse
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.DATA
-import com.flatcode.simplemultiapps.Unit.THEME
+import com.flatcode.simplemultiapps.utils.DATA
+import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityLiveTvCategoriesBinding
 import org.json.JSONException
 import org.json.JSONObject

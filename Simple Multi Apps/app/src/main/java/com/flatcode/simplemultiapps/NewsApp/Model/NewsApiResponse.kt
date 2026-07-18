@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.NewsApp.Model
+package com.flatcode.simplemultiapps.newsapp.model
 
 import java.io.Serializable
 

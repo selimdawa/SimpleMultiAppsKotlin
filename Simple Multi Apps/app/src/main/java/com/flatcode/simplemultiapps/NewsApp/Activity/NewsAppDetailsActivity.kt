@@ -1,15 +1,15 @@
-package com.flatcode.simplemultiapps.NewsApp.Activity
+package com.flatcode.simplemultiapps.newsapp.activity
 
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.BundleCompat
-import com.flatcode.simplemultiapps.NewsApp.Model.NewsHeadlines
+import com.flatcode.simplemultiapps.newsapp.model.NewsHeadlines
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.DATA
-import com.flatcode.simplemultiapps.Unit.THEME
-import com.flatcode.simplemultiapps.Unit.VOID
+import com.flatcode.simplemultiapps.utils.DATA
+import com.flatcode.simplemultiapps.utils.THEME
+import com.flatcode.simplemultiapps.utils.VOID
 import com.flatcode.simplemultiapps.databinding.ActivityNewsAppDetailsBinding
 
 class NewsAppDetailsActivity : AppCompatActivity() {
@@ -48,7 +48,7 @@ class NewsAppDetailsActivity : AppCompatActivity() {
                 content.text = data.content
             }
 
-            VOID.Glide(context, data.urlToImage, binding.image)
+            VOID.loadImage(context, data.urlToImage, binding.image)
         }
     }
 

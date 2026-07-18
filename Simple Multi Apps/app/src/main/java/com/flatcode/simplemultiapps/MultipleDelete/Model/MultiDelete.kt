@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.MultipleDelete.Model
+package com.flatcode.simplemultiapps.multipledelete.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

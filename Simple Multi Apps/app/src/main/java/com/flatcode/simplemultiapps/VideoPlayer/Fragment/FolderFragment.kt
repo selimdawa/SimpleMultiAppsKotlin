@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.VideoPlayer.Fragment
+package com.flatcode.simplemultiapps.videoplayer.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.VideoPlayer.Activity.VideoPlayerActivity.Companion.folderList
-import com.flatcode.simplemultiapps.VideoPlayer.Activity.VideoPlayerActivity.Companion.videoFiles
-import com.flatcode.simplemultiapps.VideoPlayer.Adapter.FolderAdapter
+import com.flatcode.simplemultiapps.videoplayer.activity.VideoPlayerActivity.Companion.folderList
+import com.flatcode.simplemultiapps.videoplayer.activity.VideoPlayerActivity.Companion.videoFiles
+import com.flatcode.simplemultiapps.videoplayer.adapter.FolderAdapter
 import com.flatcode.simplemultiapps.databinding.FragmentFolderBinding
 
 class FolderFragment : Fragment() {

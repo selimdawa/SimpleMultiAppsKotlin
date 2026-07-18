@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.Wordpress.Activity
+package com.flatcode.simplemultiapps.wordpress.activity
 
 import android.content.Context
 import android.os.Bundle
@@ -7,15 +7,14 @@ import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.CLASS
-import com.flatcode.simplemultiapps.Unit.THEME
-import com.flatcode.simplemultiapps.Unit.VOID
-import com.flatcode.simplemultiapps.Wordpress.Adapter.WordpressAdapter
-import com.flatcode.simplemultiapps.Wordpress.Model.Post
-import com.flatcode.simplemultiapps.Wordpress.Util.InternetConnection
-import com.flatcode.simplemultiapps.Wordpress.Util.WPApiService
-import com.flatcode.simplemultiapps.Wordpress.Util.WordPressClient
 import com.flatcode.simplemultiapps.databinding.ActivityWordpressBinding
+import com.flatcode.simplemultiapps.utils.THEME
+import com.flatcode.simplemultiapps.wordpress.utils.isNetworkAvailable
+import com.flatcode.simplemultiapps.utils.launchActivity
+import com.flatcode.simplemultiapps.wordpress.adapter.WordpressAdapter
+import com.flatcode.simplemultiapps.wordpress.model.Post
+import com.flatcode.simplemultiapps.wordpress.utils.WPApiService
+import com.flatcode.simplemultiapps.wordpress.utils.WordPressClient
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,9 +24,9 @@ class WordpressActivity : AppCompatActivity() {
 
     private var _binding: ActivityWordpressBinding? = null
     private val binding get() = _binding!!
-
-    val context: Context = this@WordpressActivity
+    private val context: Context = this
     private var postItemList: List<Post?>? = null
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
@@ -39,49 +38,52 @@ class WordpressActivity : AppCompatActivity() {
 
         binding.swipeRefresh.setOnRefreshListener {
             binding.swipeRefresh.isRefreshing = true
-            Handler(Looper.getMainLooper()).postDelayed({
+            handler.postDelayed({
                 binding.swipeRefresh.isRefreshing = false
-                setListContent(withProgress = false)
+                setListContent(false)
             }, 3000)
         }
 
         binding.toolbar.favorites.setOnClickListener {
-            VOID.Intent1(context, CLASS.WORDPRESS_FAVORITES)
+            context.launchActivity(WordpressFavoritesActivity::class.java)
         }
 
-        setListContent(withProgress = true)
+        setListContent(true)
     }
 
     fun setListContent(withProgress: Boolean) {
-        if (InternetConnection.checkInternetConnection(applicationContext)) {
+        if (isNetworkAvailable()) {
             val api: WPApiService = WordPressClient.apiService
             val call: Call<List<Post?>?>? = api.getPosts()
+
+            if (call == null) {
+                binding.swipeRefresh.isRefreshing = false
+                return
+            }
 
             if (withProgress) {
                 binding.progressBar.visibility = View.VISIBLE
             }
 
-            call?.enqueue(object : Callback<List<Post?>?> {
+            call.enqueue(object : Callback<List<Post?>?> {
                 override fun onResponse(
                     call: Call<List<Post?>?>, response: Response<List<Post?>?>
                 ) {
-                    if (withProgress) {
-                        binding.progressBar.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
+                    val body = response.body()
+                    if (body != null) {
+                        postItemList = body
+                        val safeList = body.filterNotNull()
+                        binding.recyclerView.adapter = WordpressAdapter(context, safeList)
                     }
-
-                    postItemList = response.body()
-                    val secureList = (postItemList?.filterNotNull() ?: emptyList())
-
-                    binding.recyclerView.adapter = WordpressAdapter(context, secureList)
                 }
 
                 override fun onFailure(call: Call<List<Post?>?>, t: Throwable) {
-                    if (withProgress) {
-                        binding.progressBar.visibility = View.GONE
-                    }
+                    binding.progressBar.visibility = View.GONE
                 }
             })
         } else {
+            binding.swipeRefresh.isRefreshing = false
             Snackbar.make(
                 binding.swipeRefresh, "Can't connect to the Internet", Snackbar.LENGTH_INDEFINITE
             ).show()
@@ -91,5 +93,6 @@ class WordpressActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        handler.removeCallbacksAndMessages(null)
     }
 }

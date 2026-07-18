@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.WebApp
+package com.flatcode.simplemultiapps.webapp
 
 import android.Manifest
 import android.content.ActivityNotFoundException
@@ -19,10 +19,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.CLASS
-import com.flatcode.simplemultiapps.Unit.DATA
-import com.flatcode.simplemultiapps.Unit.THEME
-import com.flatcode.simplemultiapps.Unit.VOID
+import com.flatcode.simplemultiapps.utils.CLASS
+import com.flatcode.simplemultiapps.utils.DATA
+import com.flatcode.simplemultiapps.utils.THEME
+import com.flatcode.simplemultiapps.utils.VOID
 import com.flatcode.simplemultiapps.databinding.ActivityWebAppBinding
 
 class WebAppActivity : AppCompatActivity() {

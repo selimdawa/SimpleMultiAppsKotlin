@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.VideoPlayer.Activity
+package com.flatcode.simplemultiapps.videoplayer.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -13,10 +13,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.THEME
-import com.flatcode.simplemultiapps.VideoPlayer.Fragment.FilesFragment
-import com.flatcode.simplemultiapps.VideoPlayer.Fragment.FolderFragment
-import com.flatcode.simplemultiapps.VideoPlayer.Model.VideoFiles
+import com.flatcode.simplemultiapps.utils.THEME
+import com.flatcode.simplemultiapps.videoplayer.fragment.FilesFragment
+import com.flatcode.simplemultiapps.videoplayer.fragment.FolderFragment
+import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
 import com.flatcode.simplemultiapps.databinding.ActivityVideoPlayerBinding
 
 class VideoPlayerActivity : AppCompatActivity() {

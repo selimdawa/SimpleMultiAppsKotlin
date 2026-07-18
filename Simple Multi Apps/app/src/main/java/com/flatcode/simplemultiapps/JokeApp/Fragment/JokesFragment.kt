@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.JokeApp.Fragment
+package com.flatcode.simplemultiapps.jokeapp.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.flatcode.simplemultiapps.JokeApp.Adapter.JokeAdapter
-import com.flatcode.simplemultiapps.JokeApp.Model.Joke
+import com.flatcode.simplemultiapps.jokeapp.adapter.JokeAdapter
+import com.flatcode.simplemultiapps.jokeapp.model.Joke
 import com.flatcode.simplemultiapps.databinding.FragmentJokesBinding
 import org.json.JSONException
 

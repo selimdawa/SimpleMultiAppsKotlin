@@ -1,13 +1,13 @@
-package com.flatcode.simplemultiapps.NewsApp.Adapter
+package com.flatcode.simplemultiapps.newsapp.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.NewsApp.Model.NewsHeadlines
-import com.flatcode.simplemultiapps.NewsApp.SelectListener
-import com.flatcode.simplemultiapps.Unit.DATA
-import com.flatcode.simplemultiapps.Unit.VOID
+import com.flatcode.simplemultiapps.newsapp.model.NewsHeadlines
+import com.flatcode.simplemultiapps.newsapp.SelectListener
+import com.flatcode.simplemultiapps.utils.DATA
+import com.flatcode.simplemultiapps.utils.VOID
 import com.flatcode.simplemultiapps.databinding.ItemNewsBinding
 
 class NewsAppAdapter(
@@ -28,7 +28,7 @@ class NewsAppAdapter(
             content.text = item.title
             source.text = item.source?.name ?: DATA.EMPTY
 
-            VOID.Glide(context, item.urlToImage, image)
+            VOID.loadImage(context, item.urlToImage, image)
 
             card.setOnClickListener {
                 val currentPos = holder.bindingAdapterPosition

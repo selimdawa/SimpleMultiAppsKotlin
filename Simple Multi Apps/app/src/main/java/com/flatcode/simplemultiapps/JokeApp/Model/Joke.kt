@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.JokeApp.Model
+package com.flatcode.simplemultiapps.jokeapp.model
 
 data class Joke(
     var category: String? = null,

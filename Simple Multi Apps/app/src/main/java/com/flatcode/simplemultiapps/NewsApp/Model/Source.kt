@@ -1,6 +1,6 @@
-package com.flatcode.simplemultiapps.NewsApp.Model
+package com.flatcode.simplemultiapps.newsapp.model
 
-import com.flatcode.simplemultiapps.Unit.DATA
+import com.flatcode.simplemultiapps.utils.DATA
 import java.io.Serializable
 
 data class Source(

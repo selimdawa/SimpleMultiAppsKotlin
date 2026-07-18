@@ -1,9 +1,9 @@
-package com.flatcode.simplemultiapps.NewsApp
+package com.flatcode.simplemultiapps.newsapp
 
 import android.content.Context
 import android.widget.Toast
-import com.flatcode.simplemultiapps.NewsApp.Model.NewsApiResponse
-import com.flatcode.simplemultiapps.Unit.DATA
+import com.flatcode.simplemultiapps.newsapp.model.NewsApiResponse
+import com.flatcode.simplemultiapps.utils.DATA
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

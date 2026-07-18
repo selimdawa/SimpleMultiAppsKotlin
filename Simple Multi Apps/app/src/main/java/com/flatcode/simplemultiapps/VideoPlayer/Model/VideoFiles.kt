@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.VideoPlayer.Model
+package com.flatcode.simplemultiapps.videoplayer.model
 
 data class VideoFiles(
     val id: String? = null,

@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.NewsApp.Activity
+package com.flatcode.simplemultiapps.newsapp.activity
 
 import android.content.Context
 import android.content.Intent
@@ -10,15 +10,15 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import com.flatcode.simplemultiapps.NewsApp.Adapter.NewsAppAdapter
-import com.flatcode.simplemultiapps.NewsApp.Model.NewsApiResponse
-import com.flatcode.simplemultiapps.NewsApp.Model.NewsHeadlines
-import com.flatcode.simplemultiapps.NewsApp.OnFetchDataListener
-import com.flatcode.simplemultiapps.NewsApp.RequestManger
-import com.flatcode.simplemultiapps.NewsApp.SelectListener
+import com.flatcode.simplemultiapps.newsapp.OnFetchDataListener
+import com.flatcode.simplemultiapps.newsapp.RequestManger
+import com.flatcode.simplemultiapps.newsapp.SelectListener
+import com.flatcode.simplemultiapps.newsapp.adapter.NewsAppAdapter
+import com.flatcode.simplemultiapps.newsapp.model.NewsApiResponse
+import com.flatcode.simplemultiapps.newsapp.model.NewsHeadlines
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.DATA
-import com.flatcode.simplemultiapps.Unit.THEME
+import com.flatcode.simplemultiapps.utils.DATA
+import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityNewsAppBinding
 
 class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListener {

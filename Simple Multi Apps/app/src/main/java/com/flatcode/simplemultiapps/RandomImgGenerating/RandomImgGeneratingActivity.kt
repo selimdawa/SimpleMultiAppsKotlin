@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.RandomImgGenerating
+package com.flatcode.simplemultiapps.randomimggenerating
 
 import android.content.Intent
 import android.net.Uri
@@ -9,10 +9,10 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.CLASS
-import com.flatcode.simplemultiapps.Unit.DATA
-import com.flatcode.simplemultiapps.Unit.THEME
-import com.flatcode.simplemultiapps.Unit.VOID
+import com.flatcode.simplemultiapps.utils.CLASS
+import com.flatcode.simplemultiapps.utils.DATA
+import com.flatcode.simplemultiapps.utils.THEME
+import com.flatcode.simplemultiapps.utils.VOID
 import com.flatcode.simplemultiapps.databinding.ActivityRandomImgGeneratingBinding
 import org.json.JSONException
 
@@ -42,7 +42,7 @@ class RandomImgGeneratingActivity : AppCompatActivity() {
                 val kittyData = response.getJSONObject(0)
                 val catUrl = kittyData.getString(DATA.JSON_URL)
 
-                VOID.Glide(this, catUrl, binding.kittyImage)
+                VOID.loadImage(this, catUrl, binding.kittyImage)
 
                 binding.downloadBtn.setOnClickListener {
                     val browser = Intent(Intent.ACTION_VIEW, Uri.parse(catUrl))

@@ -1,14 +1,14 @@
-package com.flatcode.simplemultiapps.BloggerApp.Adapter
+package com.flatcode.simplemultiapps.bloggerapp.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.BloggerApp.Model.Page
+import com.flatcode.simplemultiapps.bloggerapp.model.Page
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.CLASS
-import com.flatcode.simplemultiapps.Unit.DATA
-import com.flatcode.simplemultiapps.Unit.VOID
+import com.flatcode.simplemultiapps.utils.CLASS
+import com.flatcode.simplemultiapps.utils.DATA
+import com.flatcode.simplemultiapps.utils.VOID
 import com.flatcode.simplemultiapps.databinding.ItemBloggerBinding
 import org.jsoup.Jsoup
 import java.text.SimpleDateFormat
@@ -31,7 +31,7 @@ class PagesAdapter(private val context: Context, var pages: ArrayList<Page>) :
 
         try {
             val image = document.select("img").attr("src")
-            VOID.Glide(context, image, holder.binding.image)
+            VOID.loadImage(context, image, holder.binding.image)
         } catch (_: Exception) {
             holder.binding.image.setImageResource(R.color.image_profile)
         }

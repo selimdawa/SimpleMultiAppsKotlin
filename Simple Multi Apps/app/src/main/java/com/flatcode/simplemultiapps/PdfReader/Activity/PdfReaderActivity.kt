@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.PdfReader.Activity
+package com.flatcode.simplemultiapps.pdfreader.activity
 
 import android.Manifest
 import android.app.Activity
@@ -36,13 +36,13 @@ import androidx.core.os.BundleCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import com.flatcode.simplemultiapps.PdfReader.Adapter.PdfDocumentAdapter
-import com.flatcode.simplemultiapps.PdfReader.DownloadPDFFile
-import com.flatcode.simplemultiapps.PdfReader.ViewModel.PdfViewModel
+import com.flatcode.simplemultiapps.pdfreader.adapter.PdfDocumentAdapter
+import com.flatcode.simplemultiapps.pdfreader.DownloadPDFFile
+import com.flatcode.simplemultiapps.pdfreader.viewmodel.PdfViewModel
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.CLASS
-import com.flatcode.simplemultiapps.Unit.DATA
-import com.flatcode.simplemultiapps.Unit.VOID
+import com.flatcode.simplemultiapps.utils.CLASS
+import com.flatcode.simplemultiapps.utils.DATA
+import com.flatcode.simplemultiapps.utils.VOID
 import com.flatcode.simplemultiapps.databinding.ActivityPdfReaderBinding
 import com.flatcode.simplemultiapps.databinding.DialogPdfReaderPasswordBinding
 import com.github.barteksc.pdfviewer.PDFView.Configurator

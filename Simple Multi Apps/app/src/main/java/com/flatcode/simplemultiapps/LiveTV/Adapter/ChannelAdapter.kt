@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.LiveTV.Adapter
+package com.flatcode.simplemultiapps.livetv.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -9,10 +9,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.LiveTV.Model.Channel
+import com.flatcode.simplemultiapps.livetv.model.Channel
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.CLASS
-import com.flatcode.simplemultiapps.Unit.VOID
+import com.flatcode.simplemultiapps.utils.CLASS
+import com.flatcode.simplemultiapps.utils.VOID
 
 class ChannelAdapter(private val type: String) :
     ListAdapter<Channel, ChannelAdapter.ViewHolder>(ChannelDiffCallback()) {
@@ -34,7 +34,7 @@ class ChannelAdapter(private val type: String) :
         val channel = getItem(position) ?: return
 
         holder.name.text = channel.name
-        VOID.Glide(holder.itemView.context, channel.thumbnail, holder.image)
+        VOID.loadImage(holder.itemView.context, channel.thumbnail, holder.image)
 
         holder.itemView.setOnClickListener { view ->
             val intent = Intent(view.context, CLASS.LIVE_TV_DETAILS).apply {

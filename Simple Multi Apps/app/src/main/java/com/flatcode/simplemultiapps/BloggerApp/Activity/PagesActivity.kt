@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.BloggerApp.Activity
+package com.flatcode.simplemultiapps.bloggerapp.activity
 
 import android.content.Context
 import android.os.Bundle
@@ -8,11 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.flatcode.simplemultiapps.BloggerApp.Adapter.PagesAdapter
-import com.flatcode.simplemultiapps.BloggerApp.Model.Page
+import com.flatcode.simplemultiapps.bloggerapp.adapter.PagesAdapter
+import com.flatcode.simplemultiapps.bloggerapp.model.Page
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.Unit.DATA
-import com.flatcode.simplemultiapps.Unit.THEME
+import com.flatcode.simplemultiapps.utils.DATA
+import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityBloggerPagesBinding
 import org.json.JSONObject
 

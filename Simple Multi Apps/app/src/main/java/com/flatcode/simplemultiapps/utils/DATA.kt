@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.Unit
+package com.flatcode.simplemultiapps.utils
 
 object DATA {
     //Database

@@ -1,10 +1,10 @@
-package com.flatcode.simplemultiapps.JokeApp.Adapter
+package com.flatcode.simplemultiapps.jokeapp.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.JokeApp.Model.Joke
+import com.flatcode.simplemultiapps.jokeapp.model.Joke
 import com.flatcode.simplemultiapps.databinding.ItemJokeBinding
 
 class JokeAdapter(
