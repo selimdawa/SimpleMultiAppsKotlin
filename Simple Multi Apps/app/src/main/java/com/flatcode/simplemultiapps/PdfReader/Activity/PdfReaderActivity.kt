@@ -36,15 +36,18 @@ import androidx.core.os.BundleCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import com.flatcode.simplemultiapps.pdfreader.adapter.PdfDocumentAdapter
-import com.flatcode.simplemultiapps.pdfreader.DownloadPDFFile
-import com.flatcode.simplemultiapps.pdfreader.viewmodel.PdfViewModel
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.CLASS
-import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.VOID
 import com.flatcode.simplemultiapps.databinding.ActivityPdfReaderBinding
 import com.flatcode.simplemultiapps.databinding.DialogPdfReaderPasswordBinding
+import com.flatcode.simplemultiapps.pdfreader.DownloadPDFFile
+import com.flatcode.simplemultiapps.pdfreader.adapter.PdfDocumentAdapter
+import com.flatcode.simplemultiapps.pdfreader.viewmodel.PdfViewModel
+import com.flatcode.simplemultiapps.utils.DATA
+import com.flatcode.simplemultiapps.utils.canWriteToDownloadFolder
+import com.flatcode.simplemultiapps.utils.createFileShareIntent
+import com.flatcode.simplemultiapps.utils.createPlainTextShareIntent
+import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.writeBytesToFile
 import com.github.barteksc.pdfviewer.PDFView.Configurator
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import com.github.barteksc.pdfviewer.util.Constants
@@ -52,6 +55,7 @@ import com.github.barteksc.pdfviewer.util.FitPolicy
 import com.shockwave.pdfium.PdfPasswordException
 import java.io.FileNotFoundException
 import java.io.IOException
+import java.util.Locale
 import kotlin.system.exitProcess
 
 class PdfReaderActivity : AppCompatActivity() {
@@ -119,7 +123,7 @@ class PdfReaderActivity : AppCompatActivity() {
     private fun onFirstInstall() {
         val isFirstRun = prefManager!!.getBoolean(DATA.FIRST_INSTALL, true)
         if (isFirstRun) {
-            startActivity(Intent(activity, CLASS.PDF_READER_INTRO))
+            activity.intent1(PdfReaderIntroActivity::class.java)
             prefManager!!.edit {
                 putBoolean(DATA.FIRST_INSTALL, false)
             }
@@ -142,9 +146,9 @@ class PdfReaderActivity : AppCompatActivity() {
 
     fun shareFile() {
         val sharingIntent: Intent = if (uri!!.scheme != null && uri!!.scheme!!.startsWith("http")) {
-            VOID.plainTextShareIntent(getString(R.string.share_file), uri.toString())
+            createPlainTextShareIntent(getString(R.string.share_file), uri.toString())
         } else {
-            VOID.fileShareIntent(getString(R.string.share_file), pdfFileName, uri)
+            createFileShareIntent(getString(R.string.share_file), pdfFileName, uri)
         }
         startActivity(sharingIntent)
     }
@@ -241,10 +245,16 @@ class PdfReaderActivity : AppCompatActivity() {
     private fun couldNotOpenFileDueToMissingPermission(e: Throwable): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val exceptionMessage = e.message
-            return e is FileNotFoundException && exceptionMessage != null && exceptionMessage.contains("Permission denied")
+            return e is FileNotFoundException && exceptionMessage != null && exceptionMessage.contains(
+                "Permission denied"
+            )
         }
 
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             return false
         }
 
@@ -355,7 +365,7 @@ class PdfReaderActivity : AppCompatActivity() {
     }
 
     private fun saveToDownloadFolderIfAllowed(fileContent: ByteArray?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q || VOID.canWriteToDownloadFolder(activity)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q || activity.canWriteToDownloadFolder()) {
             trySaveToDownloadFolder(fileContent, false)
         } else {
             saveToDownloadPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -366,7 +376,7 @@ class PdfReaderActivity : AppCompatActivity() {
         try {
             val downloadDirectory =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            VOID.writeBytesToFile(downloadDirectory, pdfFileName, fileContent)
+            downloadDirectory.writeBytesToFile(pdfFileName, fileContent)
             if (showSuccessMessage) {
                 Toast.makeText(activity, R.string.saved_to_download, Toast.LENGTH_SHORT).show()
             }
@@ -386,7 +396,7 @@ class PdfReaderActivity : AppCompatActivity() {
 
     private fun setCurrentPage(page: Int, pageCount: Int) {
         pageNumber = page
-        title = String.format("%s %s / %s", "$pdfFileName ", page + 1, pageCount)
+        title = String.format(Locale.US, "%s %s / %s", "$pdfFileName ", page + 1, pageCount)
     }
 
     fun getFileName(uri: Uri): String? {

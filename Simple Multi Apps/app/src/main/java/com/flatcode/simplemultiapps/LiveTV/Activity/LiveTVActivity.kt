@@ -10,10 +10,9 @@ import com.flatcode.simplemultiapps.livetv.model.Channel
 import com.flatcode.simplemultiapps.livetv.service.ChannelDataService
 import com.flatcode.simplemultiapps.livetv.service.ChannelDataService.OnDataResponse
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.CLASS
 import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.utils.THEME
-import com.flatcode.simplemultiapps.utils.VOID
+import com.flatcode.simplemultiapps.utils.intent1
 import com.flatcode.simplemultiapps.databinding.ActivityLiveTvBinding
 import org.json.JSONException
 import org.json.JSONObject
@@ -78,7 +77,7 @@ class LiveTVActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         binding.toolbar.categories.setOnClickListener {
-            VOID.Intent1(context, CLASS.LIVE_TV_CATEGORIES)
+            context.intent1(CategoriesActivity::class.java)
         }
         binding.more.setOnClickListener {
             startCategoryDetailActivity("News")
@@ -92,10 +91,9 @@ class LiveTVActivity : AppCompatActivity() {
     }
 
     private fun startCategoryDetailActivity(categoryName: String) {
-        val intent = Intent(context, CLASS.LIVE_TV_CATEGORIES_DETAILS).apply {
+        context.intent1(CategoryDetailsActivity::class.java) {
             putExtra("categoryName", categoryName)
         }
-        startActivity(intent)
     }
 
     private fun loadAllChannels() {

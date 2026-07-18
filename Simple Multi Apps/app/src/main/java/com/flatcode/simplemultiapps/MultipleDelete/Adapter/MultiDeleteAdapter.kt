@@ -72,7 +72,7 @@ class MultiDeleteAdapter(
 
                         (activity as? LifecycleOwner)?.let { owner ->
                             mainViewModel?.text?.observe(owner) { s ->
-                                actionMode.title = "$s Selected"
+                                actionMode.title = context.getString(R.string.selected, s)
                             }
                         }
                         return true
@@ -132,7 +132,7 @@ class MultiDeleteAdapter(
             if (isEnable) {
                 clickItem(holder)
             } else {
-                Toast.makeText(context, "You Clicked ${arrayList[currentPos]}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.you_clicked, arrayList[currentPos]), Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -10,7 +10,7 @@ import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityWordpressBinding
 import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.wordpress.utils.isNetworkAvailable
-import com.flatcode.simplemultiapps.utils.launchActivity
+import com.flatcode.simplemultiapps.utils.intent1
 import com.flatcode.simplemultiapps.wordpress.adapter.WordpressAdapter
 import com.flatcode.simplemultiapps.wordpress.model.Post
 import com.flatcode.simplemultiapps.wordpress.utils.WPApiService
@@ -45,7 +45,7 @@ class WordpressActivity : AppCompatActivity() {
         }
 
         binding.toolbar.favorites.setOnClickListener {
-            context.launchActivity(WordpressFavoritesActivity::class.java)
+            context.intent1(WordpressFavoritesActivity::class.java)
         }
 
         setListContent(true)
@@ -85,7 +85,7 @@ class WordpressActivity : AppCompatActivity() {
         } else {
             binding.swipeRefresh.isRefreshing = false
             Snackbar.make(
-                binding.swipeRefresh, "Can't connect to the Internet", Snackbar.LENGTH_INDEFINITE
+                binding.swipeRefresh, R.string.connect_internet, Snackbar.LENGTH_INDEFINITE
             ).show()
         }
     }

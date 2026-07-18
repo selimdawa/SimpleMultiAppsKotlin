@@ -81,7 +81,7 @@ class WordpressFavoritesActivity : AppCompatActivity() {
             })
         } else {
             binding.progressBar.visibility = View.GONE
-            Snackbar.make(binding.item, "Can't connect to the Internet", Snackbar.LENGTH_INDEFINITE).show()
+            Snackbar.make(binding.item, R.string.connect_internet, Snackbar.LENGTH_INDEFINITE).show()
         }
     }
 

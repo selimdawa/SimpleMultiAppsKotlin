@@ -8,14 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.bloggerapp.adapter.PostAdapter
 import com.flatcode.simplemultiapps.bloggerapp.model.Post
-import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.CLASS
+import com.flatcode.simplemultiapps.databinding.ActivityBloggerAppBinding
 import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.utils.THEME
-import com.flatcode.simplemultiapps.utils.VOID
-import com.flatcode.simplemultiapps.databinding.ActivityBloggerAppBinding
+import com.flatcode.simplemultiapps.utils.intent1
 import org.json.JSONObject
 
 class BloggerAppActivity : AppCompatActivity() {
@@ -39,7 +38,7 @@ class BloggerAppActivity : AppCompatActivity() {
         with(binding.toolbar) {
             nameSpace.text = getString(R.string.blogger_name)
             close.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
-            pages.setOnClickListener { VOID.Intent1(context, CLASS.BLOGGER_PAGES) }
+            pages.setOnClickListener { context.intent1(PagesActivity::class.java) }
             search.setOnClickListener {
                 toolbar.visibility = View.GONE
                 toolbarSearch.visibility = View.VISIBLE
@@ -80,7 +79,7 @@ class BloggerAppActivity : AppCompatActivity() {
             }
 
             "end" -> {
-                Toast.makeText(context, "No more posts...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.no_more_posts, Toast.LENGTH_SHORT).show()
                 binding.progressBar.visibility = View.GONE
                 return
             }
@@ -97,7 +96,7 @@ class BloggerAppActivity : AppCompatActivity() {
                 nextToken = try {
                     jsonObject.getString("nextPageToken")
                 } catch (_: Exception) {
-                    Toast.makeText(context, "Reached end of page...", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.reached_end_of_page, Toast.LENGTH_SHORT).show()
                     "end"
                 }
 
@@ -154,7 +153,7 @@ class BloggerAppActivity : AppCompatActivity() {
             }
 
             "end" -> {
-                Toast.makeText(context, "No more posts...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.no_more_posts, Toast.LENGTH_SHORT).show()
                 binding.progressBar.visibility = View.GONE
                 return
             }
@@ -171,7 +170,7 @@ class BloggerAppActivity : AppCompatActivity() {
                 nextToken = try {
                     jsonObject.getString("nextPageToken")
                 } catch (_: Exception) {
-                    Toast.makeText(context, "Reached end of page...", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.reached_end_of_page, Toast.LENGTH_SHORT).show()
                     "end"
                 }
 

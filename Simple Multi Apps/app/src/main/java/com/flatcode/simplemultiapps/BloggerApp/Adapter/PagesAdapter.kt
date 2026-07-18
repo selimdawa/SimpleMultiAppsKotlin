@@ -4,11 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.flatcode.simplemultiapps.bloggerapp.activity.PageDetailsActivity
 import com.flatcode.simplemultiapps.bloggerapp.model.Page
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.CLASS
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.VOID
+import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.loadImage
 import com.flatcode.simplemultiapps.databinding.ItemBloggerBinding
 import org.jsoup.Jsoup
 import java.text.SimpleDateFormat
@@ -31,7 +32,7 @@ class PagesAdapter(private val context: Context, var pages: ArrayList<Page>) :
 
         try {
             val image = document.select("img").attr("src")
-            VOID.loadImage(context, image, holder.binding.image)
+            holder.binding.image.loadImage(image)
         } catch (_: Exception) {
             holder.binding.image.setImageResource(R.color.image_profile)
         }
@@ -52,7 +53,9 @@ class PagesAdapter(private val context: Context, var pages: ArrayList<Page>) :
         }
 
         holder.itemView.setOnClickListener {
-            VOID.IntentExtra(context, CLASS.BLOGGER_PAGES_DETAILS, "pageId", page.id)
+            context.intent1(PageDetailsActivity::class.java) {
+                putExtra("pageId", page.id)
+            }
         }
     }
 

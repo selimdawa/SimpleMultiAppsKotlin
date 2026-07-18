@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.flatcode.simplemultiapps.newsapp.OnFetchDataListener
-import com.flatcode.simplemultiapps.newsapp.RequestManger
+import com.flatcode.simplemultiapps.newsapp.RequestManager
 import com.flatcode.simplemultiapps.newsapp.SelectListener
 import com.flatcode.simplemultiapps.newsapp.adapter.NewsAppAdapter
 import com.flatcode.simplemultiapps.newsapp.model.NewsApiResponse
@@ -34,7 +34,7 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
         override fun onFetchData(list: List<NewsHeadlines?>?, message: String?) {
             progressDialog?.dismiss()
             if (list.isNullOrEmpty()) {
-                Toast.makeText(context, "No data found!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.no_data_found, Toast.LENGTH_SHORT).show()
             } else {
                 showNews(list)
             }
@@ -42,7 +42,7 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
 
         override fun onError(message: String?) {
             progressDialog?.dismiss()
-            Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -68,8 +68,8 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
 
         binding.search.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                updateProgressDialog("Fetching news Articles of $query")
-                RequestManger(context).getNewsHeadlines(listener, "general", query)
+                updateProgressDialog(getString(R.string.fetching_news_of, query))
+                RequestManager(context).getNewsHeadlines(listener, "general", query)
                 return true
             }
 
@@ -86,7 +86,7 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
             technology.setOnClickListener(this@NewsAppActivity)
         }
 
-        RequestManger(context).getNewsHeadlines(listener, "general", null)
+        RequestManager(context).getNewsHeadlines(listener, "general", null)
     }
 
     private fun showNews(list: List<NewsHeadlines?>?) {
@@ -101,20 +101,20 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
             }
             startActivity(intent)
         } else {
-            Toast.makeText(context, "News details are unavailable", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.news_details_unavailable, Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onClick(view: View) {
         val button = view as TextView
         val category = button.text.toString()
-        updateProgressDialog("Fetching news Articles of $category")
-        RequestManger(context).getNewsHeadlines(listener, category, null)
+        updateProgressDialog(getString(R.string.fetching_news_of, category))
+        RequestManager(context).getNewsHeadlines(listener, category, null)
     }
 
     private fun setupProgressDialog() {
         progressDialog = AlertDialog.Builder(context)
-            .setMessage("Fetching news Articles...")
+            .setMessage(R.string.fetching_news)
             .setCancelable(false)
             .create()
         progressDialog?.show()

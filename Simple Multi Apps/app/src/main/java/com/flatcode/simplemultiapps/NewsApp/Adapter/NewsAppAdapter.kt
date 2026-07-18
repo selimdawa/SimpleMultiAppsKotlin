@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.newsapp.model.NewsHeadlines
 import com.flatcode.simplemultiapps.newsapp.SelectListener
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.VOID
+import com.flatcode.simplemultiapps.utils.loadImage
 import com.flatcode.simplemultiapps.databinding.ItemNewsBinding
 
 class NewsAppAdapter(
@@ -28,7 +28,7 @@ class NewsAppAdapter(
             content.text = item.title
             source.text = item.source?.name ?: DATA.EMPTY
 
-            VOID.loadImage(context, item.urlToImage, image)
+            image.loadImage(item.urlToImage)
 
             card.setOnClickListener {
                 val currentPos = holder.bindingAdapterPosition

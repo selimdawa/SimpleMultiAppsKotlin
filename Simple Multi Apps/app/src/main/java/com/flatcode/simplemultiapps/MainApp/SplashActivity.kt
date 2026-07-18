@@ -5,9 +5,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import com.flatcode.simplemultiapps.utils.CLASS
 import com.flatcode.simplemultiapps.utils.THEME
-import com.flatcode.simplemultiapps.utils.VOID
+import com.flatcode.simplemultiapps.utils.intent1
 import com.flatcode.simplemultiapps.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
@@ -30,7 +29,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun launch() {
-        VOID.Intent1(context, CLASS.MAIN)
+        context.intent1(MainActivity::class.java)
         finish()
     }
 

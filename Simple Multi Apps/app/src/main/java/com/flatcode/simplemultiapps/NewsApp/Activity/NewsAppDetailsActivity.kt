@@ -9,7 +9,7 @@ import com.flatcode.simplemultiapps.newsapp.model.NewsHeadlines
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.utils.THEME
-import com.flatcode.simplemultiapps.utils.VOID
+import com.flatcode.simplemultiapps.utils.loadImage
 import com.flatcode.simplemultiapps.databinding.ActivityNewsAppDetailsBinding
 
 class NewsAppDetailsActivity : AppCompatActivity() {
@@ -48,7 +48,7 @@ class NewsAppDetailsActivity : AppCompatActivity() {
                 content.text = data.content
             }
 
-            VOID.loadImage(context, data.urlToImage, binding.image)
+            binding.image.loadImage(data.urlToImage)
         }
     }
 

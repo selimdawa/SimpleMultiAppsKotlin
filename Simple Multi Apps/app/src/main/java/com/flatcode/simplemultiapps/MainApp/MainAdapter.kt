@@ -1,13 +1,13 @@
 package com.flatcode.simplemultiapps.mainapp
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ItemMainBinding
+import com.flatcode.simplemultiapps.utils.intent1
 
 class MainAdapter(private val context: Context, private val list: List<Main>) :
     RecyclerView.Adapter<MainAdapter.ViewHolder>() {
@@ -38,7 +38,7 @@ class MainAdapter(private val context: Context, private val list: List<Main>) :
 
             root.setOnClickListener {
                 model.c?.let { targetClass ->
-                    context.startActivity(Intent(context, targetClass))
+                    context.intent1(targetClass)
                 }
             }
         }

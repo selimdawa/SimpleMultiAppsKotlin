@@ -4,11 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.flatcode.simplemultiapps.bloggerapp.activity.PostDetailsActivity
 import com.flatcode.simplemultiapps.bloggerapp.model.Post
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.CLASS
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.VOID
+import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.loadImage
 import com.flatcode.simplemultiapps.databinding.ItemBloggerBinding
 import org.jsoup.Jsoup
 import java.text.SimpleDateFormat
@@ -31,7 +32,7 @@ class PostAdapter(private val context: Context, var posts: ArrayList<Post>) :
 
         try {
             val image = document.select("img").attr("src")
-            VOID.loadImage(context, image, holder.binding.image)
+            holder.binding.image.loadImage(image)
         } catch (_: Exception) {
             holder.binding.image.setImageResource(R.color.image_profile)
         }
@@ -52,7 +53,9 @@ class PostAdapter(private val context: Context, var posts: ArrayList<Post>) :
         }
 
         holder.itemView.setOnClickListener {
-            VOID.IntentExtra(context, CLASS.BLOGGER_POST_DETAILS, "postId", post.id)
+            context.intent1(PostDetailsActivity::class.java) {
+                putExtra("postId", post.id)
+            }
         }
     }
 

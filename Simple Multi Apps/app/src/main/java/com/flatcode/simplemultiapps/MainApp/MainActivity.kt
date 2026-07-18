@@ -10,7 +10,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.CLASS
+import com.flatcode.simplemultiapps.bloggerapp.activity.BloggerAppActivity
+import com.flatcode.simplemultiapps.candycrushgame.CandyCrushGameActivity
+import com.flatcode.simplemultiapps.jokeapp.activity.JokeAppActivity
+import com.flatcode.simplemultiapps.livetv.activity.LiveTVActivity
+import com.flatcode.simplemultiapps.multipledelete.activity.MultiDeleteActivity
+import com.flatcode.simplemultiapps.newsapp.activity.NewsAppActivity
+import com.flatcode.simplemultiapps.pdfreader.activity.PdfReaderActivity
+import com.flatcode.simplemultiapps.randomimagegenerating.RandomImageGeneratingActivity
+import com.flatcode.simplemultiapps.stopwatch.StopWatchActivity
+import com.flatcode.simplemultiapps.videoplayer.activity.VideoPlayerActivity
+import com.flatcode.simplemultiapps.webapp.WebAppActivity
+import com.flatcode.simplemultiapps.wordpress.activity.WordpressActivity
 import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityMainBinding
 
@@ -50,18 +61,18 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         list.clear()
         list.addAll(
             listOf(
-                Main(R.drawable.ic_stop_watch, "Stop Watch", i1, CLASS.STOP_WATCH),
-                Main(R.drawable.ic_candy_cruch, "Candy Crush Game", i2, CLASS.CANDY_CRUSH_GAME),
-                Main(R.drawable.ic_multi_delete, "Multiple Delete", i3, CLASS.MULTIPLE_DELETE),
-                Main(R.drawable.ic_random, "Random Img Generating", i4, CLASS.RANDOM_IMG_GENERATING),
-                Main(R.drawable.ic_blogger, "Blogger App", i5, CLASS.BLOGGER_APP),
-                Main(R.drawable.ic_joke, "Joke App", i6, CLASS.JOKE_APP),
-                Main(R.drawable.ic_live_tv, "Live TV", i7, CLASS.LIVE_TV),
-                Main(R.drawable.ic_news, "News App", i8, CLASS.NEWS_APP),
-                Main(R.drawable.ic_pdf_reader, "Pdf Reader", i9, CLASS.PDF_READER),
-                Main(R.drawable.ic_video_player, "Video Player", i10, CLASS.VIDEO_PLAYER),
-                Main(R.drawable.ic_web, "Web App", i11, CLASS.WEB_APP),
-                Main(R.drawable.ic_wordpress, "Wordpress Blog", i12, CLASS.WORDPRESS)
+                Main(R.drawable.ic_stop_watch, "Stop Watch", i1, StopWatchActivity::class.java),
+                Main(R.drawable.ic_candy_crush, "Candy Crush Game", i2, CandyCrushGameActivity::class.java),
+                Main(R.drawable.ic_multi_delete, "Multiple Delete", i3, MultiDeleteActivity::class.java),
+                Main(R.drawable.ic_random, "Random Image Generating", i4, RandomImageGeneratingActivity::class.java),
+                Main(R.drawable.ic_blogger, "Blogger App", i5, BloggerAppActivity::class.java),
+                Main(R.drawable.ic_joke, "Joke App", i6, JokeAppActivity::class.java),
+                Main(R.drawable.ic_live_tv, "Live TV", i7, LiveTVActivity::class.java),
+                Main(R.drawable.ic_news, "News App", i8, NewsAppActivity::class.java),
+                Main(R.drawable.ic_pdf_reader, "Pdf Reader", i9, PdfReaderActivity::class.java),
+                Main(R.drawable.ic_video_player, "Video Player", i10, VideoPlayerActivity::class.java),
+                Main(R.drawable.ic_web, "Web App", i11, WebAppActivity::class.java),
+                Main(R.drawable.ic_wordpress, "WordPress Blog", i12, WordpressActivity::class.java)
             )
         )
         adapter?.notifyItemRangeInserted(0, list.size)

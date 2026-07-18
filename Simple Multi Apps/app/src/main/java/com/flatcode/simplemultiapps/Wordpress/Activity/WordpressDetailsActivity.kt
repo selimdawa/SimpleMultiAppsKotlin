@@ -67,7 +67,7 @@ class WordpressDetailsActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<Media?>, t: Throwable) {}
             })
         } else {
-            Snackbar.make(binding.root, "Can't connect to the Internet", Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(binding.root, R.string.connect_internet, Snackbar.LENGTH_INDEFINITE)
                 .show()
         }
 

@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.flatcode.simplemultiapps.livetv.activity.CategoryDetailsActivity
 import com.flatcode.simplemultiapps.livetv.model.Category
-import com.flatcode.simplemultiapps.utils.CLASS
-import com.flatcode.simplemultiapps.utils.VOID
+import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.loadImage
 import com.flatcode.simplemultiapps.databinding.ItemLiveTvCategoryBinding
 
 class CategoryAdapter : ListAdapter<Category, CategoryAdapter.ViewHolder>(CategoryDiffCallback()) {
@@ -26,15 +27,12 @@ class CategoryAdapter : ListAdapter<Category, CategoryAdapter.ViewHolder>(Catego
 
         with(holder.binding) {
             name.text = model.name
-            VOID.loadImage(root.context, model.imageUrl, image)
+            image.loadImage(model.imageUrl)
 
             root.setOnClickListener {
-                VOID.IntentExtraChannel(
-                    root.context,
-                    CLASS.LIVE_TV_CATEGORIES_DETAILS,
-                    "category",
-                    model
-                )
+                root.context.intent1(CategoryDetailsActivity::class.java) {
+                    putExtra("category", model)
+                }
             }
         }
     }

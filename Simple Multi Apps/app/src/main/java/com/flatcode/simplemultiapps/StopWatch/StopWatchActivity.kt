@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityStopWatchBinding
+import java.util.Locale
 
 class StopWatchActivity : AppCompatActivity() {
 
@@ -37,7 +38,7 @@ class StopWatchActivity : AppCompatActivity() {
             sec %= 60
             milliSec = (tUpdate % 100).toInt()
 
-            binding.chronometer.text = String.format("%02d:%02d:%02d", min, sec, milliSec)
+            binding.chronometer.text = String.format(Locale.US, "%02d:%02d:%02d", min, sec, milliSec)
             handler?.postDelayed(this, 60)
         }
     }
@@ -80,7 +81,7 @@ class StopWatchActivity : AppCompatActivity() {
                 min = 0
                 milliSec = 0
                 binding.lastTimeDate.text = binding.chronometer.text.toString()
-                binding.chronometer.text = "00:00:00"
+                binding.chronometer.text = getString(R.string.zero_time)
             }
         }
     }

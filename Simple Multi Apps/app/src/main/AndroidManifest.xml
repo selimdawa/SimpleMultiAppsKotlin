@@ -45,10 +45,10 @@
             android:name=".stopwatch.StopWatchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".randomimggenerating.RandomImgGeneratingActivity"
+            android:name=".randomimagegenerating.RandomImageGeneratingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".randomimggenerating.ImageInfoActivity"
+            android:name=".randomimagegenerating.ImageInfoActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".candycrushgame.CandyCrushGameActivity"

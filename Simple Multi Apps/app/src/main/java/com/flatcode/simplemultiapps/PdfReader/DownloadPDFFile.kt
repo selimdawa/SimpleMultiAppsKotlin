@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.flatcode.simplemultiapps.pdfreader.activity.PdfReaderActivity
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.VOID
+import com.flatcode.simplemultiapps.utils.readBytesToEnd
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,7 +30,7 @@ class DownloadPDFFile(private val activity: PdfReaderActivity) {
             httpConnection.connect()
             val responseCode = httpConnection.responseCode
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                VOID.readBytesToEnd(httpConnection.inputStream)
+                httpConnection.inputStream.readBytesToEnd()
             } else {
                 Log.e("DownloadPDFFile", "Error during http request, response code : $responseCode")
                 responseCode

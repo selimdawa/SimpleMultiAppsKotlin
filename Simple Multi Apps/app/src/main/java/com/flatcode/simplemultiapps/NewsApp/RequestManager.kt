@@ -2,6 +2,7 @@ package com.flatcode.simplemultiapps.newsapp
 
 import android.content.Context
 import android.widget.Toast
+import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.newsapp.model.NewsApiResponse
 import com.flatcode.simplemultiapps.utils.DATA
 import retrofit2.Call
@@ -12,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-class RequestManger(private val context: Context) {
+class RequestManager(private val context: Context) {
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("https://newsapi.org/v2/")
@@ -30,7 +31,7 @@ class RequestManger(private val context: Context) {
             ) {
                 val responseBody = response.body()
                 if (!response.isSuccessful || responseBody == null) {
-                    Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show()
                     listener.onError("Request Failed or Empty Body")
                     return
                 }
@@ -38,7 +39,7 @@ class RequestManger(private val context: Context) {
             }
 
             override fun onFailure(call: Call<NewsApiResponse>, t: Throwable) {
-                listener.onError("Request Failed!")
+                listener.onError(context.getString(R.string.request_failed))
             }
         })
     }

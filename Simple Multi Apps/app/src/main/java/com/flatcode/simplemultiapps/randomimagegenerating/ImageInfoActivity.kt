@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.randomimggenerating
+package com.flatcode.simplemultiapps.randomimagegenerating
 
 import android.content.Intent
 import android.net.Uri
@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.utils.THEME
-import com.flatcode.simplemultiapps.utils.VOID
+import com.flatcode.simplemultiapps.utils.loadImage
 import com.flatcode.simplemultiapps.databinding.ActivityImageInfoBinding
 
 class ImageInfoActivity : AppCompatActivity() {
@@ -29,7 +29,7 @@ class ImageInfoActivity : AppCompatActivity() {
         binding.catDescription.text = intent.getStringExtra(DATA.KEY_DESC) ?: DATA.UNKNOWN
         binding.catTemperament.text = intent.getStringExtra(DATA.KEY_TEMP) ?: DATA.UNKNOWN
 
-        VOID.loadImage(this, intent.getStringExtra(DATA.KEY_IMAGE_URL), binding.catImage)
+        binding.catImage.loadImage(intent.getStringExtra(DATA.KEY_IMAGE_URL))
 
         binding.wikiBtn.setOnClickListener {
             val wikiUrl = intent.getStringExtra(DATA.KEY_WIKI_URL)

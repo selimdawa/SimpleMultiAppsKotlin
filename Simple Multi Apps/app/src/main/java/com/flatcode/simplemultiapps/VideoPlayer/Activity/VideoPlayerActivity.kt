@@ -30,11 +30,11 @@ class VideoPlayerActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.permission_granted, Toast.LENGTH_SHORT).show()
             videoFiles = getAllVideos(context)
             loadFolderFragment()
         } else {
-            Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.permission_denied, Toast.LENGTH_SHORT).show()
         }
     }
 

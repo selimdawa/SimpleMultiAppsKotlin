@@ -19,10 +19,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.CLASS
 import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.utils.THEME
-import com.flatcode.simplemultiapps.utils.VOID
+import com.flatcode.simplemultiapps.utils.intent1
 import com.flatcode.simplemultiapps.databinding.ActivityWebAppBinding
 
 class WebAppActivity : AppCompatActivity() {
@@ -46,16 +45,24 @@ class WebAppActivity : AppCompatActivity() {
         }
 
         binding.webSite.setOnClickListener {
-            VOID.IntentExtra(context, CLASS.WEB_VIEW, DATA.WEB_NAME, DATA.WEBSITE)
+            context.intent1(WebViewActivity::class.java) {
+                putExtra(DATA.WEB_NAME, DATA.WEBSITE)
+            }
         }
         binding.instagram.setOnClickListener {
-            VOID.IntentExtra(context, CLASS.WEB_VIEW, DATA.WEB_NAME, DATA.INSTAGRAM)
+            context.intent1(WebViewActivity::class.java) {
+                putExtra(DATA.WEB_NAME, DATA.INSTAGRAM)
+            }
         }
         binding.twitter.setOnClickListener {
-            VOID.IntentExtra(context, CLASS.WEB_VIEW, DATA.WEB_NAME, DATA.TWITTER)
+            context.intent1(WebViewActivity::class.java) {
+                putExtra(DATA.WEB_NAME, DATA.TWITTER)
+            }
         }
         binding.facebook.setOnClickListener {
-            VOID.IntentExtra(context, CLASS.WEB_VIEW, DATA.WEB_NAME, DATA.FACEBOOK)
+            context.intent1(WebViewActivity::class.java) {
+                putExtra(DATA.WEB_NAME, DATA.FACEBOOK)
+            }
         }
 
         binding.aboutUs.setOnClickListener { showAboutUsDialog() }

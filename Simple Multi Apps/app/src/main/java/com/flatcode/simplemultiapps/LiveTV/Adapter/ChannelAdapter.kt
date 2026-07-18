@@ -9,10 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.flatcode.simplemultiapps.livetv.activity.LiveTVDetailsActivity
 import com.flatcode.simplemultiapps.livetv.model.Channel
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.CLASS
-import com.flatcode.simplemultiapps.utils.VOID
+import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.loadImage
 
 class ChannelAdapter(private val type: String) :
     ListAdapter<Channel, ChannelAdapter.ViewHolder>(ChannelDiffCallback()) {
@@ -34,13 +35,12 @@ class ChannelAdapter(private val type: String) :
         val channel = getItem(position) ?: return
 
         holder.name.text = channel.name
-        VOID.loadImage(holder.itemView.context, channel.thumbnail, holder.image)
+        holder.image.loadImage(channel.thumbnail)
 
         holder.itemView.setOnClickListener { view ->
-            val intent = Intent(view.context, CLASS.LIVE_TV_DETAILS).apply {
+            view.context.intent1(LiveTVDetailsActivity::class.java) {
                 putExtra("channel", channel)
             }
-            view.context.startActivity(intent)
         }
     }
 

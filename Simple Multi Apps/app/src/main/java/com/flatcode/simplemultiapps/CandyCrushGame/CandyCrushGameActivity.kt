@@ -12,12 +12,12 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.THEME
-import com.flatcode.simplemultiapps.databinding.ActivityCandyCrashGameBinding
+import com.flatcode.simplemultiapps.databinding.ActivityCandyCrushGameBinding
 import kotlin.math.floor
 
 class CandyCrushGameActivity : AppCompatActivity() {
 
-    private var _binding: ActivityCandyCrashGameBinding? = null
+    private var _binding: ActivityCandyCrushGameBinding? = null
     private val binding get() = _binding!!
 
     private val context: Context = this@CandyCrushGameActivity
@@ -41,7 +41,7 @@ class CandyCrushGameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
-        _binding = ActivityCandyCrashGameBinding.inflate(layoutInflater)
+        _binding = ActivityCandyCrushGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.toolbar.nameSpace.text = getString(R.string.candy_crush_game)

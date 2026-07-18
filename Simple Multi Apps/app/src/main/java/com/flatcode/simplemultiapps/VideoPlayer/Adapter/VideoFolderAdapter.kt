@@ -1,13 +1,13 @@
 package com.flatcode.simplemultiapps.videoplayer.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.flatcode.simplemultiapps.utils.CLASS
-import com.flatcode.simplemultiapps.utils.VOID
+import com.flatcode.simplemultiapps.utils.formatDuration
+import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.videoplayer.activity.PlayerActivity
 import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
 import com.flatcode.simplemultiapps.databinding.ItemVideoBinding
 import java.io.File
@@ -30,18 +30,17 @@ class VideoFolderAdapter(
             name.text = currentVideo.title
 
             val durationMs = currentVideo.duration?.toLongOrNull() ?: 0L
-            duration.text = VOID.convertDuration(durationMs)
+            duration.text = durationMs.formatDuration()
 
             currentVideo.path?.let { path ->
                 image.load(File(path))
             }
 
             root.setOnClickListener {
-                val intent = Intent(context, CLASS.VIDEO_PLAY).apply {
+                context.intent1(PlayerActivity::class.java) {
                     putExtra("position", position)
                     putExtra("sender", "FolderIsSending")
                 }
-                context.startActivity(intent)
             }
         }
     }

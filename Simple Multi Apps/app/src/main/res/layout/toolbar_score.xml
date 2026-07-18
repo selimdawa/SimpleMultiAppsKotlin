@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Score - "
+            android:text="@string/score_label"
             android:textColor="@color/white"
             android:textSize="28sp"
             android:textStyle="bold" />
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="0000"
+            android:text="@string/zero_score"
             android:textColor="@color/white"
             android:textSize="28sp"
             android:textStyle="bold" />

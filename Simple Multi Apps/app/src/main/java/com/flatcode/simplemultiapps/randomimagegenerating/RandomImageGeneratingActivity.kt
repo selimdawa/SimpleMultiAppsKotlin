@@ -1,4 +1,4 @@
-package com.flatcode.simplemultiapps.randomimggenerating
+package com.flatcode.simplemultiapps.randomimagegenerating
 
 import android.content.Intent
 import android.net.Uri
@@ -9,25 +9,25 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.CLASS
 import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.utils.THEME
-import com.flatcode.simplemultiapps.utils.VOID
-import com.flatcode.simplemultiapps.databinding.ActivityRandomImgGeneratingBinding
+import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.loadImage
+import com.flatcode.simplemultiapps.databinding.ActivityRandomImageGeneratingBinding
 import org.json.JSONException
 
-class RandomImgGeneratingActivity : AppCompatActivity() {
+class RandomImageGeneratingActivity : AppCompatActivity() {
 
-    private var _binding: ActivityRandomImgGeneratingBinding? = null
+    private var _binding: ActivityRandomImageGeneratingBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME.setThemeOfApp(this)
         super.onCreate(savedInstanceState)
-        _binding = ActivityRandomImgGeneratingBinding.inflate(layoutInflater)
+        _binding = ActivityRandomImageGeneratingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.toolbar.nameSpace.text = getString(R.string.random_img_generating)
+        binding.toolbar.nameSpace.text = getString(R.string.random_image_generating)
         getImage(DATA.API_RANDOM_IMAGE)
 
         binding.refreshBtn.setOnClickListener { getImage(DATA.API_RANDOM_IMAGE) }
@@ -42,7 +42,7 @@ class RandomImgGeneratingActivity : AppCompatActivity() {
                 val kittyData = response.getJSONObject(0)
                 val catUrl = kittyData.getString(DATA.JSON_URL)
 
-                VOID.loadImage(this, catUrl, binding.kittyImage)
+                binding.kittyImage.loadImage(catUrl)
 
                 binding.downloadBtn.setOnClickListener {
                     val browser = Intent(Intent.ACTION_VIEW, Uri.parse(catUrl))
@@ -53,10 +53,9 @@ class RandomImgGeneratingActivity : AppCompatActivity() {
                     try {
                         val breedsInfo = kittyData.getJSONArray(DATA.JSON_BREEDS)
                         if (breedsInfo.isNull(0)) {
-                            Toast.makeText(this, "Data Not Found.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, R.string.data_not_found, Toast.LENGTH_SHORT).show()
                         } else {
                             val breedsData = breedsInfo.getJSONObject(0)
-                            val i = Intent(this, CLASS.IMAGE_INFO)
 
                             val name =
                                 if (breedsData.has(DATA.JSON_NAME)) breedsData.getString(DATA.JSON_NAME) else DATA.EMPTY
@@ -71,18 +70,19 @@ class RandomImgGeneratingActivity : AppCompatActivity() {
                                     DATA.JSON_WIKIPEDIA_URL
                                 ) else DATA.EMPTY
                             val moreLink =
-                                if (breedsData.has(DATA.JSON_VCAHOSPITALS_URL)) breedsData.getString(
-                                    DATA.JSON_VCAHOSPITALS_URL
+                                if (breedsData.has(DATA.JSON_VCA_HOSPITALS_URL)) breedsData.getString(
+                                    DATA.JSON_VCA_HOSPITALS_URL
                                 ) else DATA.EMPTY
 
-                            i.putExtra(DATA.KEY_NAME, name)
-                            i.putExtra(DATA.KEY_ORIGIN, origin)
-                            i.putExtra(DATA.KEY_DESC, desc)
-                            i.putExtra(DATA.KEY_TEMP, temp)
-                            i.putExtra(DATA.KEY_WIKI_URL, wikiUrl)
-                            i.putExtra(DATA.KEY_MORE_LINK, moreLink)
-                            i.putExtra(DATA.KEY_IMAGE_URL, catUrl)
-                            startActivity(i)
+                            intent1(ImageInfoActivity::class.java) {
+                                putExtra(DATA.KEY_NAME, name)
+                                putExtra(DATA.KEY_ORIGIN, origin)
+                                putExtra(DATA.KEY_DESC, desc)
+                                putExtra(DATA.KEY_TEMP, temp)
+                                putExtra(DATA.KEY_WIKI_URL, wikiUrl)
+                                putExtra(DATA.KEY_MORE_LINK, moreLink)
+                                putExtra(DATA.KEY_IMAGE_URL, catUrl)
+                            }
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
@@ -92,7 +92,7 @@ class RandomImgGeneratingActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         }, { error ->
-            val message = error.message ?: "An unknown error occurred"
+            val message = error.message ?: getString(R.string.unknown_error)
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         })
         queue.add(arrayRequest)
