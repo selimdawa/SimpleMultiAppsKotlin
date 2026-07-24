@@ -13,7 +13,6 @@ import com.flatcode.simplemultiapps.bloggerapp.adapter.PostAdapter
 import com.flatcode.simplemultiapps.bloggerapp.model.Post
 import com.flatcode.simplemultiapps.databinding.ActivityBloggerAppBinding
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.utils.intent1
 import org.json.JSONObject
 
@@ -30,7 +29,6 @@ class BloggerAppActivity : AppCompatActivity() {
     private val context: Context = this@BloggerAppActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityBloggerAppBinding.inflate(layoutInflater)
         setContentView(binding.root)

@@ -3,7 +3,7 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="45sp"
-    android:background="?background"
+    android:background="?mc_bg"
     android:visibility="visible">
 
     <ImageView

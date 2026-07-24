@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityWebViewBinding
 
 class WebViewActivity : AppCompatActivity() {
@@ -19,7 +18,6 @@ class WebViewActivity : AppCompatActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityWebViewBinding.inflate(layoutInflater)
         setContentView(binding.root)

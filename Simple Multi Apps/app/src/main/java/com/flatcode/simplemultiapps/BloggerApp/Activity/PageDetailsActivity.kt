@@ -10,7 +10,6 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityPageDetailsBinding
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -28,7 +27,6 @@ class PageDetailsActivity : AppCompatActivity() {
     private val outputDateFormat = SimpleDateFormat("dd/MM/yyyy K:mm a", Locale.ENGLISH)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityPageDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)

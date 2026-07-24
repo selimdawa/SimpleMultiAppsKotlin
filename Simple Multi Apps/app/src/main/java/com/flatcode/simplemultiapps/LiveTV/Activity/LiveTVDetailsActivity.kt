@@ -16,7 +16,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.flatcode.simplemultiapps.livetv.model.Channel
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityLiveTvDetailsBinding
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -36,7 +35,6 @@ class LiveTVDetailsActivity : AppCompatActivity() {
     val context: Context = this@LiveTVDetailsActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityLiveTvDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)

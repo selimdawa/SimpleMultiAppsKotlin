@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.flatcode.simplemultiapps.multipledelete.adapter.MultiDeleteAdapter
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityMultiDeleteBinding
 
 class MultiDeleteActivity : AppCompatActivity() {
@@ -22,7 +21,6 @@ class MultiDeleteActivity : AppCompatActivity() {
     private val context: Context = this@MultiDeleteActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityMultiDeleteBinding.inflate(layoutInflater)
         setContentView(binding.root)

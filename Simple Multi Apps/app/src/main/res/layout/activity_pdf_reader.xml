@@ -29,8 +29,8 @@
         android:layout_gravity="bottom"
         android:minHeight="?android:attr/actionBarSize"
         app:backgroundTint="?colorOnBackground"
-        app:itemIconTint="?trackColor"
-        app:itemTextColor="?trackColor"
+        app:itemIconTint="?mc_track"
+        app:itemTextColor="?mc_track"
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/pdf_reader_menu" />
 

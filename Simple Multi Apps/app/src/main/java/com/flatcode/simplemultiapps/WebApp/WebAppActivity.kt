@@ -20,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.utils.intent1
 import com.flatcode.simplemultiapps.databinding.ActivityWebAppBinding
 
@@ -33,7 +32,6 @@ class WebAppActivity : AppCompatActivity() {
     private var alertDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityWebAppBinding.inflate(layoutInflater)
         setContentView(binding.root)

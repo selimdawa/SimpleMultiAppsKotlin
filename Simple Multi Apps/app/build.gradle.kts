@@ -66,15 +66,12 @@ dependencies {
     //Layout
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
+    implementation(libs.multicolors)                   //Theme Colors
     //Image
     implementation(libs.coil)                          //Coil Image
     //Pdf Reader
     implementation(libs.appintro)
     implementation(libs.android.pdf.viewer)
-    implementation(libs.attributionpresenter)
-    implementation(libs.whatsnew)
-    //Multi delete demo
-    implementation(libs.androidx.lifecycle.extensions)
     //Live TV
     implementation(libs.exoplayer)
     //Video Player

@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.flatcode.simplemultiapps.jokeapp.adapter.JokeCategoriesAdapter
 import com.flatcode.simplemultiapps.jokeapp.fragment.JokesFragment
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityJokeAppBinding
 
 class JokeAppActivity : AppCompatActivity() {
@@ -19,7 +18,6 @@ class JokeAppActivity : AppCompatActivity() {
     private val context: Context = this@JokeAppActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
 
         _binding = ActivityJokeAppBinding.inflate(layoutInflater)

@@ -18,7 +18,6 @@ import com.flatcode.simplemultiapps.newsapp.model.NewsApiResponse
 import com.flatcode.simplemultiapps.newsapp.model.NewsHeadlines
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityNewsAppBinding
 
 class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListener {
@@ -47,7 +46,6 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityNewsAppBinding.inflate(layoutInflater)
         setContentView(binding.root)

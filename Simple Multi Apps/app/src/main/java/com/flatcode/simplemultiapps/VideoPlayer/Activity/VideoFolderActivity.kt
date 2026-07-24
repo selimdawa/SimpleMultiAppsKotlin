@@ -6,7 +6,6 @@ import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.videoplayer.adapter.VideoFolderAdapter
 import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
 import com.flatcode.simplemultiapps.databinding.ActivityVideoFolderBinding
@@ -22,7 +21,6 @@ class VideoFolderActivity : AppCompatActivity() {
     private var list = ArrayList<VideoFiles?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityVideoFolderBinding.inflate(layoutInflater)
         setContentView(binding.root)

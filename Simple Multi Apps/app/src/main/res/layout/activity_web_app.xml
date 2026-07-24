@@ -44,7 +44,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="?background"
+                        android:background="?mc_bg"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -86,7 +86,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="?background"
+                        android:background="?mc_bg"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -136,7 +136,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="?background"
+                        android:background="?mc_bg"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -187,7 +187,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="?background"
+                        android:background="?mc_bg"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -229,7 +229,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="?background"
+                        android:background="?mc_bg"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -274,7 +274,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_facebook"
-                    app:tint="?tickColor" />
+                    app:tint="?mc_tick" />
 
             </LinearLayout>
 
@@ -290,7 +290,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_instagram"
-                    app:tint="?tickColor" />
+                    app:tint="?mc_tick" />
             </LinearLayout>
 
             <LinearLayout
@@ -304,7 +304,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_twitter"
-                    app:tint="?tickColor" />
+                    app:tint="?mc_tick" />
 
             </LinearLayout>
 

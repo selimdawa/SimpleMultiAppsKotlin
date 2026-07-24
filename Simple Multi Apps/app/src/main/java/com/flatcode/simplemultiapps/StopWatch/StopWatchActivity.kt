@@ -9,7 +9,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityStopWatchBinding
 import java.util.Locale
 
@@ -44,7 +43,6 @@ class StopWatchActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityStopWatchBinding.inflate(layoutInflater)
         setContentView(binding.root)

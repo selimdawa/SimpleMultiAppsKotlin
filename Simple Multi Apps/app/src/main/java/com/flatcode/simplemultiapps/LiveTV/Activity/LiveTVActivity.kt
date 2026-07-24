@@ -1,7 +1,6 @@
 package com.flatcode.simplemultiapps.livetv.activity
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +10,6 @@ import com.flatcode.simplemultiapps.livetv.service.ChannelDataService
 import com.flatcode.simplemultiapps.livetv.service.ChannelDataService.OnDataResponse
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.utils.intent1
 import com.flatcode.simplemultiapps.databinding.ActivityLiveTvBinding
 import org.json.JSONException
@@ -36,7 +34,6 @@ class LiveTVActivity : AppCompatActivity() {
     val context: Context = this@LiveTVActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityLiveTvBinding.inflate(layoutInflater)
         setContentView(binding.root)

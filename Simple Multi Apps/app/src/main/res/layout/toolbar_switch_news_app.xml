@@ -27,7 +27,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?background">
+                android:background="?mc_bg">
 
                 <TextView
                     android:id="@+id/business"
@@ -54,7 +54,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?background">
+                android:background="?mc_bg">
 
                 <TextView
                     android:id="@+id/entertainment"
@@ -81,7 +81,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?background">
+                android:background="?mc_bg">
 
                 <TextView
                     android:id="@+id/general"
@@ -108,7 +108,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?background">
+                android:background="?mc_bg">
 
                 <TextView
                     android:id="@+id/health"
@@ -135,7 +135,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?background">
+                android:background="?mc_bg">
 
                 <TextView
                     android:id="@+id/science"
@@ -162,7 +162,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?background">
+                android:background="?mc_bg">
 
                 <TextView
                     android:id="@+id/sports"
@@ -189,7 +189,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?background">
+                android:background="?mc_bg">
 
                 <TextView
                     android:id="@+id/technology"

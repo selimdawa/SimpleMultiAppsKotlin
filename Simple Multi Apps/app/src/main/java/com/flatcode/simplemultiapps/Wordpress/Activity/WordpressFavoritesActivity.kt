@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.wordpress.adapter.WordpressAdapter
 import com.flatcode.simplemultiapps.wordpress.model.Post
 import com.flatcode.simplemultiapps.wordpress.sqlite.PostDB
@@ -26,7 +25,6 @@ class WordpressFavoritesActivity : AppCompatActivity() {
     private var postList: List<Post?>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         binding = ActivityWordpressFavoritesBinding.inflate(layoutInflater)
         setContentView(binding.root)

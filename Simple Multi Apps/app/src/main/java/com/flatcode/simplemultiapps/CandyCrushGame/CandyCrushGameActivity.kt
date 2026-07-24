@@ -11,7 +11,6 @@ import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityCandyCrushGameBinding
 import kotlin.math.floor
 
@@ -39,7 +38,6 @@ class CandyCrushGameActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityCandyCrushGameBinding.inflate(layoutInflater)
         setContentView(binding.root)

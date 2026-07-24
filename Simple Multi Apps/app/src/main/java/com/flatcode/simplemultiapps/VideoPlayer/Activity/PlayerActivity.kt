@@ -15,7 +15,6 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.videoplayer.adapter.VideoAdapter.Companion.videoFile
 import com.flatcode.simplemultiapps.videoplayer.adapter.VideoFolderAdapter.Companion.folderVideoFile
 import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
@@ -32,7 +31,6 @@ class PlayerActivity : AppCompatActivity() {
     private var myFiles: ArrayList<VideoFiles?>? = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityPlayerBinding.inflate(layoutInflater)
         setFullScreen()

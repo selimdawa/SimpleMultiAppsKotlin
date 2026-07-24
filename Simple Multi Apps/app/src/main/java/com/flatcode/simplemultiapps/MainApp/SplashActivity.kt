@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.utils.intent1
 import com.flatcode.simplemultiapps.databinding.ActivitySplashBinding
 
@@ -20,7 +19,6 @@ class SplashActivity : AppCompatActivity() {
     private val timeFinal = TIME_PER_MILLIS * timePerSecond
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)

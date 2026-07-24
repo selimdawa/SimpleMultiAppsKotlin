@@ -12,7 +12,6 @@ import androidx.core.view.WindowCompat
 import coil.load
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityWordpressDetailsBinding
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.wordpress.utils.isNetworkAvailable
 import com.flatcode.simplemultiapps.wordpress.model.Media
 import com.flatcode.simplemultiapps.wordpress.sqlite.PostDB
@@ -31,7 +30,6 @@ class WordpressDetailsActivity : AppCompatActivity() {
     private var isItemSelected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         binding = ActivityWordpressDetailsBinding.inflate(layoutInflater)
 

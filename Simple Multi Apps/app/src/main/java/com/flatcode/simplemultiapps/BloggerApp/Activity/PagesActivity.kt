@@ -12,7 +12,6 @@ import com.flatcode.simplemultiapps.bloggerapp.adapter.PagesAdapter
 import com.flatcode.simplemultiapps.bloggerapp.model.Page
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.databinding.ActivityBloggerPagesBinding
 import org.json.JSONObject
 
@@ -26,7 +25,6 @@ class PagesActivity : AppCompatActivity() {
     val context: Context = this@PagesActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityBloggerPagesBinding.inflate(layoutInflater)
         setContentView(binding.root)

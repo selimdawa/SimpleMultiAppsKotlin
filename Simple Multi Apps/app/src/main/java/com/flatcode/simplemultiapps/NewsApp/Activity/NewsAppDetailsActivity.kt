@@ -8,7 +8,6 @@ import androidx.core.os.BundleCompat
 import com.flatcode.simplemultiapps.newsapp.model.NewsHeadlines
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.utils.loadImage
 import com.flatcode.simplemultiapps.databinding.ActivityNewsAppDetailsBinding
 
@@ -21,7 +20,6 @@ class NewsAppDetailsActivity : AppCompatActivity() {
     private val context: Context = this@NewsAppDetailsActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityNewsAppDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)

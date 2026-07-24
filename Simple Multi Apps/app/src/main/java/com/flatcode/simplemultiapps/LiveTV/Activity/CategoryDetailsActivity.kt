@@ -5,14 +5,13 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.flatcode.simplemultiapps.databinding.ActivityLiveTvCategoryDetailsBinding
 import com.flatcode.simplemultiapps.livetv.adapter.ChannelAdapter
 import com.flatcode.simplemultiapps.livetv.model.Category
 import com.flatcode.simplemultiapps.livetv.model.Channel
 import com.flatcode.simplemultiapps.livetv.service.ChannelDataService
 import com.flatcode.simplemultiapps.livetv.service.ChannelDataService.OnDataResponse
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.THEME
-import com.flatcode.simplemultiapps.databinding.ActivityLiveTvCategoryDetailsBinding
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -30,7 +29,6 @@ class CategoryDetailsActivity : AppCompatActivity() {
     private var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityLiveTvCategoryDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -39,12 +37,12 @@ class CategoryDetailsActivity : AppCompatActivity() {
         categoryName = intent.getStringExtra("categoryName")
 
         val extractedName = if (categoryName.isNullOrEmpty()) {
-            @Suppress("DEPRECATION")
-            category = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getSerializableExtra("category", Category::class.java)
-            } else {
-                intent.getSerializableExtra("category") as? Category
-            }
+            @Suppress("DEPRECATION") category =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    intent.getSerializableExtra("category", Category::class.java)
+                } else {
+                    intent.getSerializableExtra("category") as? Category
+                }
             category?.name
         } else {
             categoryName
@@ -56,7 +54,8 @@ class CategoryDetailsActivity : AppCompatActivity() {
             back.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
         }
 
-        url = "http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=$extractedName"
+        url =
+            "http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=$extractedName"
 
         adapter = ChannelAdapter("details")
         binding.recyclerView.adapter = adapter

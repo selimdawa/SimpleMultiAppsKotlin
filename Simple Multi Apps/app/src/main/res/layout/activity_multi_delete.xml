@@ -9,7 +9,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?tickColor"
+        android:background="?mc_tick"
         tools:listitem="@layout/item_main"
         tools:ignore="MissingConstraints" />
 

@@ -13,7 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.videoplayer.fragment.FilesFragment
 import com.flatcode.simplemultiapps.videoplayer.fragment.FolderFragment
 import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
@@ -39,7 +38,6 @@ class VideoPlayerActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityVideoPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)

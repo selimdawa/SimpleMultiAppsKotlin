@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.utils.loadImage
 import com.flatcode.simplemultiapps.databinding.ActivityImageInfoBinding
 
@@ -16,7 +15,6 @@ class ImageInfoActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(this)
         super.onCreate(savedInstanceState)
 
         _binding = ActivityImageInfoBinding.inflate(layoutInflater)

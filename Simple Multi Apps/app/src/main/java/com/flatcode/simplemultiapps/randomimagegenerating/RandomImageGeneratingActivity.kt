@@ -10,7 +10,6 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.utils.intent1
 import com.flatcode.simplemultiapps.utils.loadImage
 import com.flatcode.simplemultiapps.databinding.ActivityRandomImageGeneratingBinding
@@ -22,7 +21,6 @@ class RandomImageGeneratingActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(this)
         super.onCreate(savedInstanceState)
         _binding = ActivityRandomImageGeneratingBinding.inflate(layoutInflater)
         setContentView(binding.root)

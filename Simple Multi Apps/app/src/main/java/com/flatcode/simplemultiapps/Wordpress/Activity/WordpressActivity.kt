@@ -8,7 +8,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityWordpressBinding
-import com.flatcode.simplemultiapps.utils.THEME
 import com.flatcode.simplemultiapps.wordpress.utils.isNetworkAvailable
 import com.flatcode.simplemultiapps.utils.intent1
 import com.flatcode.simplemultiapps.wordpress.adapter.WordpressAdapter
@@ -29,7 +28,6 @@ class WordpressActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        THEME.setThemeOfApp(context)
         super.onCreate(savedInstanceState)
         _binding = ActivityWordpressBinding.inflate(layoutInflater)
         setContentView(binding.root)

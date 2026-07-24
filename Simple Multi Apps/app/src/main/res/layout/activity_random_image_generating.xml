@@ -45,7 +45,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?background"
+                android:background="?mc_bg"
                 android:orientation="horizontal"
                 android:padding="10sp">
 
