@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.decode.VideoFrameDecoder
 import coil.load
 import com.flatcode.simplemultiapps.utils.formatDuration
 import com.flatcode.simplemultiapps.utils.intent1
@@ -32,7 +33,7 @@ class VideoFolderAdapter(
             val durationMs = currentVideo.duration?.toLongOrNull() ?: 0L
             duration.text = durationMs.formatDuration()
 
-            currentItem.path?.let { path ->
+            currentVideo.path?.let { path ->
                 image.load(File(path)) {
                     decoderFactory { result, options, _ ->
                         VideoFrameDecoder(result.source, options)
