@@ -4,9 +4,7 @@ plugins {
 
 android {
     namespace = "com.flatcode.simplemultiapps"
-    compileSdk {
-        version = release(37)
-    }
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.flatcode.simplemultiapps"
@@ -31,8 +29,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -68,7 +65,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.multicolors)                   //Theme Colors
     //Image
-    implementation(libs.coil)                          //Coil Image
+    implementation(libs.coil)                              //Coil Image
+    implementation(libs.coilVideo)                         //Coil Video
     //Pdf Reader
     implementation(libs.appintro)
     implementation(libs.android.pdf.viewer)

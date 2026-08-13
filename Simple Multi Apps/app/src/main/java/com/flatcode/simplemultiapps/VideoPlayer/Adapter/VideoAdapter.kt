@@ -31,8 +31,12 @@ class VideoAdapter(
             val durationMs = currentVideo.duration?.toLongOrNull() ?: 0L
             duration.text = durationMs.formatDuration()
 
-            currentVideo.path?.let { path ->
-                image.load(File(path))
+            currentItem.path?.let { path ->
+                image.load(File(path)) {
+                    decoderFactory { result, options, _ ->
+                        VideoFrameDecoder(result.source, options)
+                    }
+                }
             }
 
             root.setOnClickListener {
