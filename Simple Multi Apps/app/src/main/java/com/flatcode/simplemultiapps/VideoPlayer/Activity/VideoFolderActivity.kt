@@ -3,12 +3,19 @@ package com.flatcode.simplemultiapps.videoplayer.activity
 import android.content.Context
 import android.os.Bundle
 import android.provider.MediaStore
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.videoplayer.adapter.VideoFolderAdapter
 import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
 import com.flatcode.simplemultiapps.databinding.ActivityVideoFolderBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class VideoFolderActivity : AppCompatActivity() {
 
@@ -21,20 +28,31 @@ class VideoFolderActivity : AppCompatActivity() {
     private var list = ArrayList<VideoFiles?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         _binding = ActivityVideoFolderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        myFolderName = intent.getStringExtra("folderName")
-        myFolderName?.let { folder ->
-            list = getAllVideos(context, folder)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
 
-        if (list.isNotEmpty()) {
-            adapter = VideoFolderAdapter(context, list)
-            binding.recyclerView.apply {
-                adapter = this@VideoFolderActivity.adapter
-                layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        myFolderName = intent.getStringExtra("folderName")
+        myFolderName?.let { folder ->
+            lifecycleScope.launch {
+                val videos = withContext(Dispatchers.IO) {
+                    getAllVideos(context, folder)
+                }
+                list = videos
+                if (list.isNotEmpty()) {
+                    adapter = VideoFolderAdapter(context, list)
+                    binding.recyclerView.apply {
+                        adapter = this@VideoFolderActivity.adapter
+                        layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+                    }
+                }
             }
         }
     }

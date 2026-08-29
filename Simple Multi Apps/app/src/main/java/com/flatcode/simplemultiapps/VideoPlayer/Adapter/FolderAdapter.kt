@@ -15,6 +15,14 @@ class FolderAdapter(
     private val folderName: ArrayList<String>,
 ) : RecyclerView.Adapter<FolderAdapter.ViewHolder>() {
 
+    private val folderFileCounts: Map<String, Int>
+
+    init {
+        folderFileCounts = videoFiles?.filterNotNull()?.groupBy { file ->
+            file.path?.substringBeforeLast('/', "") ?: ""
+        }?.mapValues { it.value.size } ?: emptyMap()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             ItemVideoPlayerFolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -26,7 +34,7 @@ class FolderAdapter(
 
         with(holder.binding) {
             name.text = currentPath.substringAfterLast('/')
-            count.text = numberOfFiles(currentPath).toString()
+            count.text = (folderFileCounts[currentPath] ?: 0).toString()
 
             root.setOnClickListener {
                 context.intent1(VideoFolderActivity::class.java) {
@@ -37,14 +45,6 @@ class FolderAdapter(
     }
 
     override fun getItemCount(): Int = folderName.size
-
-    private fun numberOfFiles(folderName: String): Int {
-        if (videoFiles == null) return 0
-        return videoFiles.count { file ->
-            val path = file?.path ?: return@count false
-            path.substringBeforeLast('/', "").endsWith(folderName)
-        }
-    }
 
     class ViewHolder(val binding: ItemVideoPlayerFolderBinding) :
         RecyclerView.ViewHolder(binding.root)

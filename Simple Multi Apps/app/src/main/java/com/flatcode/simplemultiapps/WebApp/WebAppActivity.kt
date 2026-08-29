@@ -15,9 +15,12 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.utils.intent1
@@ -32,9 +35,16 @@ class WebAppActivity : AppCompatActivity() {
     private var alertDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         _binding = ActivityWebAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         binding.toolbar.nameSpace.setText(R.string.web_app)
 

@@ -7,9 +7,12 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.flatcode.simplemultiapps.newsapp.OnFetchDataListener
 import com.flatcode.simplemultiapps.newsapp.RequestManager
 import com.flatcode.simplemultiapps.newsapp.SelectListener
@@ -46,9 +49,16 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         _binding = ActivityNewsAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

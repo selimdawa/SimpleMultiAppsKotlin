@@ -2,7 +2,10 @@ package com.flatcode.simplemultiapps.livetv.activity
 
 import android.content.Context
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.flatcode.simplemultiapps.livetv.adapter.ChannelAdapter
 import com.flatcode.simplemultiapps.livetv.model.Channel
@@ -34,9 +37,16 @@ class LiveTVActivity : AppCompatActivity() {
     val context: Context = this@LiveTVActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         _binding = ActivityLiveTvBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         binding.toolbar.nameSpace.setText(R.string.live_tv)
         service = ChannelDataService(this)

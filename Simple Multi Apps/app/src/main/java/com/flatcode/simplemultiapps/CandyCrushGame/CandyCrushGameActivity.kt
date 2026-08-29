@@ -8,8 +8,11 @@ import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityCandyCrushGameBinding
 import kotlin.math.floor
@@ -38,9 +41,16 @@ class CandyCrushGameActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         _binding = ActivityCandyCrushGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         binding.toolbar.nameSpace.text = getString(R.string.candy_crush_game)
 

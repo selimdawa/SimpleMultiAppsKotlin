@@ -3,7 +3,10 @@ package com.flatcode.simplemultiapps.wordpress.activity
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.wordpress.adapter.WordpressAdapter
 import com.flatcode.simplemultiapps.wordpress.model.Post
@@ -25,9 +28,16 @@ class WordpressFavoritesActivity : AppCompatActivity() {
     private var postList: List<Post?>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         binding = ActivityWordpressFavoritesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         binding.toolbar.back.visibility = View.VISIBLE
         binding.toolbar.back.setOnClickListener {
@@ -79,7 +89,7 @@ class WordpressFavoritesActivity : AppCompatActivity() {
             })
         } else {
             binding.progressBar.visibility = View.GONE
-            Snackbar.make(binding.item, R.string.connect_internet, Snackbar.LENGTH_INDEFINITE).show()
+            Snackbar.make(binding.main, R.string.connect_internet, Snackbar.LENGTH_INDEFINITE).show()
         }
     }
 

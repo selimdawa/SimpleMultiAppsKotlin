@@ -9,10 +9,17 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.flatcode.simplemultiapps.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.flatcode.simplemultiapps.videoplayer.fragment.FilesFragment
 import com.flatcode.simplemultiapps.videoplayer.fragment.FolderFragment
 import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
@@ -30,17 +37,29 @@ class VideoPlayerActivity : AppCompatActivity() {
     ) { isGranted ->
         if (isGranted) {
             Toast.makeText(context, R.string.permission_granted, Toast.LENGTH_SHORT).show()
-            videoFiles = getAllVideos(context)
-            loadFolderFragment()
+            loadData()
         } else {
             Toast.makeText(context, R.string.permission_denied, Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         _binding = ActivityVideoPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            insets
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNavView) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(0, 0, 0, systemBars.bottom)
+            insets
+        }
 
         checkAndRequestPermissions()
 
@@ -48,16 +67,16 @@ class VideoPlayerActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.folders -> {
                     loadFolderFragment()
-                    item.isChecked = true
+                    true
                 }
                 R.id.files -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.constraint, FilesFragment())
                         .commit()
-                    item.isChecked = true
+                    true
                 }
+                else -> false
             }
-            false
         }
     }
 
@@ -72,7 +91,16 @@ class VideoPlayerActivity : AppCompatActivity() {
         if (ContextCompat.checkSelfPermission(this, videoPermission) != PackageManager.PERMISSION_GRANTED) {
             videoPermissionLauncher.launch(videoPermission)
         } else {
-            videoFiles = getAllVideos(context)
+            loadData()
+        }
+    }
+
+    private fun loadData() {
+        lifecycleScope.launch {
+            val videos = withContext(Dispatchers.IO) {
+                getAllVideos(context)
+            }
+            videoFiles = videos
             loadFolderFragment()
         }
     }
@@ -84,6 +112,7 @@ class VideoPlayerActivity : AppCompatActivity() {
     }
 
     private fun getAllVideos(context: Context): ArrayList<VideoFiles?> {
+        folderList?.clear()
         val tempVideoFiles = ArrayList<VideoFiles?>()
         val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(

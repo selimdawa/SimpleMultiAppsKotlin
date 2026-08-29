@@ -4,7 +4,10 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.flatcode.simplemultiapps.databinding.ActivityLiveTvCategoryDetailsBinding
 import com.flatcode.simplemultiapps.livetv.adapter.ChannelAdapter
 import com.flatcode.simplemultiapps.livetv.model.Category
@@ -29,9 +32,16 @@ class CategoryDetailsActivity : AppCompatActivity() {
     private var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         _binding = ActivityLiveTvCategoryDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         dataService = ChannelDataService(this)
         categoryName = intent.getStringExtra("categoryName")

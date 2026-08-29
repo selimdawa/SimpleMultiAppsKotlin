@@ -6,9 +6,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import coil.load
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityWordpressDetailsBinding
@@ -30,8 +33,15 @@ class WordpressDetailsActivity : AppCompatActivity() {
     private var isItemSelected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         binding = ActivityWordpressDetailsBinding.inflate(layoutInflater)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(binding.root)

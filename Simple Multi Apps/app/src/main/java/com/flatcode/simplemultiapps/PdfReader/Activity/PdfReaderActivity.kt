@@ -26,6 +26,7 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts.OpenDocument
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.appcompat.app.AlertDialog
@@ -33,6 +34,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.os.BundleCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
@@ -91,9 +94,16 @@ class PdfReaderActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         viewBinding = ActivityPdfReaderBinding.inflate(layoutInflater)
         setContentView(viewBinding!!.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(viewBinding!!.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            insets
+        }
 
         Constants.THUMBNAIL_RATIO = 1f
         setBottomBarListeners()

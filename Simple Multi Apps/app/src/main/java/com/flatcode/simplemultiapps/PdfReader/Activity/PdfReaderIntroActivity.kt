@@ -3,6 +3,7 @@ package com.flatcode.simplemultiapps.pdfreader.activity
 import android.Manifest
 import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.fragment.app.Fragment
 import com.flatcode.simplemultiapps.R
 import com.github.paolorotolo.appintro.AppIntro
@@ -14,6 +15,7 @@ class PdfReaderIntroActivity : AppIntro() {
     private val backgroundColor = Color.parseColor("#000000")
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         val sliderPage = SliderPage().apply {

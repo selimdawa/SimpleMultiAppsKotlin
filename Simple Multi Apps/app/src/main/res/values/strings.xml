@@ -62,7 +62,7 @@
     <string name="saved_to_download">File saved to Download folder.</string>
     <string name="save_to_download_failed">Couldn\'t save file to Download folder.</string>
     <string name="intro">Replay Intro</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="title_permission">Storage Permissions</string>
     <string name="description__permission">You will now be prompted to allow the app to access the phone\'s storage. Without this permission, documents might fail to open in some cases.</string>
     <string name="share_file">Share File</string>
@@ -100,8 +100,8 @@
     <string name="temperament">Temperament</string>
     <string name="wikipedia">Wikipedia</string>
     <string name="more_info">More Info</string>
-    <string name="no_more_posts">No more posts...</string>
-    <string name="reached_end_of_page">Reached end of page...</string>
+    <string name="no_more_posts">No more posts…</string>
+    <string name="reached_end_of_page">Reached end of page…</string>
     <string name="selected">%1$s Selected</string>
     <string name="you_clicked">You Clicked %1$s</string>
     <string name="error">Error!</string>

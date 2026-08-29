@@ -3,7 +3,10 @@ package com.flatcode.simplemultiapps.mainapp
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.bloggerapp.activity.BloggerAppActivity
 import com.flatcode.simplemultiapps.candycrushgame.CandyCrushGameActivity
@@ -29,9 +32,16 @@ class MainActivity : AppCompatActivity() {
     val context: Context = this@MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         binding.recyclerView.setHasFixedSize(true)
         adapter = MainAdapter(context, list)

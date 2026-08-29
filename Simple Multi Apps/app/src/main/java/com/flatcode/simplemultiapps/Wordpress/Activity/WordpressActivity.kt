@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityWordpressBinding
 import com.flatcode.simplemultiapps.wordpress.utils.isNetworkAvailable
@@ -28,16 +31,23 @@ class WordpressActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         _binding = ActivityWordpressBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
         binding.toolbar.nameSpace.setText(R.string.wordpress_app)
 
-        binding.swipeRefresh.setOnRefreshListener {
-            binding.swipeRefresh.isRefreshing = true
+        binding.main.setOnRefreshListener {
+            binding.main.isRefreshing = true
             handler.postDelayed({
-                binding.swipeRefresh.isRefreshing = false
+                binding.main.isRefreshing = false
                 setListContent(false)
             }, 3000)
         }
@@ -55,7 +65,7 @@ class WordpressActivity : AppCompatActivity() {
             val call: Call<List<Post?>?>? = api.getPosts()
 
             if (call == null) {
-                binding.swipeRefresh.isRefreshing = false
+                binding.main.isRefreshing = false
                 return
             }
 
@@ -81,9 +91,9 @@ class WordpressActivity : AppCompatActivity() {
                 }
             })
         } else {
-            binding.swipeRefresh.isRefreshing = false
+            binding.main.isRefreshing = false
             Snackbar.make(
-                binding.swipeRefresh, R.string.connect_internet, Snackbar.LENGTH_INDEFINITE
+                binding.main, R.string.connect_internet, Snackbar.LENGTH_INDEFINITE
             ).show()
         }
     }
