@@ -46,10 +46,13 @@ class WordpressActivity : AppCompatActivity() {
 
         binding.main.setOnRefreshListener {
             binding.main.isRefreshing = true
-            handler.postDelayed({
-                binding.main.isRefreshing = false
-                setListContent(false)
-            }, 3000)
+            handler.postDelayed(
+                {
+                    binding.main.isRefreshing = false
+                    setListContent(withProgress = false)
+                },
+                3000,
+            )
         }
 
         binding.toolbar.favorites.setOnClickListener {

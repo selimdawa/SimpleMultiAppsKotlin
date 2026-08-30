@@ -1,6 +1,5 @@
 package com.flatcode.simplemultiapps.wordpress.activity
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -23,7 +22,6 @@ import retrofit2.Response
 class WordpressFavoritesActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWordpressFavoritesBinding
-    private val context: Context = this
     private var sqLitePostList: List<Post?>? = null
     private var postList: List<Post?>? = null
 
@@ -46,7 +44,7 @@ class WordpressFavoritesActivity : AppCompatActivity() {
         binding.toolbar.nameSpace.setText(R.string.favorites)
 
         sqLitePostList = PostDB.getInstance(applicationContext)?.allDbPosts
-        setFavListContent(true, sqLitePostList)
+        setFavListContent(withProgress = true, favPostList = sqLitePostList)
     }
 
     fun setFavListContent(withProgress: Boolean, favPostList: List<Post?>?) {
@@ -63,10 +61,12 @@ class WordpressFavoritesActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.VISIBLE
             }
 
-            call.enqueue(object : Callback<List<Post?>?> {
-                override fun onResponse(
-                    call: Call<List<Post?>?>, response: Response<List<Post?>?>
-                ) {
+            call.enqueue(
+                object : Callback<List<Post?>?> {
+                    override fun onResponse(
+                        call: Call<List<Post?>?>,
+                        response: Response<List<Post?>?>,
+                    ) {
                     binding.progressBar.visibility = View.GONE
                     val myList = ArrayList<Post>()
                     postList = response.body()
@@ -96,6 +96,6 @@ class WordpressFavoritesActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         sqLitePostList = PostDB.getInstance(applicationContext)?.allDbPosts
-        setFavListContent(true, sqLitePostList)
+        setFavListContent(withProgress = true, favPostList = sqLitePostList)
     }
 }

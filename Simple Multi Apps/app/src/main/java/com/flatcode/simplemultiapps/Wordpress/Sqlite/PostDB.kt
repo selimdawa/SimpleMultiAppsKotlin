@@ -11,6 +11,7 @@ class PostDB private constructor(context: Context) {
 
     private val dbHelper = TodoItemDbHelper(context.applicationContext)
 
+    @Suppress("SpellCheckingInspection")
     object PostItem : BaseColumns {
         const val TABLE_NAME = "post"
         const val COLNAME_POSTID = "postID"
@@ -34,7 +35,11 @@ class PostDB private constructor(context: Context) {
                 db.query(
                     PostItem.TABLE_NAME,
                     arrayOf(BaseColumns._ID, PostItem.COLNAME_POSTID, PostItem.COLNAME_TITLE, PostItem.COLNAME_EXCERPT, PostItem.COLNAME_ISFAV),
-                    null, null, null, null, null
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
                 ).use { cursor ->
                     while (cursor.moveToNext()) {
                         postList.add(
@@ -79,22 +84,6 @@ class PostDB private constructor(context: Context) {
                 put(PostItem.COLNAME_ISFAV, if (isFavorite) 1 else 0)
             }
             db.insert(PostItem.TABLE_NAME, null, values)
-        }
-    }
-
-    fun update(post: Post): Int {
-        return dbHelper.writableDatabase.use { db ->
-            val values = ContentValues().apply {
-                put(PostItem.COLNAME_TITLE, post.wpTitle)
-                put(PostItem.COLNAME_EXCERPT, post.wpExcerpt)
-                put(PostItem.COLNAME_ISFAV, if (post.isFavorite) 1 else 0)
-            }
-            db.update(
-                PostItem.TABLE_NAME,
-                values,
-                "${BaseColumns._ID} = ?",
-                arrayOf(post.id.toString())
-            )
         }
     }
 

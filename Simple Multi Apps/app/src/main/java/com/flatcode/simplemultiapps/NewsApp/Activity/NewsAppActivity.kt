@@ -60,11 +60,14 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
             insets
         }
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                finish()
-            }
-        })
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(enabled = true) {
+                override fun handleOnBackPressed() {
+                    finish()
+                }
+            },
+        )
 
         with(binding.toolbar) {
             back.visibility = View.VISIBLE

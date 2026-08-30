@@ -1,16 +1,15 @@
 package com.flatcode.simplemultiapps.multipledelete.activity
 
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.flatcode.simplemultiapps.multipledelete.adapter.MultiDeleteAdapter
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityMultiDeleteBinding
+import com.flatcode.simplemultiapps.multipledelete.adapter.MultiDeleteAdapter
 
 class MultiDeleteActivity : AppCompatActivity() {
 
@@ -21,7 +20,6 @@ class MultiDeleteActivity : AppCompatActivity() {
     private var adapter: MultiDeleteAdapter? = null
 
     private val activity: Activity = this@MultiDeleteActivity
-    private val context: Context = this@MultiDeleteActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()

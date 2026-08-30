@@ -99,13 +99,13 @@ class CandyCrushGameActivity : AppCompatActivity() {
 
     private fun checkRowForThree() {
         for (i in 0..61) {
-            val chooseCandy = candy[i].tag as Int
+            val chosenCandy = candy[i].tag as Int
             val isBlank = candy[i].tag as Int == notCandy
             val notValid = arrayOf(6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55)
             val list = listOf(*notValid)
             if (!list.contains(i)) {
                 var x = i
-                if (candy[x++].tag as Int == chooseCandy && !isBlank && candy[x++].tag as Int == chooseCandy && candy[x].tag as Int == chooseCandy) {
+                if (candy[x++].tag as Int == chosenCandy && !isBlank && candy[x++].tag as Int == chosenCandy && candy[x].tag as Int == chosenCandy) {
                     score += 3
                     binding.toolbarScore.scoreList.text = score.toString()
                     candy[x].setImageResource(notCandy)
@@ -124,10 +124,10 @@ class CandyCrushGameActivity : AppCompatActivity() {
 
     private fun checkColumnForThree() {
         for (i in 0..46) {
-            val choosedCandy = candy[i].tag as Int
+            val chosenCandy = candy[i].tag as Int
             val isBlank = candy[i].tag as Int == notCandy
             var x = i
-            if (candy[x].tag as Int == choosedCandy && !isBlank && candy[x + noOfBlocks].tag as Int == choosedCandy && candy[x + 2 * noOfBlocks].tag as Int == choosedCandy) {
+            if (candy[x].tag as Int == chosenCandy && !isBlank && candy[x + noOfBlocks].tag as Int == chosenCandy && candy[x + 2 * noOfBlocks].tag as Int == chosenCandy) {
                 score += 3
                 binding.toolbarScore.scoreList.text = score.toString()
                 candy[x].setImageResource(notCandy)

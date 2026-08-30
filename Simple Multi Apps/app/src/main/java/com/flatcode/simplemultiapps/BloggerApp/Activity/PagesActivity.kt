@@ -25,7 +25,7 @@ class PagesActivity : AppCompatActivity() {
 
     private val pages = ArrayList<Page>()
     private var adapter: PagesAdapter? = null
-    val context: Context = this@PagesActivity
+    private val context: Context = this@PagesActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -51,12 +51,13 @@ class PagesActivity : AppCompatActivity() {
     private fun loadPages() {
         binding.progressBar.visibility = View.VISIBLE
 
-        val url = "https://googleapis.com{DATA.BLOG_ID}/pages?key=${DATA.BLOGGER_API}"
+        val url = "https://www.googleapis.com/blogger/v3/blogs/${DATA.BLOG_ID}/pages?key=${DATA.BLOGGER_API}"
 
         val stringRequest = StringRequest(Request.Method.GET, url, { response ->
             binding.progressBar.visibility = View.GONE
+            if (response.isNullOrEmpty()) return@StringRequest
             try {
-                val jsonObject = JSONObject(response ?: DATA.EMPTY)
+                val jsonObject = JSONObject(response)
                 val jsonArray = jsonObject.getJSONArray("items")
                 pages.clear()
 
@@ -68,13 +69,13 @@ class PagesActivity : AppCompatActivity() {
                         val content = jsonObject1.getString("content")
                         val published = jsonObject1.getString("published")
                         val updated = jsonObject1.getString("updated")
-                        val url_ = jsonObject1.getString("url")
+                        val pageUrl = jsonObject1.getString("url")
                         val selfLink = jsonObject1.getString("selfLink")
                         val displayName = jsonObject1.getJSONObject("author").getString("displayName")
 
                         val page = Page(
                             displayName, content, id, published,
-                            selfLink, title, updated, url_
+                            selfLink, title, updated, pageUrl
                         )
                         pages.add(page)
                     } catch (e: Exception) {

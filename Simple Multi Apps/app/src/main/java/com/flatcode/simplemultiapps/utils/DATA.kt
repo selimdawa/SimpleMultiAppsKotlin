@@ -1,13 +1,9 @@
 package com.flatcode.simplemultiapps.utils
 
+@Suppress("SpellCheckingInspection")
 object DATA {
     //Database
     const val EMPTY = ""
-    const val SPACE = " "
-    const val IMAGE = "image"
-    const val TITLE = "title"
-    const val NULL = "null"
-    const val DOT = "."
     const val DATA = "data"
     const val UNKNOWN = "Unknown"
     var searchStatus = false

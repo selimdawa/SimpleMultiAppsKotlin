@@ -31,8 +31,8 @@ fun ImageView.loadImage(url: String?) {
 }
 
 fun Long.formatDuration(): String {
-    val minutes = this / 1000 / 60
-    val seconds = this / 1000 % 60
+    val minutes = (this / 1000) / 60
+    val seconds = (this / 1000) % 60
     return String.format(Locale.US, "%d:%02d", minutes, seconds)
 }
 

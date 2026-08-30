@@ -83,7 +83,7 @@ class BloggerAppActivity : AppCompatActivity() {
 
         url = when (nextToken) {
             DATA.EMPTY -> {
-                "https://googleapis.com{DATA.BLOG_ID}/posts/search?q=$query&key=${DATA.BLOGGER_API}"
+                "https://www.googleapis.com/blogger/v3/blogs/${DATA.BLOG_ID}/posts/search?q=$query&key=${DATA.BLOGGER_API}"
             }
 
             "end" -> {
@@ -93,14 +93,15 @@ class BloggerAppActivity : AppCompatActivity() {
             }
 
             else -> {
-                "https://googleapis.com{DATA.BLOG_ID}/posts/search?q=$query&pageToken=$nextToken&key=${DATA.BLOGGER_API}"
+                "https://www.googleapis.com/blogger/v3/blogs/${DATA.BLOG_ID}/posts/search?q=$query&pageToken=$nextToken&key=${DATA.BLOGGER_API}"
             }
         }
 
         val stringRequest = StringRequest(Request.Method.GET, url, { response ->
             binding.progressBar.visibility = View.GONE
+            if (response.isNullOrEmpty()) return@StringRequest
             try {
-                val jsonObject = JSONObject(response ?: DATA.EMPTY)
+                val jsonObject = JSONObject(response)
                 nextToken = try {
                     jsonObject.getString("nextPageToken")
                 } catch (_: Exception) {
@@ -157,7 +158,7 @@ class BloggerAppActivity : AppCompatActivity() {
 
         url = when (nextToken) {
             DATA.EMPTY -> {
-                "https://googleapis.com{DATA.BLOG_ID}/posts?maxResults=${DATA.MAX_POST_RESULTS}&key=${DATA.BLOGGER_API}"
+                "https://www.googleapis.com/blogger/v3/blogs/${DATA.BLOG_ID}/posts?maxResults=${DATA.MAX_POST_RESULTS}&key=${DATA.BLOGGER_API}"
             }
 
             "end" -> {
@@ -167,14 +168,15 @@ class BloggerAppActivity : AppCompatActivity() {
             }
 
             else -> {
-                "https://googleapis.com{DATA.BLOG_ID}/posts?maxResults=${DATA.MAX_POST_RESULTS}&pageToken=$nextToken&key=${DATA.BLOGGER_API}"
+                "https://www.googleapis.com/blogger/v3/blogs/${DATA.BLOG_ID}/posts?maxResults=${DATA.MAX_POST_RESULTS}&pageToken=$nextToken&key=${DATA.BLOGGER_API}"
             }
         }
 
         val stringRequest = StringRequest(Request.Method.GET, url, { response ->
             binding.progressBar.visibility = View.GONE
+            if (response.isNullOrEmpty()) return@StringRequest
             try {
-                val jsonObject = JSONObject(response ?: DATA.EMPTY)
+                val jsonObject = JSONObject(response)
                 nextToken = try {
                     jsonObject.getString("nextPageToken")
                 } catch (_: Exception) {

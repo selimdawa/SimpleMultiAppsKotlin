@@ -1,3 +1,4 @@
+@file:Suppress("SpellCheckingInspection")
 package com.flatcode.simplemultiapps.livetv.activity
 
 import android.content.Context
@@ -47,12 +48,13 @@ class CategoryDetailsActivity : AppCompatActivity() {
         categoryName = intent.getStringExtra("categoryName")
 
         val extractedName = if (categoryName.isNullOrEmpty()) {
-            @Suppress("DEPRECATION") category =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    intent.getSerializableExtra("category", Category::class.java)
-                } else {
-                    intent.getSerializableExtra("category") as? Category
-                }
+            @Suppress("DEPRECATION")
+            val serializable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getSerializableExtra("category", Category::class.java)
+            } else {
+                intent.getSerializableExtra("category") as? Category
+            }
+            category = serializable
             category?.name
         } else {
             categoryName

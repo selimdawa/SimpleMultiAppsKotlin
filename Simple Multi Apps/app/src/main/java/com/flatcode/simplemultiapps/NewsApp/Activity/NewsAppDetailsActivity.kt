@@ -1,6 +1,5 @@
 package com.flatcode.simplemultiapps.newsapp.activity
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
@@ -20,7 +19,6 @@ class NewsAppDetailsActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private var headlines: NewsHeadlines? = null
-    private val context: Context = this@NewsAppDetailsActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -34,11 +32,14 @@ class NewsAppDetailsActivity : AppCompatActivity() {
             insets
         }
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                finish()
-            }
-        })
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(enabled = true) {
+                override fun handleOnBackPressed() {
+                    finish()
+                }
+            },
+        )
 
         intent.extras?.let { bundle ->
             headlines = BundleCompat.getSerializable(bundle, DATA.DATA, NewsHeadlines::class.java)

@@ -1,3 +1,4 @@
+@file:Suppress("SpellCheckingInspection")
 package com.flatcode.simplemultiapps.livetv.activity
 
 import android.content.Context

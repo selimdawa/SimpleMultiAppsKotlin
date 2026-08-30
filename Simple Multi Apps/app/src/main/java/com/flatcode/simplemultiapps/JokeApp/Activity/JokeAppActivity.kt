@@ -1,6 +1,5 @@
 package com.flatcode.simplemultiapps.jokeapp.activity
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +17,6 @@ class JokeAppActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private var catAdapter: JokeCategoriesAdapter? = null
-    private val context: Context = this@JokeAppActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()

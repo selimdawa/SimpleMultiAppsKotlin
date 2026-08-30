@@ -11,6 +11,9 @@ open class OnSwipeListener(context: Context?) : View.OnTouchListener {
     var gestureDetector: GestureDetector
 
     override fun onTouch(v: View, event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_UP) {
+            v.performClick()
+        }
         return gestureDetector.onTouchEvent(event)
     }
 

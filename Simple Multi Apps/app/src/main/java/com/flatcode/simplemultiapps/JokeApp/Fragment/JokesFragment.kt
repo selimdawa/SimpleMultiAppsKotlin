@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.flatcode.simplemultiapps.databinding.FragmentJokesBinding
 import com.flatcode.simplemultiapps.jokeapp.adapter.JokeAdapter
 import com.flatcode.simplemultiapps.jokeapp.model.Joke
-import com.flatcode.simplemultiapps.databinding.FragmentJokesBinding
 import org.json.JSONException
 
 class JokesFragment : Fragment() {

@@ -62,11 +62,12 @@ class PostDetailsActivity : AppCompatActivity() {
     }
 
     private fun loadPostDetails() {
-        val url = "https://googleapis.com{DATA.BLOG_ID}/posts/$postId?key=${DATA.BLOGGER_API}"
+        val url = "https://www.googleapis.com/blogger/v3/blogs/${DATA.BLOG_ID}/posts/$postId?key=${DATA.BLOGGER_API}"
 
         val stringRequest = StringRequest(Request.Method.GET, url, { response ->
+            if (response.isNullOrEmpty()) return@StringRequest
             try {
-                val jsonObject = JSONObject(response ?: DATA.EMPTY)
+                val jsonObject = JSONObject(response)
                 val title = jsonObject.getString("title")
                 val content = jsonObject.getString("content")
                 val published = jsonObject.getString("published")
@@ -106,7 +107,7 @@ class PostDetailsActivity : AppCompatActivity() {
     }
 
     private fun loadComments() {
-        val url = "https://googleapis.com{DATA.BLOG_ID}/posts/$postId/comments?key=${DATA.BLOGGER_API}"
+        val url = "https://www.googleapis.com/blogger/v3/blogs/${DATA.BLOG_ID}/posts/$postId/comments?key=${DATA.BLOGGER_API}"
 
         val stringRequest = StringRequest(Request.Method.GET, url,
             { response -> onResponse(response) }) { _: VolleyError? -> }

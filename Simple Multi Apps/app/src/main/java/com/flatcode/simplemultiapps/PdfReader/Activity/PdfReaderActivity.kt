@@ -76,7 +76,7 @@ class PdfReaderActivity : AppCompatActivity() {
     private var viewBinding: ActivityPdfReaderBinding? = null
 
     private val documentPickerLauncher = registerForActivityResult(
-        OpenDocument()
+        OpenDocument(),
     ) { selectedDocumentUri: Uri? -> openSelectedDocument(selectedDocumentUri) }
     private val saveToDownloadPermissionLauncher = registerForActivityResult(
         RequestPermission()
@@ -155,7 +155,7 @@ class PdfReaderActivity : AppCompatActivity() {
 
 
     fun shareFile() {
-        val sharingIntent: Intent = if (uri!!.scheme != null && uri!!.scheme!!.startsWith("http")) {
+        val sharingIntent: Intent = if ((uri!!.scheme != null) && uri!!.scheme!!.startsWith("http")) {
             createPlainTextShareIntent(getString(R.string.share_file), uri.toString())
         } else {
             createFileShareIntent(getString(R.string.share_file), pdfFileName, uri)
@@ -205,7 +205,7 @@ class PdfReaderActivity : AppCompatActivity() {
 
 
     fun configurePdfViewAndLoad(viewConfigurator: Configurator) {
-        if (!prefManager!!.getBoolean("pdftheme_pref", false)) {
+        if (!prefManager!!.getBoolean("pdf_theme_pref", false)) {
             viewBinding!!.pdfView.setBackgroundColor(Color.LTGRAY)
         } else {
             viewBinding!!.pdfView.setBackgroundColor(-0xdededf)
@@ -233,7 +233,7 @@ class PdfReaderActivity : AppCompatActivity() {
             .autoSpacing(prefManager!!.getBoolean("scroll_pref", false))
             .pageSnap(prefManager!!.getBoolean("snap_pref", false))
             .pageFling(prefManager!!.getBoolean("fling_pref", false))
-            .nightMode(prefManager!!.getBoolean("pdftheme_pref", false))
+            .nightMode(prefManager!!.getBoolean("pdf_theme_pref", false))
             .load()
     }
 
@@ -376,7 +376,7 @@ class PdfReaderActivity : AppCompatActivity() {
 
     private fun saveToDownloadFolderIfAllowed(fileContent: ByteArray?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q || activity.canWriteToDownloadFolder()) {
-            trySaveToDownloadFolder(fileContent, false)
+            trySaveToDownloadFolder(fileContent, showSuccessMessage = false)
         } else {
             saveToDownloadPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }

@@ -3,6 +3,7 @@ package com.flatcode.simplemultiapps.videoplayer.activity
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.widget.Toast
 import androidx.annotation.OptIn
@@ -16,16 +17,15 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
-import android.util.Log
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import com.flatcode.simplemultiapps.R
+import com.flatcode.simplemultiapps.databinding.ActivityPlayerBinding
 import com.flatcode.simplemultiapps.videoplayer.adapter.VideoAdapter.Companion.videoFile
 import com.flatcode.simplemultiapps.videoplayer.adapter.VideoFolderAdapter.Companion.folderVideoFile
 import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
-import com.flatcode.simplemultiapps.databinding.ActivityPlayerBinding
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -42,7 +42,11 @@ class PlayerActivity : AppCompatActivity() {
         override fun onPlayerError(error: PlaybackException) {
             super.onPlayerError(error)
             Log.e("PlayerActivity", "ExoPlayer Error: ${error.errorCodeName}", error)
-            Toast.makeText(context, "Playback Error: ${error.errorCodeName}\nCheck Logcat for details.", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                context,
+                "Playback Error: ${error.errorCodeName}\nCheck Logcat for details.",
+                Toast.LENGTH_LONG,
+            ).show()
         }
     }
 
@@ -57,7 +61,7 @@ class PlayerActivity : AppCompatActivity() {
 
         myFiles = if (sender == "FolderIsSending") folderVideoFile else videoFile
 
-        if (myFiles.isNullOrEmpty() || position == -1) {
+        if ((myFiles.isNullOrEmpty()) || (position == -1)) {
             Toast.makeText(context, R.string.data_not_found, Toast.LENGTH_SHORT).show()
             finish()
             return
@@ -70,22 +74,22 @@ class PlayerActivity : AppCompatActivity() {
         val video = myFiles?.getOrNull(position) ?: return
         val uri = (video.uriString ?: video.path)?.toUri() ?: return
 
-        val mediaCodecSelector = MediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
-            val decoders = MediaCodecSelector.DEFAULT.getDecoderInfos(
-                mimeType, requiresSecureDecoder, requiresTunnelingDecoder
-            )
-            if (Build.PRODUCT.contains("sdk_gphone") || Build.MODEL.contains("Emulator")) {
-                // On emulator, prefer Google's software decoders (c2.android.*) over goldfish/hardware ones
-                decoders.sortedBy { it.name.startsWith("c2.android") }.reversed()
-            } else {
-                decoders
+        val mediaCodecSelector =
+            MediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
+                val decoders = MediaCodecSelector.DEFAULT.getDecoderInfos(
+                    mimeType, requiresSecureDecoder, requiresTunnelingDecoder
+                )
+                if (Build.PRODUCT.contains("sdk_gphone") || Build.MODEL.contains("Emulator")) {
+                    // On emulator, prefer Google's software decoders (c2.android.*) over goldfish/hardware ones
+                    decoders.sortedBy { it.name.startsWith("c2.android") }.reversed()
+                } else {
+                    decoders
+                }
             }
-        }
 
-        val renderersFactory = DefaultRenderersFactory(context)
-            .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
-            .setMediaCodecSelector(mediaCodecSelector)
-            .setEnableDecoderFallback(true)
+        val renderersFactory =
+            DefaultRenderersFactory(context).setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
+                .setMediaCodecSelector(mediaCodecSelector).setEnableDecoderFallback(true)
 
         exoPlayer = ExoPlayer.Builder(context, renderersFactory).build().apply {
             addListener(playerListener)

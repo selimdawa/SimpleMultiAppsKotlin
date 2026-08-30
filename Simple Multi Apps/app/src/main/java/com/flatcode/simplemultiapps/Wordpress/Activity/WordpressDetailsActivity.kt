@@ -60,20 +60,22 @@ class WordpressDetailsActivity : AppCompatActivity() {
             val api: WPApiService = WordPressClient.apiService
             val call: Call<Media?>? = api.getPostThumbnail(featuredMedia)
 
-            call?.enqueue(object : Callback<Media?> {
-                override fun onResponse(call: Call<Media?>, response: Response<Media?>) {
-                    if (response.code() != 404) {
-                        val media: Media? = response.body()
-                        val mediaUrl = media?.guid?.rendered.orEmpty()
+            call?.enqueue(
+                object : Callback<Media?> {
+                    override fun onResponse(call: Call<Media?>, response: Response<Media?>) {
+                        if (response.code() != 404) {
+                            val media: Media? = response.body()
+                            val mediaUrl = media?.guid?.rendered.orEmpty()
 
-                        binding.postBackdrop.load(mediaUrl) {
-                            crossfade(true)
+                            binding.postBackdrop.load(mediaUrl) {
+                                crossfade(enable = true)
+                            }
                         }
                     }
-                }
 
-                override fun onFailure(call: Call<Media?>, t: Throwable) {}
-            })
+                    override fun onFailure(call: Call<Media?>, t: Throwable) {}
+                },
+            )
         } else {
             Snackbar.make(binding.root, R.string.connect_internet, Snackbar.LENGTH_INDEFINITE)
                 .show()

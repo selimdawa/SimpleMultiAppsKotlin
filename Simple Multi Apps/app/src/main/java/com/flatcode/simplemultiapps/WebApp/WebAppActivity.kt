@@ -6,8 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +17,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.flatcode.simplemultiapps.R
@@ -93,7 +93,7 @@ class WebAppActivity : AppCompatActivity() {
 
         alertDialog = AlertDialog.Builder(context).setView(dialogView).create().apply {
             closeText.setOnClickListener { dismiss() }
-            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
             show()
         }
     }
@@ -113,10 +113,10 @@ class WebAppActivity : AppCompatActivity() {
 
         alertDialog = AlertDialog.Builder(context).setView(dialogView).create().apply {
             closeText.setOnClickListener { dismiss() }
-            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
             emailImage.setOnClickListener {
-                val emailSelectorIntent = Intent(Intent.ACTION_SENDTO).apply { data = Uri.parse("mailto:") }
+                val emailSelectorIntent = Intent(Intent.ACTION_SENDTO).apply { data = "mailto:".toUri() }
                 val emailIntent = Intent(Intent.ACTION_SEND).apply {
                     putExtra(Intent.EXTRA_EMAIL, arrayOf(DATA.myEmail))
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
@@ -126,7 +126,7 @@ class WebAppActivity : AppCompatActivity() {
             }
 
             phoneImage.setOnClickListener {
-                val callIntent = Intent(Intent.ACTION_CALL).apply { data = Uri.parse("tel:${DATA.myMobileNumber}") }
+                val callIntent = Intent(Intent.ACTION_CALL).apply { data = "tel:${DATA.myMobileNumber}".toUri() }
                 startActivity(callIntent)
             }
             show()
@@ -137,27 +137,27 @@ class WebAppActivity : AppCompatActivity() {
         val share = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
-            putExtra(Intent.EXTRA_TEXT, "Share App with\nhttps://play.google.com/store/apps/details?id=${packageName}")
+            putExtra(Intent.EXTRA_TEXT, "Share App with\nhttps://play.google.com/store/apps/details?id=$packageName")
         }
         startActivity(Intent.createChooser(share, "Share link!"))
     }
 
     private fun rateApp() {
-        val uri = Uri.parse("market://details?id=$packageName")
+        val uri = "market://details?id=$packageName".toUri()
         val goToMarket = Intent(Intent.ACTION_VIEW, uri).apply {
             addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NEW_DOCUMENT or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
         }
         try {
             startActivity(goToMarket)
         } catch (_: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://google.com")))
+            startActivity(Intent(Intent.ACTION_VIEW, "http://google.com".toUri()))
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
-            val message = if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            val message = if ((grantResults.isNotEmpty()) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 "Permission granted"
             } else {
                 "Permission denied"

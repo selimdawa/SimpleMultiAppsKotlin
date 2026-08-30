@@ -1,3 +1,4 @@
+@file:Suppress("SpellCheckingInspection")
 package com.flatcode.simplemultiapps.livetv.activity
 
 import android.content.Context
@@ -145,30 +146,24 @@ class LiveTVDetailsActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (Build.VERSION.SDK_INT > 23) {
-            initializePlayer()
-        }
+        initializePlayer()
     }
 
     override fun onResume() {
         super.onResume()
-        if (Build.VERSION.SDK_INT <= 23 || player == null) {
+        if (player == null) {
             initializePlayer()
         }
     }
 
     override fun onPause() {
         super.onPause()
-        if (Build.VERSION.SDK_INT <= 23) {
-            releasePlayer()
-        }
+        // no-op for SDK >= 24 as per previous logic (releasePlayer in onStop)
     }
 
     override fun onStop() {
         super.onStop()
-        if (Build.VERSION.SDK_INT > 23) {
-            releasePlayer()
-        }
+        releasePlayer()
     }
 
     override fun onDestroy() {
