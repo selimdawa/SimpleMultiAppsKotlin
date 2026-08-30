@@ -1,27 +1,16 @@
 package com.flatcode.simplemultiapps.videoplayer.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.utils.intent1
-import com.flatcode.simplemultiapps.videoplayer.activity.VideoFolderActivity
-import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
 import com.flatcode.simplemultiapps.databinding.ItemVideoPlayerFolderBinding
+import com.flatcode.simplemultiapps.videoplayer.model.Folder
 
 class FolderAdapter(
-    private val context: Context,
-    private val videoFiles: ArrayList<VideoFiles?>?,
-    private val folderName: ArrayList<String>,
-) : RecyclerView.Adapter<FolderAdapter.ViewHolder>() {
-
-    private val folderFileCounts: Map<String, Int>
-
-    init {
-        folderFileCounts = videoFiles?.filterNotNull()?.groupBy { file ->
-            file.path?.substringBeforeLast('/', "") ?: ""
-        }?.mapValues { it.value.size } ?: emptyMap()
-    }
+    private val onItemClick: (Folder) -> Unit
+) : ListAdapter<Folder, FolderAdapter.ViewHolder>(FolderDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -30,22 +19,28 @@ class FolderAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentPath = folderName[position]
+        val folder = getItem(position)
 
         with(holder.binding) {
-            name.text = currentPath.substringAfterLast('/')
-            count.text = (folderFileCounts[currentPath] ?: 0).toString()
+            name.text = folder.name
+            count.text = folder.videoCount.toString()
 
             root.setOnClickListener {
-                context.intent1(VideoFolderActivity::class.java) {
-                    putExtra("folderName", currentPath)
-                }
+                onItemClick(folder)
             }
         }
     }
 
-    override fun getItemCount(): Int = folderName.size
-
     class ViewHolder(val binding: ItemVideoPlayerFolderBinding) :
         RecyclerView.ViewHolder(binding.root)
+
+    class FolderDiffCallback : DiffUtil.ItemCallback<Folder>() {
+        override fun areItemsTheSame(oldItem: Folder, newItem: Folder): Boolean {
+            return oldItem.path == newItem.path
+        }
+
+        override fun areContentsTheSame(oldItem: Folder, newItem: Folder): Boolean {
+            return oldItem == newItem
+        }
+    }
 }

@@ -79,6 +79,10 @@ dependencies {
     implementation(libs.converter.gson)
     //Wordpress
     implementation(libs.androidx.swiperefreshlayout)
+    //Video Player
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     //Other's
     implementation(libs.jsoup)
     implementation(libs.volley)

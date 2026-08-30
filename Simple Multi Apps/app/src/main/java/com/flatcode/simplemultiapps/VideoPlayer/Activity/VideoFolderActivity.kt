@@ -2,20 +2,21 @@ package com.flatcode.simplemultiapps.videoplayer.activity
 
 import android.content.Context
 import android.os.Bundle
-import android.provider.MediaStore
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.flatcode.simplemultiapps.utils.intent1
 import com.flatcode.simplemultiapps.videoplayer.adapter.VideoFolderAdapter
-import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
+import com.flatcode.simplemultiapps.videoplayer.viewmodel.VideoViewModel
 import com.flatcode.simplemultiapps.databinding.ActivityVideoFolderBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class VideoFolderActivity : AppCompatActivity() {
 
@@ -23,9 +24,9 @@ class VideoFolderActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private val context: Context = this@VideoFolderActivity
-    private var adapter: VideoFolderAdapter? = null
+    private val viewModel: VideoViewModel by viewModels()
+    private lateinit var adapter: VideoFolderAdapter
     private var myFolderName: String? = null
-    private var list = ArrayList<VideoFiles?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -40,67 +41,44 @@ class VideoFolderActivity : AppCompatActivity() {
         }
 
         myFolderName = intent.getStringExtra("folderName")
+
+        adapter = VideoFolderAdapter { position ->
+            val currentList = adapter.currentList
+            VideoFolderAdapter.folderVideoFile = ArrayList(currentList)
+            context.intent1(PlayerActivity::class.java) {
+                putExtra("position", position)
+                putExtra("sender", "FolderIsSending")
+            }
+        }
+
+        binding.recyclerView.apply {
+            adapter = this@VideoFolderActivity.adapter
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.loadVideos()
+        }
+
         myFolderName?.let { folder ->
             lifecycleScope.launch {
-                val videos = withContext(Dispatchers.IO) {
-                    getAllVideos(context, folder)
-                }
-                list = videos
-                if (list.isNotEmpty()) {
-                    adapter = VideoFolderAdapter(context, list)
-                    binding.recyclerView.apply {
-                        adapter = this@VideoFolderActivity.adapter
-                        layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    launch {
+                        viewModel.videoFiles.collect { allVideos ->
+                            val filteredVideos = allVideos.filter {
+                                it.path?.substringBeforeLast('/', "") == folder
+                            }
+                            adapter.submitList(filteredVideos)
+                        }
+                    }
+                    launch {
+                        viewModel.isRefreshing.collect { isRefreshing ->
+                            binding.swipeRefresh.isRefreshing = isRefreshing
+                        }
                     }
                 }
             }
         }
-    }
-
-    private fun getAllVideos(context: Context, folderName: String): ArrayList<VideoFiles?> {
-        val tempVideoFiles = ArrayList<VideoFiles?>()
-        val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-        val projection = arrayOf(
-            MediaStore.Video.Media._ID,
-            MediaStore.Video.Media.DATA,
-            MediaStore.Video.Media.TITLE,
-            MediaStore.Video.Media.SIZE,
-            MediaStore.Video.Media.DATE_ADDED,
-            MediaStore.Video.Media.DURATION,
-            MediaStore.Video.Media.DISPLAY_NAME,
-            MediaStore.Video.Media.BUCKET_DISPLAY_NAME
-        )
-        val selection = "${MediaStore.Video.Media.DATA} LIKE ?"
-        val selectionArgs = arrayOf("%$folderName%")
-
-        context.contentResolver.query(uri, projection, selection, selectionArgs, null)
-            ?.use { cursor ->
-                val idIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
-                val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
-                val titleIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE)
-                val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)
-                val dateAddedIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)
-                val durationIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)
-                val displayNameIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)
-                val bucketIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME)
-
-                while (cursor.moveToNext()) {
-                    val id = cursor.getString(idIndex)
-                    val path = cursor.getString(dataIndex)
-                    val title = cursor.getString(titleIndex)
-                    val size = cursor.getString(sizeIndex)
-                    val dateAdded = cursor.getString(dateAddedIndex)
-                    val duration = cursor.getString(durationIndex)
-                    val fileName = cursor.getString(displayNameIndex)
-                    val bucketName = cursor.getString(bucketIndex)
-
-                    val videoFiles = VideoFiles(id, path, title, fileName, size, dateAdded, duration)
-                    if (folderName.endsWith(bucketName)) {
-                        tempVideoFiles.add(videoFiles)
-                    }
-                }
-            }
-        return tempVideoFiles
     }
 
     override fun onDestroy() {

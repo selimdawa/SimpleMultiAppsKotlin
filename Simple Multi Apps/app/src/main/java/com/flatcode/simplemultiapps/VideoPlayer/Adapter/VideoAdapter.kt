@@ -1,22 +1,20 @@
 package com.flatcode.simplemultiapps.videoplayer.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.decode.VideoFrameDecoder
 import coil.load
-import com.flatcode.simplemultiapps.utils.formatDuration
-import com.flatcode.simplemultiapps.utils.intent1
-import com.flatcode.simplemultiapps.videoplayer.activity.PlayerActivity
-import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
 import com.flatcode.simplemultiapps.databinding.ItemVideoBinding
+import com.flatcode.simplemultiapps.utils.formatDuration
+import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
 import java.io.File
 
 class VideoAdapter(
-    private val context: Context,
-    private val videoFiles: ArrayList<VideoFiles?>
-) : RecyclerView.Adapter<VideoAdapter.ViewHolder>() {
+    private val onItemClick: (Int) -> Unit
+) : ListAdapter<VideoFiles, VideoAdapter.ViewHolder>(VideoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,7 +22,7 @@ class VideoAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentVideo = videoFiles[position] ?: return
+        val currentVideo = getItem(position)
 
         with(holder.binding) {
             name.text = currentVideo.title
@@ -41,15 +39,10 @@ class VideoAdapter(
             }
 
             root.setOnClickListener {
-                context.intent1(PlayerActivity::class.java) {
-                    putExtra("position", position)
-                    putExtra("sender", "FilesIsSending")
-                }
+                onItemClick(position)
             }
         }
     }
-
-    override fun getItemCount(): Int = videoFiles.size
 
     class ViewHolder(val binding: ItemVideoBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -57,7 +50,13 @@ class VideoAdapter(
         var videoFile: ArrayList<VideoFiles?>? = null
     }
 
-    init {
-        videoFile = videoFiles
+    class VideoDiffCallback : DiffUtil.ItemCallback<VideoFiles>() {
+        override fun areItemsTheSame(oldItem: VideoFiles, newItem: VideoFiles): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: VideoFiles, newItem: VideoFiles): Boolean {
+            return oldItem == newItem
+        }
     }
 }

@@ -6,24 +6,20 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import com.flatcode.simplemultiapps.R
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.flatcode.simplemultiapps.databinding.ActivityVideoPlayerBinding
 import com.flatcode.simplemultiapps.videoplayer.fragment.FilesFragment
 import com.flatcode.simplemultiapps.videoplayer.fragment.FolderFragment
-import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
-import com.flatcode.simplemultiapps.databinding.ActivityVideoPlayerBinding
+import com.flatcode.simplemultiapps.videoplayer.viewmodel.VideoViewModel
 
 class VideoPlayerActivity : AppCompatActivity() {
 
@@ -31,13 +27,15 @@ class VideoPlayerActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private val context: Context = this@VideoPlayerActivity
+    private val viewModel: VideoViewModel by viewModels()
 
     private val videoPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
             Toast.makeText(context, R.string.permission_granted, Toast.LENGTH_SHORT).show()
-            loadData()
+            viewModel.loadVideos()
+            loadFolderFragment()
         } else {
             Toast.makeText(context, R.string.permission_denied, Toast.LENGTH_SHORT).show()
         }
@@ -69,12 +67,13 @@ class VideoPlayerActivity : AppCompatActivity() {
                     loadFolderFragment()
                     true
                 }
+
                 R.id.files -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.constraint, FilesFragment())
-                        .commit()
+                        .replace(R.id.constraint, FilesFragment()).commit()
                     true
                 }
+
                 else -> false
             }
         }
@@ -88,84 +87,24 @@ class VideoPlayerActivity : AppCompatActivity() {
             Manifest.permission.READ_EXTERNAL_STORAGE
         }
 
-        if (ContextCompat.checkSelfPermission(this, videoPermission) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this, videoPermission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             videoPermissionLauncher.launch(videoPermission)
         } else {
-            loadData()
-        }
-    }
-
-    private fun loadData() {
-        lifecycleScope.launch {
-            val videos = withContext(Dispatchers.IO) {
-                getAllVideos(context)
-            }
-            videoFiles = videos
+            viewModel.loadVideos()
             loadFolderFragment()
         }
     }
 
     private fun loadFolderFragment() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.constraint, FolderFragment())
+        supportFragmentManager.beginTransaction().replace(R.id.constraint, FolderFragment())
             .commit()
-    }
-
-    private fun getAllVideos(context: Context): ArrayList<VideoFiles?> {
-        folderList?.clear()
-        val tempVideoFiles = ArrayList<VideoFiles?>()
-        val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-        val projection = arrayOf(
-            MediaStore.Video.Media._ID,
-            MediaStore.Video.Media.DATA,
-            MediaStore.Video.Media.TITLE,
-            MediaStore.Video.Media.SIZE,
-            MediaStore.Video.Media.DATE_ADDED,
-            MediaStore.Video.Media.DURATION,
-            MediaStore.Video.Media.DISPLAY_NAME
-        )
-
-        context.contentResolver.query(uri, projection, null, null, null)?.use { cursor ->
-            val idIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
-            val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
-            val titleIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE)
-            val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)
-            val dateAddedIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)
-            val durationIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)
-            val displayNameIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)
-
-            while (cursor.moveToNext()) {
-                val id = cursor.getString(idIndex)
-                val path = cursor.getString(dataIndex)
-                val title = cursor.getString(titleIndex)
-                val size = cursor.getString(sizeIndex)
-                val dateAdded = cursor.getString(dateAddedIndex)
-                val duration = cursor.getString(durationIndex)
-                val fileName = cursor.getString(displayNameIndex)
-
-                val videoFilesInstance = VideoFiles(id, path, title, fileName, size, dateAdded, duration)
-
-                val parentFolder = path.substringBeforeLast('/', "")
-                if (parentFolder.isNotEmpty()) {
-                    folderList?.let { list ->
-                        if (!list.contains(parentFolder)) {
-                            list.add(parentFolder)
-                        }
-                    }
-                }
-                tempVideoFiles.add(videoFilesInstance)
-            }
-        }
-        return tempVideoFiles
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    companion object {
-        var videoFiles: ArrayList<VideoFiles?>? = ArrayList()
-        var folderList: ArrayList<String>? = ArrayList()
     }
 }

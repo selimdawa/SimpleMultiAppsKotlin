@@ -1,22 +1,20 @@
 package com.flatcode.simplemultiapps.videoplayer.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.decode.VideoFrameDecoder
 import coil.load
 import com.flatcode.simplemultiapps.utils.formatDuration
-import com.flatcode.simplemultiapps.utils.intent1
-import com.flatcode.simplemultiapps.videoplayer.activity.PlayerActivity
 import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
 import com.flatcode.simplemultiapps.databinding.ItemVideoBinding
 import java.io.File
 
 class VideoFolderAdapter(
-    private val context: Context,
-    private val folderVideoFiles: ArrayList<VideoFiles?>,
-) : RecyclerView.Adapter<VideoFolderAdapter.ViewHolder>() {
+    private val onItemClick: (Int) -> Unit
+) : ListAdapter<VideoFiles, VideoFolderAdapter.ViewHolder>(VideoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -25,7 +23,7 @@ class VideoFolderAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentVideo = folderVideoFiles[position] ?: return
+        val currentVideo = getItem(position)
 
         with(holder.binding) {
             name.text = currentVideo.title
@@ -42,15 +40,10 @@ class VideoFolderAdapter(
             }
 
             root.setOnClickListener {
-                context.intent1(PlayerActivity::class.java) {
-                    putExtra("position", position)
-                    putExtra("sender", "FolderIsSending")
-                }
+                onItemClick(position)
             }
         }
     }
-
-    override fun getItemCount(): Int = folderVideoFiles.size
 
     class ViewHolder(val binding: ItemVideoBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -58,7 +51,13 @@ class VideoFolderAdapter(
         var folderVideoFile: ArrayList<VideoFiles?>? = null
     }
 
-    init {
-        folderVideoFile = folderVideoFiles
+    class VideoDiffCallback : DiffUtil.ItemCallback<VideoFiles>() {
+        override fun areItemsTheSame(oldItem: VideoFiles, newItem: VideoFiles): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: VideoFiles, newItem: VideoFiles): Boolean {
+            return oldItem == newItem
+        }
     }
 }
