@@ -53,7 +53,7 @@
                     android:layout_height="@dimen/item_contact_size"
                     android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_phone"
-                    app:tint="?mc_tick" />
+                    app:tint="?mc_track" />
 
                 <ImageView
                     android:id="@+id/email"
@@ -76,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="?mc_tick"
+                android:background="?mc_track"
                 android:gravity="center"
                 android:padding="@dimen/item_card_text_padding"
                 android:text="@string/close"

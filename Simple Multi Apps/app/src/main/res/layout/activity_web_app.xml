@@ -275,7 +275,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_facebook"
-                    app:tint="?mc_tick" />
+                    app:tint="?mc_track" />
 
             </LinearLayout>
 
@@ -291,7 +291,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_instagram"
-                    app:tint="?mc_tick" />
+                    app:tint="?mc_track" />
             </LinearLayout>
 
             <LinearLayout
@@ -305,7 +305,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_twitter"
-                    app:tint="?mc_tick" />
+                    app:tint="?mc_track" />
 
             </LinearLayout>
 
