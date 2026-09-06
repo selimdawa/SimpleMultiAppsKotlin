@@ -12,10 +12,10 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.flatcode.simplemultiapps.R
+import com.flatcode.simplemultiapps.databinding.ActivityRandomImageGeneratingBinding
 import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.utils.intent1
 import com.flatcode.simplemultiapps.utils.loadImage
-import com.flatcode.simplemultiapps.databinding.ActivityRandomImageGeneratingBinding
 import org.json.JSONException
 
 class RandomImageGeneratingActivity : AppCompatActivity() {
@@ -58,42 +58,30 @@ class RandomImageGeneratingActivity : AppCompatActivity() {
                 }
 
                 binding.infoBtn.setOnClickListener {
-                    try {
-                        val breedsInfo = kittyData.getJSONArray(DATA.JSON_BREEDS)
-                        if (breedsInfo.isNull(0)) {
-                            Toast.makeText(this, R.string.data_not_found, Toast.LENGTH_SHORT).show()
-                        } else {
-                            val breedsData = breedsInfo.getJSONObject(0)
+                    val breedsInfo = kittyData.optJSONArray(DATA.JSON_BREEDS)
+                    if (breedsInfo != null && breedsInfo.length() > 0) {
+                        val breedsData = breedsInfo.getJSONObject(0)
 
-                            val name =
-                                if (breedsData.has(DATA.JSON_NAME)) breedsData.getString(DATA.JSON_NAME) else DATA.EMPTY
-                            val origin =
-                                if (breedsData.has(DATA.JSON_ORIGIN)) breedsData.getString(DATA.JSON_ORIGIN) else DATA.EMPTY
-                            val desc =
-                                if (breedsData.has(DATA.JSON_DESCRIPTION)) breedsData.getString(DATA.JSON_DESCRIPTION) else DATA.EMPTY
-                            val temp =
-                                if (breedsData.has(DATA.JSON_TEMPERAMENT)) breedsData.getString(DATA.JSON_TEMPERAMENT) else DATA.EMPTY
-                            val wikiUrl =
-                                if (breedsData.has(DATA.JSON_WIKIPEDIA_URL)) breedsData.getString(
-                                    DATA.JSON_WIKIPEDIA_URL
-                                ) else DATA.EMPTY
-                            val moreLink =
-                                if (breedsData.has(DATA.JSON_VCA_HOSPITALS_URL)) breedsData.getString(
-                                    DATA.JSON_VCA_HOSPITALS_URL
-                                ) else DATA.EMPTY
+                        val name = breedsData.optString(DATA.JSON_NAME, DATA.EMPTY)
+                        val origin = breedsData.optString(DATA.JSON_ORIGIN, DATA.EMPTY)
+                        val desc = breedsData.optString(DATA.JSON_DESCRIPTION, DATA.EMPTY)
+                        val temp = breedsData.optString(DATA.JSON_TEMPERAMENT, DATA.EMPTY)
+                        val wikiUrl = breedsData.optString(DATA.JSON_WIKIPEDIA_URL, DATA.EMPTY)
+                        val moreLink = breedsData.optString(DATA.JSON_VCA_HOSPITALS_URL, DATA.EMPTY)
 
-                            intent1(ImageInfoActivity::class.java) {
-                                putExtra(DATA.KEY_NAME, name)
-                                putExtra(DATA.KEY_ORIGIN, origin)
-                                putExtra(DATA.KEY_DESC, desc)
-                                putExtra(DATA.KEY_TEMP, temp)
-                                putExtra(DATA.KEY_WIKI_URL, wikiUrl)
-                                putExtra(DATA.KEY_MORE_LINK, moreLink)
-                                putExtra(DATA.KEY_IMAGE_URL, catUrl)
-                            }
+                        intent1(ImageInfoActivity::class.java) {
+                            putExtra(DATA.KEY_NAME, name)
+                            putExtra(DATA.KEY_ORIGIN, origin)
+                            putExtra(DATA.KEY_DESC, desc)
+                            putExtra(DATA.KEY_TEMP, temp)
+                            putExtra(DATA.KEY_WIKI_URL, wikiUrl)
+                            putExtra(DATA.KEY_MORE_LINK, moreLink)
+                            putExtra(DATA.KEY_IMAGE_URL, catUrl)
                         }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+                    } else {
+                        Toast.makeText(
+                            this, "No information available for this image", Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             } catch (e: JSONException) {

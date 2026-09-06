@@ -31,7 +31,7 @@ object DATA {
     var TWITTER = "twitter"
 
     //API & Url
-    var API_RANDOM_IMAGE = "https://api.thecatapi.com/v1/images/search"
+    var API_RANDOM_IMAGE = "https://api.thecatapi.com/v1/images/search?has_breeds=1"
     var IP_LIVE_TV = "192.168.1.2" // IP My Computer
     var NEWS_API = "07f40de92d3644908496e8f9677ee838"
     var JOKE_URL = "https://v2.jokeapi.dev/joke/"
