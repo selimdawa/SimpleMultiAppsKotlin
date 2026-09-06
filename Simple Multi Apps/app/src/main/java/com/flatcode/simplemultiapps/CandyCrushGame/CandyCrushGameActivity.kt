@@ -37,6 +37,7 @@ class CandyCrushGameActivity : AppCompatActivity() {
     var mHandler = Handler(Looper.getMainLooper())
     var interval = 100
     var score = 0
+    private var isRepeatStarted = false
 
     @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("ClickableViewAccessibility")
@@ -94,7 +95,6 @@ class CandyCrushGameActivity : AppCompatActivity() {
                 }
             })
         }
-        startRepeat()
     }
 
     private fun checkRowForThree() {
@@ -181,7 +181,10 @@ class CandyCrushGameActivity : AppCompatActivity() {
     }
 
     fun startRepeat() {
-        repeatChecker.run()
+        if (!isRepeatStarted) {
+            isRepeatStarted = true
+            repeatChecker.run()
+        }
     }
 
     private fun candyInterChange() {
@@ -191,6 +194,7 @@ class CandyCrushGameActivity : AppCompatActivity() {
         candy[candyToBeReplaced].setImageResource(background2)
         candy[candyToBeDragged].tag = background
         candy[candyToBeReplaced].tag = background2
+        startRepeat()
     }
 
     private fun createBoard() {
