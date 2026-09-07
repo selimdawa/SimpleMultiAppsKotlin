@@ -1,11 +1,11 @@
 package com.flatcode.simplemultiapps.randomimagegenerating
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.flatcode.simplemultiapps.R
@@ -43,7 +43,7 @@ class ImageInfoActivity : AppCompatActivity() {
         binding.wikiBtn.setOnClickListener {
             val wikiUrl = intent.getStringExtra(DATA.KEY_WIKI_URL)
             if (!wikiUrl.isNullOrEmpty()) {
-                val browser = Intent(Intent.ACTION_VIEW, Uri.parse(wikiUrl))
+                val browser = Intent(Intent.ACTION_VIEW, wikiUrl.toUri())
                 startActivity(browser)
             } else {
                 Toast.makeText(this, R.string.wikipedia_link_not_available, Toast.LENGTH_SHORT).show()
@@ -53,7 +53,7 @@ class ImageInfoActivity : AppCompatActivity() {
         binding.moreInfoBtn.setOnClickListener {
             val moreLink = intent.getStringExtra(DATA.KEY_MORE_LINK)
             if (!moreLink.isNullOrEmpty()) {
-                val browser = Intent(Intent.ACTION_VIEW, Uri.parse(moreLink))
+                val browser = Intent(Intent.ACTION_VIEW, moreLink.toUri())
                 startActivity(browser)
             } else {
                 Toast.makeText(this, R.string.more_info_link_not_available, Toast.LENGTH_SHORT).show()

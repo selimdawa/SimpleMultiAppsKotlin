@@ -70,7 +70,8 @@ dependencies {
     implementation(libs.appintro)
     implementation(libs.android.pdf.viewer)
     //Live TV
-    implementation(libs.exoplayer)
+    implementation(libs.media3.hls)
+    implementation(libs.media3.datasource)
     //Video Player
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.ui)

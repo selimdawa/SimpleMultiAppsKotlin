@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityMultiDeleteBinding
 import com.flatcode.simplemultiapps.multipledelete.adapter.MultiDeleteAdapter
 import com.flatcode.simplemultiapps.utils.DATA

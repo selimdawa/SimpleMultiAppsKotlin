@@ -1,4 +1,5 @@
 @file:Suppress("SpellCheckingInspection")
+
 package com.flatcode.simplemultiapps.livetv.activity
 
 import android.content.Context
@@ -12,19 +13,21 @@ import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.annotation.OptIn
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.flatcode.simplemultiapps.livetv.model.Channel
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.hls.HlsMediaSource
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityLiveTvDetailsBinding
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.flatcode.simplemultiapps.livetv.model.Channel
 
 class LiveTVDetailsActivity : AppCompatActivity() {
 
@@ -49,12 +52,12 @@ class LiveTVDetailsActivity : AppCompatActivity() {
             insets
         }
 
-        @Suppress("DEPRECATION")
-        val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getSerializableExtra("channel", Channel::class.java)
-        } else {
-            intent.getSerializableExtra("channel") as? Channel
-        }
+        @Suppress("DEPRECATION") val channel =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getSerializableExtra("channel", Channel::class.java)
+            } else {
+                intent.getSerializableExtra("channel") as? Channel
+            }
 
         if (channel != null) {
             binding.toolbar.nameSpace.text = channel.name
@@ -106,6 +109,7 @@ class LiveTVDetailsActivity : AppCompatActivity() {
         }
     }
 
+    @OptIn(UnstableApi::class)
     private fun initializePlayer() {
         val url = liveChannelUrl ?: return
 
@@ -124,10 +128,12 @@ class LiveTVDetailsActivity : AppCompatActivity() {
                         Player.STATE_READY -> {
                             binding.progressBar.visibility = View.GONE
                         }
+
                         Player.STATE_BUFFERING -> {
                             binding.progressBar.visibility = View.VISIBLE
                             binding.playerView.keepScreenOn = true
                         }
+
                         else -> {
                             binding.progressBar.visibility = View.GONE
                         }

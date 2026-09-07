@@ -18,7 +18,6 @@ object DATA {
     const val POST_EXCERPT = "postExcerpt"
     const val CATEGORY_NAME = "categoryName"
     const val CATEGORY = "category"
-    const val CHANNEL = "channel"
     const val JOKES_URL = "extra_jokes_url"
     const val ANY = "Any"
     const val AMOUNT_PARAM = "amount=10"
@@ -28,7 +27,6 @@ object DATA {
 
     //JSON Keys
     const val ITEMS = "items"
-    const val ITEM = "item"
     const val NEXT_PAGE_TOKEN = "nextPageToken"
     const val AUTHOR = "author"
     const val IMAGE = "image"
@@ -40,15 +38,12 @@ object DATA {
     const val TWITTER_KEY = "twitter"
     const val YOUTUBE = "youtube"
     const val WEBSITE_KEY = "website"
-    const val CATEGORIES = "categories"
-    const val BUCKET_NAME = "bucketName"
     const val POSTS = "posts"
     const val PAGES = "pages"
     const val COMMENTS = "comments"
     const val NAME = "name"
     const val DESCRIPTION = "description"
     const val IMAGE_URL_KEY = "image_url"
-    const val IMAGE_URL = "image_url"
     const val JOKES = "jokes"
     const val AMOUNT = "amount"
     const val TYPE = "type"
@@ -75,25 +70,34 @@ object DATA {
 
     //Lists
     val VALUES = listOf(
-        "One", "Two", "Three", "Five", "Sex", "Seven", "Eight", "Nine", "Ten",
-        "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen"
+        "One",
+        "Two",
+        "Three",
+        "Five",
+        "Sex",
+        "Seven",
+        "Eight",
+        "Nine",
+        "Ten",
+        "Eleven",
+        "Twelve",
+        "Thirteen",
+        "Fourteen",
+        "Fifteen"
     )
 
     //Jokes
     val JOKE_CATEGORIES = listOf("Any", "Programming", "Dark", "Spooky", "Misc", "Pun", "Christmas")
     const val JOKE_TYPE_SINGLE = "single"
-    const val JOKE_TYPE_TWOPART = "twopart"
 
     //Extensions & Schemes
     const val TEXT_PLAIN = "text/plain"
     const val APPLICATION_PDF = "application/pdf"
     const val HTTP = "http"
-    const val HTTPS = "https"
     const val SCHEME_CONTENT = "content"
     const val MAILTO_SCHEME = "mailto:"
     const val TEL_SCHEME = "tel:"
     const val MARKET_SCHEME = "market://details?id="
-    const val DOCUMENT_PDF = "document.pdf"
     const val PERMISSION_DENIED = "Permission denied"
     const val META_DIALOG = "meta_dialog"
     const val ERROR_HTTP_REQUEST = "Error during http request, response code : "

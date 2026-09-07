@@ -10,16 +10,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.multipledelete.model.MultiDelete
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ItemMultiDeleteBinding
-import androidx.core.content.ContextCompat
+import com.flatcode.simplemultiapps.multipledelete.model.MultiDelete
 
 class MultiDeleteAdapter(
     private val context: Context,
@@ -39,7 +39,8 @@ class MultiDeleteAdapter(
     class ViewHolder(val binding: ItemMultiDeleteBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemMultiDeleteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemMultiDeleteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -51,10 +52,18 @@ class MultiDeleteAdapter(
 
             if (isSelectAll || selectList.contains(itemText)) {
                 checkBox.isVisible = true
-                holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.gray_light))
+                holder.itemView.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context, R.color.gray_light
+                    )
+                )
             } else {
                 checkBox.isGone = true
-                holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+                holder.itemView.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context, R.color.transparent
+                    )
+                )
             }
         }
 
@@ -78,7 +87,9 @@ class MultiDeleteAdapter(
                         return true
                     }
 
-                    override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
+                    override fun onActionItemClicked(
+                        actionMode: ActionMode, menuItem: MenuItem
+                    ): Boolean {
                         when (menuItem.itemId) {
                             R.id.menu_delete -> {
                                 selectList.forEach { selectedItem ->
@@ -132,7 +143,11 @@ class MultiDeleteAdapter(
             if (isEnable) {
                 clickItem(holder)
             } else {
-                Toast.makeText(context, context.getString(R.string.you_clicked, arrayList[currentPos]), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.you_clicked, arrayList[currentPos]),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -148,11 +163,19 @@ class MultiDeleteAdapter(
         with(holder.binding) {
             if (checkBox.isGone) {
                 checkBox.isVisible = true
-                holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.gray_light))
+                holder.itemView.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context, R.color.gray_light
+                    )
+                )
                 selectList.add(itemText)
             } else {
                 checkBox.isGone = true
-                holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+                holder.itemView.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context, R.color.transparent
+                    )
+                )
                 selectList.remove(itemText)
             }
         }

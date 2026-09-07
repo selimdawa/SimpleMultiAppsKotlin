@@ -2,7 +2,6 @@
 agp = "9.4.0"
 androidPdfViewer = "3.2.0-beta06"
 appintro = "v5.1.0"
-exoplayer = "2.19.1"
 media3Exoplayer = "1.11.0"
 coil = "2.7.0"
 gson = "2.14.0"
@@ -32,9 +31,10 @@ androidx-preference-ktx = { module = "androidx.preference:preference-ktx", versi
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
 appintro = { module = "com.github.paolorotolo:appintro", version.ref = "appintro" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
-exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoplayer" }
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3Exoplayer" }
 androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3Exoplayer" }
+media3-hls = { module = "androidx.media3:media3-exoplayer-hls", version.ref = "media3Exoplayer" }
+media3-datasource = { module = "androidx.media3:media3-datasource", version.ref = "media3Exoplayer" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coilVideo = { module = "io.coil-kt:coil-video", version.ref = "coil" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }

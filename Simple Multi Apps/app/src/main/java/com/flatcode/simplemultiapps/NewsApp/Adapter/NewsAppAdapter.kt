@@ -1,19 +1,16 @@
 package com.flatcode.simplemultiapps.newsapp.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.newsapp.model.NewsHeadlines
+import com.flatcode.simplemultiapps.databinding.ItemNewsBinding
 import com.flatcode.simplemultiapps.newsapp.SelectListener
+import com.flatcode.simplemultiapps.newsapp.model.NewsHeadlines
 import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.utils.loadImage
-import com.flatcode.simplemultiapps.databinding.ItemNewsBinding
 
 class NewsAppAdapter(
-    private val context: Context,
-    private val headlines: List<NewsHeadlines?>?,
-    private val listener: SelectListener
+    private val headlines: List<NewsHeadlines?>?, private val listener: SelectListener
 ) : RecyclerView.Adapter<NewsAppAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
