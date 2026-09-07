@@ -14,6 +14,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import coil.load
 import com.flatcode.simplemultiapps.R
+import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.databinding.ActivityWordpressDetailsBinding
 import com.flatcode.simplemultiapps.wordpress.utils.isNetworkAvailable
 import com.flatcode.simplemultiapps.wordpress.model.Media
@@ -46,11 +47,11 @@ class WordpressDetailsActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(binding.root)
 
-        val id = intent.getIntExtra("postId", -1)
-        val featuredMedia = intent.getIntExtra("featuredMedia", -1)
-        val title = intent.getStringExtra("postTitle").orEmpty()
+        val id = intent.getIntExtra(DATA.POST_ID, -1)
+        val featuredMedia = intent.getIntExtra(DATA.FEATURED_MEDIA, -1)
+        val title = intent.getStringExtra(DATA.POST_TITLE).orEmpty()
         val contentPost =
-            intent.getStringExtra("postContent").orEmpty().replace("\\\\n".toRegex(), "<br>")
+            intent.getStringExtra(DATA.POST_CONTENT).orEmpty().replace("\\\\n".toRegex(), "<br>")
                 .replace("\\\\r".toRegex(), "").replace("\\\\".toRegex(), "")
 
         initToolbar(title, id)
@@ -90,9 +91,9 @@ class WordpressDetailsActivity : AppCompatActivity() {
             return true
         }
 
-        val id = intent.getIntExtra("postId", -1)
-        val title = intent.getStringExtra("postTitle").orEmpty()
-        val excerpt = intent.getStringExtra("postExcerpt").orEmpty()
+        val id = intent.getIntExtra(DATA.POST_ID, -1)
+        val title = intent.getStringExtra(DATA.POST_TITLE).orEmpty()
+        val excerpt = intent.getStringExtra(DATA.POST_EXCERPT).orEmpty()
 
         if (!isItemSelected) {
             item.icon = ContextCompat.getDrawable(context, R.drawable.ic_heart_selected)
@@ -134,11 +135,11 @@ class WordpressDetailsActivity : AppCompatActivity() {
             excerpt: String?, content: String?,
         ): Intent {
             return Intent(context, WordpressDetailsActivity::class.java).apply {
-                putExtra("postId", id)
-                putExtra("featuredMedia", featuredMedia)
-                putExtra("postExcerpt", excerpt)
-                putExtra("postTitle", title)
-                putExtra("postContent", content)
+                putExtra(DATA.POST_ID, id)
+                putExtra(DATA.FEATURED_MEDIA, featuredMedia)
+                putExtra(DATA.POST_EXCERPT, excerpt)
+                putExtra(DATA.POST_TITLE, title)
+                putExtra(DATA.POST_CONTENT, content)
             }
         }
     }

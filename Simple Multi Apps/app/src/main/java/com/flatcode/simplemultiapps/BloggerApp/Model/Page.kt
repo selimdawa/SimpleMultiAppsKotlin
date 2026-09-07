@@ -8,5 +8,5 @@ data class Page(
     var selfLink: String? = null,
     var title: String? = null,
     var updated: String? = null,
-    var url: String? = null
+    var url: String? = null,
 )

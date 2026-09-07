@@ -69,7 +69,6 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     @OptIn(UnstableApi::class)
-    @Suppress("SpellCheckingInspection")
     private fun initializePlayer() {
         val video = myFiles?.getOrNull(position) ?: return
         val uri = (video.uriString ?: video.path)?.toUri() ?: return
@@ -77,7 +76,7 @@ class PlayerActivity : AppCompatActivity() {
         val mediaCodecSelector =
             MediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
                 val decoders = MediaCodecSelector.DEFAULT.getDecoderInfos(
-                    mimeType, requiresSecureDecoder, requiresTunnelingDecoder
+                    mimeType, requiresSecureDecoder, requiresTunnelingDecoder,
                 )
                 if (Build.PRODUCT.contains("sdk_gphone") || Build.MODEL.contains("Emulator")) {
                     // On emulator, prefer Google's software decoders (c2.android.*) over goldfish/hardware ones

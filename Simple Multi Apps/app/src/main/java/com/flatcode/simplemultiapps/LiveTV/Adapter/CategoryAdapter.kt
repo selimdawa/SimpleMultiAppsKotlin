@@ -17,7 +17,7 @@ class CategoryAdapter : ListAdapter<Category, CategoryAdapter.ViewHolder>(Catego
         val binding = ItemLiveTvCategoryBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
-            false
+            false,
         )
         return ViewHolder(binding)
     }

@@ -45,14 +45,14 @@ class CategoryDetailsActivity : AppCompatActivity() {
         }
 
         dataService = ChannelDataService(this)
-        categoryName = intent.getStringExtra("categoryName")
+        categoryName = intent.getStringExtra(DATA.CATEGORY_NAME)
 
         val extractedName = if (categoryName.isNullOrEmpty()) {
             @Suppress("DEPRECATION")
             val serializable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getSerializableExtra("category", Category::class.java)
+                intent.getSerializableExtra(DATA.CATEGORY, Category::class.java)
             } else {
-                intent.getSerializableExtra("category") as? Category
+                intent.getSerializableExtra(DATA.CATEGORY) as? Category
             }
             category = serializable
             category?.name
@@ -67,9 +67,9 @@ class CategoryDetailsActivity : AppCompatActivity() {
         }
 
         url =
-            "http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&cat=$extractedName"
+            "${DATA.HTTP}://${DATA.IP_LIVE_TV}/mytv/api.php?key=${DATA.LIVETV_API_KEY}&id=1&cat=$extractedName"
 
-        adapter = ChannelAdapter("details")
+        adapter = ChannelAdapter(DATA.DETAILS)
         binding.recyclerView.adapter = adapter
 
         loadChannels()
@@ -83,16 +83,16 @@ class CategoryDetailsActivity : AppCompatActivity() {
                     try {
                         val channelData = response.getJSONObject(i.toString())
                         val c = Channel(
-                            id = channelData.getInt("id"),
-                            name = channelData.getString("name"),
-                            description = channelData.getString("description"),
-                            thumbnail = channelData.getString("thumbnail"),
-                            liveUrl = channelData.getString("live_url"),
-                            facebook = channelData.getString("facebook"),
-                            twitter = channelData.getString("twitter"),
-                            youtube = channelData.getString("youtube"),
-                            website = channelData.getString("website"),
-                            category = channelData.getString("category")
+                            id = channelData.getInt(DATA.ID),
+                            name = channelData.getString(DATA.NAME),
+                            description = channelData.getString(DATA.DESCRIPTION),
+                            thumbnail = channelData.getString(DATA.THUMBNAIL),
+                            liveUrl = channelData.getString(DATA.LIVE_URL),
+                            facebook = channelData.getString(DATA.FACEBOOK_KEY),
+                            twitter = channelData.getString(DATA.TWITTER_KEY),
+                            youtube = channelData.getString(DATA.YOUTUBE),
+                            website = channelData.getString(DATA.WEBSITE_KEY),
+                            category = channelData.getString(DATA.CATEGORY),
                         )
                         channels.add(c)
                     } catch (_: JSONException) {
@@ -102,7 +102,7 @@ class CategoryDetailsActivity : AppCompatActivity() {
             }
 
             override fun onError(error: String?) {}
-        })
+        },)
     }
 
     override fun onDestroy() {

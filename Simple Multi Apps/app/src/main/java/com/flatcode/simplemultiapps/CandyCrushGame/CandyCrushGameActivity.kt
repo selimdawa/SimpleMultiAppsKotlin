@@ -25,7 +25,7 @@ class CandyCrushGameActivity : AppCompatActivity() {
     private val context: Context = this@CandyCrushGameActivity
     var candies = intArrayOf(
         R.drawable.bluecandy, R.drawable.greencandy, R.drawable.redcandy,
-        R.drawable.orangecandy, R.drawable.yellowcandy, R.drawable.purplecandy
+        R.drawable.orangecandy, R.drawable.yellowcandy, R.drawable.purplecandy,
     )
     var widthOfBlock = 0
     var noOfBlocks = 8
@@ -107,7 +107,7 @@ class CandyCrushGameActivity : AppCompatActivity() {
                 var x = i
                 if (candy[x++].tag as Int == chosenCandy && !isBlank && candy[x++].tag as Int == chosenCandy && candy[x].tag as Int == chosenCandy) {
                     score += 3
-                    binding.toolbarScore.scoreList.text = score.toString()
+                    binding.toolbarScore.scoreList.text = getString(R.string.score_label, score)
                     candy[x].setImageResource(notCandy)
                     candy[x].tag = notCandy
                     x--
@@ -129,7 +129,7 @@ class CandyCrushGameActivity : AppCompatActivity() {
             var x = i
             if (candy[x].tag as Int == chosenCandy && !isBlank && candy[x + noOfBlocks].tag as Int == chosenCandy && candy[x + 2 * noOfBlocks].tag as Int == chosenCandy) {
                 score += 3
-                binding.toolbarScore.scoreList.text = score.toString()
+                binding.toolbarScore.scoreList.text = getString(R.string.score_label, score)
                 candy[x].setImageResource(notCandy)
                 candy[x].tag = notCandy
                 x += noOfBlocks

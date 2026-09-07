@@ -29,7 +29,7 @@ abstract class ThreadedPrintDocumentAdapter(private val context: Context?) :
         cancellationSignal: CancellationSignal, callback: LayoutResultCallback, extras: Bundle,
     ) {
         threadPool.submit(
-            buildLayoutJob(oldAttributes, newAttributes, cancellationSignal, callback, extras)
+            buildLayoutJob(oldAttributes, newAttributes, cancellationSignal, callback, extras),
         )
     }
 

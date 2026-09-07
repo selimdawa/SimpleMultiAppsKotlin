@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityStopWatchBinding
+import com.flatcode.simplemultiapps.utils.DATA
 import java.util.Locale
 
 class StopWatchActivity : AppCompatActivity() {
@@ -40,7 +41,7 @@ class StopWatchActivity : AppCompatActivity() {
             sec %= 60
             milliSec = (tUpdate % 100).toInt()
 
-            binding.chronometer.text = String.format(Locale.US, "%02d:%02d:%02d", min, sec, milliSec)
+            binding.chronometer.text = String.format(Locale.US, DATA.TIME_FORMAT, min, sec, milliSec)
             handler?.postDelayed(this, 60)
         }
     }

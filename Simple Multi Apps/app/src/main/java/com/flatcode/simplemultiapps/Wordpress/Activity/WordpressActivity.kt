@@ -13,6 +13,7 @@ import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityWordpressBinding
 import com.flatcode.simplemultiapps.wordpress.utils.isNetworkAvailable
 import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.wordpress.adapter.WordpressAdapter
 import com.flatcode.simplemultiapps.wordpress.model.Post
 import com.flatcode.simplemultiapps.wordpress.utils.WPApiService
@@ -51,7 +52,7 @@ class WordpressActivity : AppCompatActivity() {
                     binding.main.isRefreshing = false
                     setListContent(withProgress = false)
                 },
-                3000,
+                DATA.REFRESH_DELAY,
             )
         }
 
@@ -59,7 +60,7 @@ class WordpressActivity : AppCompatActivity() {
             context.intent1(WordpressFavoritesActivity::class.java)
         }
 
-        setListContent(true)
+        setListContent(withProgress = true)
     }
 
     fun setListContent(withProgress: Boolean) {
@@ -76,10 +77,12 @@ class WordpressActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.VISIBLE
             }
 
-            call.enqueue(object : Callback<List<Post?>?> {
-                override fun onResponse(
-                    call: Call<List<Post?>?>, response: Response<List<Post?>?>
-                ) {
+            call.enqueue(
+                object : Callback<List<Post?>?> {
+                    override fun onResponse(
+                        call: Call<List<Post?>?>,
+                        response: Response<List<Post?>?>,
+                    ) {
                     binding.progressBar.visibility = View.GONE
                     val body = response.body()
                     if (body != null) {
@@ -92,7 +95,8 @@ class WordpressActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<List<Post?>?>, t: Throwable) {
                     binding.progressBar.visibility = View.GONE
                 }
-            })
+            },
+            )
         } else {
             binding.main.isRefreshing = false
             Snackbar.make(

@@ -26,7 +26,7 @@ class VideoViewModel(application: Application) : AndroidViewModel(application) {
     private val _folderList = MutableStateFlow<List<Folder>>(emptyList())
     val folderList: StateFlow<List<Folder>> = _folderList.asStateFlow()
 
-    private val _isRefreshing = MutableStateFlow(false)
+    private val _isRefreshing = MutableStateFlow(value = false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
 
     private val contentObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
@@ -37,7 +37,9 @@ class VideoViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         application.contentResolver.registerContentObserver(
-            MediaStore.Video.Media.EXTERNAL_CONTENT_URI, true, contentObserver
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+            true,
+            contentObserver,
         )
         loadVideos()
     }

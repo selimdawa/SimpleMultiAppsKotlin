@@ -77,15 +77,17 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
 
         setupProgressDialog()
 
-        binding.search.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                updateProgressDialog(getString(R.string.fetching_news_of, query))
-                RequestManager(context).getNewsHeadlines(listener, "general", query)
-                return true
-            }
+        binding.search.search.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    updateProgressDialog(getString(R.string.fetching_news_of, query))
+                    RequestManager(context).getNewsHeadlines(listener, DATA.GENERAL, query)
+                    return true
+                }
 
-            override fun onQueryTextChange(newText: String): Boolean = false
-        })
+                override fun onQueryTextChange(newText: String): Boolean = false
+            },
+        )
 
         with(binding.linearSwitchUser) {
             business.setOnClickListener(this@NewsAppActivity)
@@ -97,7 +99,7 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
             technology.setOnClickListener(this@NewsAppActivity)
         }
 
-        RequestManager(context).getNewsHeadlines(listener, "general", null)
+        RequestManager(context).getNewsHeadlines(listener, DATA.GENERAL, null)
     }
 
     private fun showNews(list: List<NewsHeadlines?>?) {

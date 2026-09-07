@@ -30,7 +30,7 @@ class VideoPlayerActivity : AppCompatActivity() {
     private val viewModel: VideoViewModel by viewModels()
 
     private val videoPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
+        ActivityResultContracts.RequestPermission(),
     ) { isGranted ->
         if (isGranted) {
             Toast.makeText(context, R.string.permission_granted, Toast.LENGTH_SHORT).show()

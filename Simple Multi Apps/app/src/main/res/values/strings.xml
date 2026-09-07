@@ -5,8 +5,8 @@
     //Joke
     <string name="joke">Joke</string>
     <string name="programming">Programming</string>
-    <string name="first_line">First Line"</string>
-    <string name="second_line">Second Line"</string>
+    <string name="first_line">First Line</string>
+    <string name="second_line">Second Line</string>
     //Stop Watch
     <string name="stop_watch">Stop Watch</string>
     //Random Image Generating
@@ -16,12 +16,14 @@
     <string name="web_app">Web App</string>
     <string name="support">Support</string>
     <string name="about_us">About Us</string>
+    <string name="about_us_content">About Here</string>
     <string name="web_site">WebSite</string>
     <string name="rate_app">Rate App</string>
     <string name="share_app">Share App</string>
     //Live TV
     <string name="live_tv">Live TV</string>
     //Blogger
+    <string name="blogger_app">Blogger App</string>
     <string name="none_display">There are no items to display</string>
     <string name="categories">Categories</string>
     <string name="post_details">Post Details</string>
@@ -37,6 +39,7 @@
     <string name="news_app">News App</string>
     <string name="share">Share</string>
     //Pdf Reader
+    <string name="pdf_reader">Pdf Reader</string>
     <string name="pick_file">Pick File</string>
     <string name="toast_pick_file_error">Unable to pick file. Check status of file manager.</string>
     <string name="toast_http_code_error">Remote server responded with an error.</string>
@@ -60,6 +63,7 @@
     <string name="enter_password">Enter the correct password to open the document:</string>
     <string name="wrong_password">Wrong password.</string>
     //Wordpress
+    <string name="wordpress_blog">WordPress Blog</string>
     <string name="wordpress_app">Wordpress App</string>
     <string name="favorites">Favorites</string>
     <string name="add_as_favorite">add</string>
@@ -96,32 +100,25 @@
     <string name="request_failed">Request Failed!</string>
     <string name="zero_time">00:00:00</string>
     <string name="last_time_label">Last Time : </string>
-    <string name="score_label">"Score - "</string>
+    <string name="score_label">Score - %1$d</string>
     <string name="zero_score">0000</string>
     <string name="zero">0</string>
+    <string name="unknown">Unknown</string>
     <string name="data_not_found">Data Not Found.</string>
     <string name="unknown_error">An unknown error occurred</string>
     <string name="connect_internet">Can\'t connect to the Internet</string>
+    <string name="wikipedia_link_not_available">Wikipedia link not available</string>
+    <string name="more_info_link_not_available">More info link not available</string>
+    <string name="no_info_available">No information available for this image</string>
+    <string name="request_failed_empty_body">Request Failed or Empty Body</string>
+    <string name="share_app_text">Share App with\nhttps://play.google.com/store/apps/details?id=%1$s</string>
+    <string name="share_link">Share link!</string>
     //Video Player
+    <string name="video_player">Video Player</string>
     <string name="folders">Folders</string>
     <string name="files">Files</string>
     //Multi Delete
-    <string-array name="values">
-        <item>One</item>
-        <item>Two</item>
-        <item>Three</item>
-        <item>Five</item>
-        <item>Sex</item>
-        <item>Seven</item>
-        <item>Eight</item>
-        <item>Nine</item>
-        <item>Ten</item>
-        <item>Eleven</item>
-        <item>Twelve</item>
-        <item>Thirteen</item>
-        <item>Fourteen</item>
-        <item>Fifteen</item>
-    </string-array>
+    <string name="multi_delete">Multiple Delete</string>
     <string name="delete">Delete</string>
     <string name="select_all">Select All</string>
 </resources>

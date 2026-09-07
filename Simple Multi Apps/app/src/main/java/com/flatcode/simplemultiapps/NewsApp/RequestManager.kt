@@ -16,13 +16,13 @@ import retrofit2.http.Query
 class RequestManager(private val context: Context) {
 
     private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://newsapi.org/v2/")
+        .baseUrl(DATA.NEWS_BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
     fun getNewsHeadlines(listener: OnFetchDataListener<NewsApiResponse>, category: String?, query: String?) {
         val callNewsApi: CallNewsApi = retrofit.create(CallNewsApi::class.java)
-        val call: Call<NewsApiResponse> = callNewsApi.callHeadlines("us", category, query, DATA.NEWS_API)
+        val call: Call<NewsApiResponse> = callNewsApi.callHeadlines(DATA.COUNTRY_US, category, query, DATA.NEWS_API_KEY)
 
         call.enqueue(object : Callback<NewsApiResponse> {
             override fun onResponse(
@@ -32,7 +32,7 @@ class RequestManager(private val context: Context) {
                 val responseBody = response.body()
                 if (!response.isSuccessful || responseBody == null) {
                     Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show()
-                    listener.onError("Request Failed or Empty Body")
+                    listener.onError(context.getString(R.string.request_failed_empty_body))
                     return
                 }
                 listener.onFetchData(responseBody.articles, response.message())
@@ -45,7 +45,7 @@ class RequestManager(private val context: Context) {
     }
 
     interface CallNewsApi {
-        @GET("top-headlines")
+        @GET(DATA.TOP_HEADLINES)
         fun callHeadlines(
             @Query("country") country: String?,
             @Query("category") category: String?,

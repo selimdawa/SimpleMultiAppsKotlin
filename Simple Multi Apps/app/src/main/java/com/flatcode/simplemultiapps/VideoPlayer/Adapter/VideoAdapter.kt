@@ -13,7 +13,7 @@ import com.flatcode.simplemultiapps.videoplayer.model.VideoFiles
 import java.io.File
 
 class VideoAdapter(
-    private val onItemClick: (Int) -> Unit
+    private val onItemClick: (Int) -> Unit,
 ) : ListAdapter<VideoFiles, VideoAdapter.ViewHolder>(VideoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

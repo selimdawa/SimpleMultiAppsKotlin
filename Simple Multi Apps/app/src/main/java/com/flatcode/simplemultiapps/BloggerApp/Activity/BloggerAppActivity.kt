@@ -83,45 +83,46 @@ class BloggerAppActivity : AppCompatActivity() {
 
         url = when (nextToken) {
             DATA.EMPTY -> {
-                "https://www.googleapis.com/blogger/v3/blogs/${DATA.BLOG_ID}/posts/search?q=$query&key=${DATA.BLOGGER_API}"
+                "${DATA.BLOGGER_BASE_URL}${DATA.BLOG_ID}/${DATA.POSTS}/search?q=$query&key=${DATA.BLOGGER_API}"
             }
 
-            "end" -> {
+            DATA.END -> {
                 Toast.makeText(context, R.string.no_more_posts, Toast.LENGTH_SHORT).show()
                 binding.progressBar.visibility = View.GONE
                 return
             }
 
             else -> {
-                "https://www.googleapis.com/blogger/v3/blogs/${DATA.BLOG_ID}/posts/search?q=$query&pageToken=$nextToken&key=${DATA.BLOGGER_API}"
+                "${DATA.BLOGGER_BASE_URL}${DATA.BLOG_ID}/${DATA.POSTS}/search?q=$query&pageToken=$nextToken&key=${DATA.BLOGGER_API}"
             }
         }
 
-        val stringRequest = StringRequest(Request.Method.GET, url, { response ->
+        val stringRequest = StringRequest(
+            Request.Method.GET, url, { response ->
             binding.progressBar.visibility = View.GONE
             if (response.isNullOrEmpty()) return@StringRequest
             try {
                 val jsonObject = JSONObject(response)
                 nextToken = try {
-                    jsonObject.getString("nextPageToken")
+                    jsonObject.getString(DATA.NEXT_PAGE_TOKEN)
                 } catch (_: Exception) {
                     Toast.makeText(context, R.string.reached_end_of_page, Toast.LENGTH_SHORT).show()
-                    "end"
+                    DATA.END
                 }
 
-                val jsonArray = jsonObject.getJSONArray("items")
+                val jsonArray = jsonObject.getJSONArray(DATA.ITEMS)
                 for (i in 0 until jsonArray.length()) {
                     try {
                         val jsonObject1 = jsonArray.getJSONObject(i)
-                        val id = jsonObject1.getString("id")
-                        val title = jsonObject1.getString("title")
-                        val content = jsonObject1.getString("content")
-                        val published = jsonObject1.getString("published")
-                        val updated = jsonObject1.getString("updated")
-                        val urlPath = jsonObject1.getString("url")
-                        val selfLink = jsonObject1.getString("selfLink")
+                        val id = jsonObject1.getString(DATA.ID)
+                        val title = jsonObject1.getString(DATA.TITLE)
+                        val content = jsonObject1.getString(DATA.CONTENT)
+                        val published = jsonObject1.getString(DATA.PUBLISHED)
+                        val updated = jsonObject1.getString(DATA.UPDATED)
+                        val urlPath = jsonObject1.getString(DATA.URL)
+                        val selfLink = jsonObject1.getString(DATA.SELF_LINK)
                         val authorName =
-                            jsonObject1.getJSONObject("author").getString("displayName")
+                            jsonObject1.getJSONObject(DATA.AUTHOR).getString(DATA.DISPLAY_NAME)
 
                         posts.add(
                             Post(
@@ -132,8 +133,8 @@ class BloggerAppActivity : AppCompatActivity() {
                                 selfLink,
                                 title,
                                 updated,
-                                urlPath
-                            )
+                                urlPath,
+                            ),
                         )
                     } catch (e: Exception) {
                         Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
@@ -144,10 +145,12 @@ class BloggerAppActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
             }
-        }) { error ->
-            Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
-            binding.progressBar.visibility = View.GONE
-        }
+        },
+            { error ->
+                Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
+                binding.progressBar.visibility = View.GONE
+            },
+        )
 
         Volley.newRequestQueue(context).add(stringRequest)
     }
@@ -158,45 +161,46 @@ class BloggerAppActivity : AppCompatActivity() {
 
         url = when (nextToken) {
             DATA.EMPTY -> {
-                "https://www.googleapis.com/blogger/v3/blogs/${DATA.BLOG_ID}/posts?maxResults=${DATA.MAX_POST_RESULTS}&key=${DATA.BLOGGER_API}"
+                "${DATA.BLOGGER_BASE_URL}${DATA.BLOG_ID}/${DATA.POSTS}?maxResults=${DATA.MAX_POST_RESULTS}&key=${DATA.BLOGGER_API}"
             }
 
-            "end" -> {
+            DATA.END -> {
                 Toast.makeText(context, R.string.no_more_posts, Toast.LENGTH_SHORT).show()
                 binding.progressBar.visibility = View.GONE
                 return
             }
 
             else -> {
-                "https://www.googleapis.com/blogger/v3/blogs/${DATA.BLOG_ID}/posts?maxResults=${DATA.MAX_POST_RESULTS}&pageToken=$nextToken&key=${DATA.BLOGGER_API}"
+                "${DATA.BLOGGER_BASE_URL}${DATA.BLOG_ID}/${DATA.POSTS}?maxResults=${DATA.MAX_POST_RESULTS}&pageToken=$nextToken&key=${DATA.BLOGGER_API}"
             }
         }
 
-        val stringRequest = StringRequest(Request.Method.GET, url, { response ->
+        val stringRequest = StringRequest(
+            Request.Method.GET, url, { response ->
             binding.progressBar.visibility = View.GONE
             if (response.isNullOrEmpty()) return@StringRequest
             try {
                 val jsonObject = JSONObject(response)
                 nextToken = try {
-                    jsonObject.getString("nextPageToken")
+                    jsonObject.getString(DATA.NEXT_PAGE_TOKEN)
                 } catch (_: Exception) {
                     Toast.makeText(context, R.string.reached_end_of_page, Toast.LENGTH_SHORT).show()
-                    "end"
+                    DATA.END
                 }
 
-                val jsonArray = jsonObject.getJSONArray("items")
+                val jsonArray = jsonObject.getJSONArray(DATA.ITEMS)
                 for (i in 0 until jsonArray.length()) {
                     try {
                         val jsonObject1 = jsonArray.getJSONObject(i)
-                        val id = jsonObject1.getString("id")
-                        val title = jsonObject1.getString("title")
-                        val content = jsonObject1.getString("content")
-                        val published = jsonObject1.getString("published")
-                        val updated = jsonObject1.getString("updated")
-                        val urlPath = jsonObject1.getString("url")
-                        val selfLink = jsonObject1.getString("selfLink")
+                        val id = jsonObject1.getString(DATA.ID)
+                        val title = jsonObject1.getString(DATA.TITLE)
+                        val content = jsonObject1.getString(DATA.CONTENT)
+                        val published = jsonObject1.getString(DATA.PUBLISHED)
+                        val updated = jsonObject1.getString(DATA.UPDATED)
+                        val urlPath = jsonObject1.getString(DATA.URL)
+                        val selfLink = jsonObject1.getString(DATA.SELF_LINK)
                         val authorName =
-                            jsonObject1.getJSONObject("author").getString("displayName")
+                            jsonObject1.getJSONObject(DATA.AUTHOR).getString(DATA.DISPLAY_NAME)
 
                         posts.add(
                             Post(
@@ -207,8 +211,8 @@ class BloggerAppActivity : AppCompatActivity() {
                                 selfLink,
                                 title,
                                 updated,
-                                urlPath
-                            )
+                                urlPath,
+                            ),
                         )
                     } catch (e: Exception) {
                         Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
@@ -219,10 +223,12 @@ class BloggerAppActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
             }
-        }) { error ->
-            Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
-            binding.progressBar.visibility = View.GONE
-        }
+        },
+            { error ->
+                Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
+                binding.progressBar.visibility = View.GONE
+            },
+        )
 
         Volley.newRequestQueue(context).add(stringRequest)
     }

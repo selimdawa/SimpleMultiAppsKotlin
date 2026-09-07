@@ -54,7 +54,7 @@ class CategoriesActivity : AppCompatActivity() {
 
     private fun loadCategories() {
         val url =
-            "http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1&categories=all"
+            "${DATA.HTTP}://${DATA.IP_LIVE_TV}/mytv/api.php?key=${DATA.LIVETV_API_KEY}&id=1&categories=all"
 
         dataService?.getChannelData(url, object : OnDataResponse {
             override fun onResponse(response: JSONObject) {
@@ -63,9 +63,9 @@ class CategoriesActivity : AppCompatActivity() {
                     try {
                         val categoryData = response.getJSONObject(i.toString())
                         val category = Category(
-                            id = categoryData.getInt("id"),
-                            name = categoryData.getString("name"),
-                            imageUrl = categoryData.getString("image_url")
+                            id = categoryData.getInt(DATA.ID),
+                            name = categoryData.getString(DATA.NAME),
+                            imageUrl = categoryData.getString(DATA.IMAGE_URL_KEY),
                         )
                         categoryList.add(category)
                     } catch (_: JSONException) {
@@ -75,7 +75,7 @@ class CategoriesActivity : AppCompatActivity() {
             }
 
             override fun onError(error: String?) {}
-        })
+        },)
     }
 
     override fun onDestroy() {

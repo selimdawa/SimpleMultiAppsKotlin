@@ -5,5 +5,5 @@ data class Joke(
     var type: String? = null,
     var joke: String? = null,
     var setup: String? = null,
-    var delivery: String? = null
+    var delivery: String? = null,
 )

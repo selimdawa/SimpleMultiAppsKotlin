@@ -9,7 +9,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -79,12 +78,12 @@ class PdfReaderActivity : AppCompatActivity() {
         OpenDocument(),
     ) { selectedDocumentUri: Uri? -> openSelectedDocument(selectedDocumentUri) }
     private val saveToDownloadPermissionLauncher = registerForActivityResult(
-        RequestPermission()
+        RequestPermission(),
     ) { isPermissionGranted: Boolean ->
         saveDownloadedFileAfterPermissionRequest(isPermissionGranted)
     }
     private val readFileErrorPermissionLauncher = registerForActivityResult(
-        RequestPermission()
+        RequestPermission(),
     ) { isPermissionGranted: Boolean ->
         restartAppIfGranted(isPermissionGranted)
     }
@@ -125,7 +124,7 @@ class PdfReaderActivity : AppCompatActivity() {
     public override fun onResume() {
         super.onResume()
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        if (prefManager!!.getBoolean("screen_on_pref", false)) {
+        if (prefManager!!.getBoolean(DATA.SCREEN_ON_PREF, false)) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
     }
@@ -141,21 +140,21 @@ class PdfReaderActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable("uri", uri)
-        outState.putInt("pageNumber", pageNumber)
-        outState.putString("pdfPassword", pdfPassword)
+        outState.putParcelable(DATA.URI, uri)
+        outState.putInt(DATA.PAGE_NUMBER, pageNumber)
+        outState.putString(DATA.PDF_PASSWORD, pdfPassword)
         super.onSaveInstanceState(outState)
     }
 
     private fun restoreInstanceState(savedState: Bundle) {
-        uri = BundleCompat.getParcelable(savedState, "uri", Uri::class.java)
-        pageNumber = savedState.getInt("pageNumber")
-        pdfPassword = savedState.getString("pdfPassword")
+        uri = BundleCompat.getParcelable(savedState, DATA.URI, Uri::class.java)
+        pageNumber = savedState.getInt(DATA.PAGE_NUMBER)
+        pdfPassword = savedState.getString(DATA.PDF_PASSWORD)
     }
 
 
     fun shareFile() {
-        val sharingIntent: Intent = if ((uri!!.scheme != null) && uri!!.scheme!!.startsWith("http")) {
+        val sharingIntent: Intent = if ((uri!!.scheme != null) && uri!!.scheme!!.startsWith(DATA.HTTP)) {
             createPlainTextShareIntent(getString(R.string.share_file), uri.toString())
         } else {
             createFileShareIntent(getString(R.string.share_file), pdfFileName, uri)
@@ -179,7 +178,7 @@ class PdfReaderActivity : AppCompatActivity() {
 
     private fun pickFile() {
         try {
-            documentPickerLauncher.launch(arrayOf("application/pdf"))
+            documentPickerLauncher.launch(arrayOf(DATA.APPLICATION_PDF))
         } catch (_: ActivityNotFoundException) {
             Toast.makeText(activity, R.string.toast_pick_file_error, Toast.LENGTH_SHORT).show()
         }
@@ -205,12 +204,16 @@ class PdfReaderActivity : AppCompatActivity() {
 
 
     fun configurePdfViewAndLoad(viewConfigurator: Configurator) {
-        if (!prefManager!!.getBoolean("pdf_theme_pref", false)) {
-            viewBinding!!.pdfView.setBackgroundColor(Color.LTGRAY)
+        if (!prefManager!!.getBoolean(DATA.PDF_THEME_PREF, false)) {
+            viewBinding!!.pdfView.setBackgroundColor(
+                ContextCompat.getColor(this, R.color.gray_light)
+            )
         } else {
-            viewBinding!!.pdfView.setBackgroundColor(-0xdededf)
+            viewBinding!!.pdfView.setBackgroundColor(
+                ContextCompat.getColor(this, R.color.gray_pdf)
+            )
         }
-        viewBinding!!.pdfView.useBestQuality(prefManager!!.getBoolean("quality_pref", false))
+        viewBinding!!.pdfView.useBestQuality(prefManager!!.getBoolean(DATA.QUALITY_PREF, false))
         viewBinding!!.pdfView.minZoom = 0.5f
         viewBinding!!.pdfView.midZoom = 2.0f
         viewBinding!!.pdfView.maxZoom = 5.0f
@@ -218,7 +221,7 @@ class PdfReaderActivity : AppCompatActivity() {
             .defaultPage(pageNumber)
             .onPageChange { page: Int, pageCount: Int -> setCurrentPage(page, pageCount) }
             .enableAnnotationRendering(true)
-            .enableAntialiasing(prefManager!!.getBoolean("alias_pref", true))
+            .enableAntialiasing(prefManager!!.getBoolean(DATA.ALIAS_PREF, true))
             .onTap { _: MotionEvent -> toggleBottomNavigationVisibility() }
             .onPageScroll { _: Int, positionOffset: Float ->
                 toggleBottomNavigationAccordingToPosition(positionOffset)
@@ -229,11 +232,11 @@ class PdfReaderActivity : AppCompatActivity() {
             .onPageError { page: Int, err: Throwable? -> Log.e(TAG, "Cannot load page $page", err) }
             .pageFitPolicy(FitPolicy.WIDTH)
             .password(pdfPassword)
-            .swipeHorizontal(prefManager!!.getBoolean("scroll_pref", false))
-            .autoSpacing(prefManager!!.getBoolean("scroll_pref", false))
-            .pageSnap(prefManager!!.getBoolean("snap_pref", false))
-            .pageFling(prefManager!!.getBoolean("fling_pref", false))
-            .nightMode(prefManager!!.getBoolean("pdf_theme_pref", false))
+            .swipeHorizontal(prefManager!!.getBoolean(DATA.SCROLL_PREF, false))
+            .autoSpacing(prefManager!!.getBoolean(DATA.SCROLL_PREF, false))
+            .pageSnap(prefManager!!.getBoolean(DATA.SNAP_PREF, false))
+            .pageFling(prefManager!!.getBoolean(DATA.FLING_PREF, false))
+            .nightMode(prefManager!!.getBoolean(DATA.PDF_THEME_PREF, false))
             .load()
     }
 
@@ -256,7 +259,7 @@ class PdfReaderActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val exceptionMessage = e.message
             return e is FileNotFoundException && exceptionMessage != null && exceptionMessage.contains(
-                "Permission denied"
+                DATA.PERMISSION_DENIED
             )
         }
 
@@ -269,7 +272,7 @@ class PdfReaderActivity : AppCompatActivity() {
         }
 
         val exceptionMessage = e.message
-        return e is FileNotFoundException && exceptionMessage != null && exceptionMessage.contains("Permission denied")
+        return e is FileNotFoundException && exceptionMessage != null && exceptionMessage.contains(DATA.PERMISSION_DENIED)
     }
 
     private fun restartAppIfGranted(isPermissionGranted: Boolean) {
@@ -345,7 +348,7 @@ class PdfReaderActivity : AppCompatActivity() {
         }
 
         val scheme = uri.scheme
-        if (scheme != null && scheme.contains("http")) {
+        if (scheme != null && scheme.contains(DATA.HTTP)) {
             downloadOrShowDownloadedFile(uri)
         } else {
             configurePdfViewAndLoad(viewBinding!!.pdfView.fromUri(uri))
@@ -411,7 +414,7 @@ class PdfReaderActivity : AppCompatActivity() {
 
     fun getFileName(uri: Uri): String? {
         var result: String? = null
-        if (uri.scheme != null && uri.scheme == "content") {
+        if (uri.scheme != null && uri.scheme == DATA.SCHEME_CONTENT) {
             try {
                 contentResolver.query(uri, null, null, null, null).use { cursor ->
                     if (cursor != null && cursor.moveToFirst()) {
@@ -459,7 +462,7 @@ class PdfReaderActivity : AppCompatActivity() {
             dialogArgs.putString(PdfMetaDialog.CREATION_DATE_ARGUMENT, meta.creationDate)
             val dialog: DialogFragment = PdfMetaDialog()
             dialog.arguments = dialogArgs
-            dialog.show(supportFragmentManager, "meta_dialog")
+            dialog.show(supportFragmentManager, DATA.META_DIALOG)
         }
     }
 
@@ -480,13 +483,13 @@ class PdfReaderActivity : AppCompatActivity() {
         }
 
         companion object {
-            const val TITLE_ARGUMENT = "title"
-            const val AUTHOR_ARGUMENT = "author"
-            const val CREATION_DATE_ARGUMENT = "creation_date"
+            const val TITLE_ARGUMENT = DATA.TITLE
+            const val AUTHOR_ARGUMENT = DATA.AUTHOR
+            const val CREATION_DATE_ARGUMENT = DATA.PUBLISHED
         }
     }
 
     companion object {
-        private const val TAG = "MainActivity"
+        private val TAG = PdfReaderActivity::class.java.simpleName
     }
 }

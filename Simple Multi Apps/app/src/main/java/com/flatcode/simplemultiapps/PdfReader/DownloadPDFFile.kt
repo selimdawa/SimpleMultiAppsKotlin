@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.flatcode.simplemultiapps.pdfreader.activity.PdfReaderActivity
 import com.flatcode.simplemultiapps.R
+import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.utils.readBytesToEnd
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,14 +33,14 @@ class DownloadPDFFile(private val activity: PdfReaderActivity) {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 httpConnection.inputStream.readBytesToEnd()
             } else {
-                Log.e("DownloadPDFFile", "Error during http request, response code : $responseCode")
+                Log.e(TAG, "${DATA.ERROR_HTTP_REQUEST}$responseCode")
                 responseCode
             }
         } catch (e: SSLException) {
-            Log.e("DownloadPDFFile", "SSL Error cannot get file at URL : $url", e)
+            Log.e(TAG, "${DATA.ERROR_SSL}$url", e)
             e
         } catch (e: IOException) {
-            Log.e("DownloadPDFFile", "Error cannot get file at URL : $url", e)
+            Log.e(TAG, "${DATA.ERROR_IO}$url", e)
             e
         } finally {
             httpConnection?.disconnect()
@@ -71,5 +72,9 @@ class DownloadPDFFile(private val activity: PdfReaderActivity) {
                     .show()
             }
         }
+    }
+
+    companion object {
+        private val TAG = DownloadPDFFile::class.java.simpleName
     }
 }

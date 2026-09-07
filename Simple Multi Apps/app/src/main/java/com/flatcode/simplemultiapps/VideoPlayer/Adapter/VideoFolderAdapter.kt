@@ -13,7 +13,7 @@ import com.flatcode.simplemultiapps.databinding.ItemVideoBinding
 import java.io.File
 
 class VideoFolderAdapter(
-    private val onItemClick: (Int) -> Unit
+    private val onItemClick: (Int) -> Unit,
 ) : ListAdapter<VideoFiles, VideoFolderAdapter.ViewHolder>(VideoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

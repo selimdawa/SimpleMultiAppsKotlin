@@ -9,7 +9,7 @@ import com.flatcode.simplemultiapps.databinding.ItemVideoPlayerFolderBinding
 import com.flatcode.simplemultiapps.videoplayer.model.Folder
 
 class FolderAdapter(
-    private val onItemClick: (Folder) -> Unit
+    private val onItemClick: (Folder) -> Unit,
 ) : ListAdapter<Folder, FolderAdapter.ViewHolder>(FolderDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityMultiDeleteBinding
 import com.flatcode.simplemultiapps.multipledelete.adapter.MultiDeleteAdapter
+import com.flatcode.simplemultiapps.utils.DATA
 
 class MultiDeleteActivity : AppCompatActivity() {
 
@@ -33,7 +34,7 @@ class MultiDeleteActivity : AppCompatActivity() {
             insets
         }
 
-        arrayList.addAll(resources.getStringArray(R.array.values))
+        arrayList.addAll(DATA.VALUES)
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)

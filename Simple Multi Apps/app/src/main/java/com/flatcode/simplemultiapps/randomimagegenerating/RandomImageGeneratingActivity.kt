@@ -80,7 +80,7 @@ class RandomImageGeneratingActivity : AppCompatActivity() {
                         }
                     } else {
                         Toast.makeText(
-                            this, "No information available for this image", Toast.LENGTH_SHORT
+                            this, R.string.no_info_available, Toast.LENGTH_SHORT,
                         ).show()
                     }
                 }

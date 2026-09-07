@@ -47,55 +47,42 @@ class MainActivity : AppCompatActivity() {
         adapter = MainAdapter(context, list)
         binding.recyclerView.adapter = adapter
 
-        ideaPosts(1, 1, 1, 2, 4, 1, 4, 2, 2, 3, 2, 3)
+        ideaPosts()
     }
 
-    private fun ideaPosts(
-        i1: Int,
-        i2: Int,
-        i3: Int,
-        i4: Int,
-        i5: Int,
-        i6: Int,
-        i7: Int,
-        i8: Int,
-        i9: Int,
-        i10: Int,
-        i11: Int,
-        i12: Int
-    ) {
+    private fun ideaPosts() {
         list.clear()
         list.addAll(
             listOf(
-                Main(R.drawable.ic_stop_watch, "Stop Watch", i1, StopWatchActivity::class.java),
+                Main(R.drawable.ic_stop_watch, getString(R.string.stop_watch), 1, StopWatchActivity::class.java),
                 Main(
                     R.drawable.ic_candy_crush,
-                    "Candy Crush Game",
-                    i2,
-                    CandyCrushGameActivity::class.java
+                    getString(R.string.candy_crush_game),
+                    1,
+                    CandyCrushGameActivity::class.java,
                 ),
                 Main(
                     R.drawable.ic_multi_delete,
-                    "Multiple Delete",
-                    i3,
-                    MultiDeleteActivity::class.java
+                    getString(R.string.multi_delete),
+                    1,
+                    MultiDeleteActivity::class.java,
                 ),
                 Main(
                     R.drawable.ic_random,
-                    "Random Image Generating",
-                    i4,
-                    RandomImageGeneratingActivity::class.java
+                    getString(R.string.random_image_generating),
+                    2,
+                    RandomImageGeneratingActivity::class.java,
                 ),
-                Main(R.drawable.ic_blogger, "Blogger App", i5, BloggerAppActivity::class.java),
-                Main(R.drawable.ic_joke, "Joke App", i6, JokeAppActivity::class.java),
-                Main(R.drawable.ic_live_tv, "Live TV", i7, LiveTVActivity::class.java),
-                Main(R.drawable.ic_news, "News App", i8, NewsAppActivity::class.java),
-                Main(R.drawable.ic_pdf_reader, "Pdf Reader", i9, PdfReaderActivity::class.java),
+                Main(R.drawable.ic_blogger, getString(R.string.blogger_app), 4, BloggerAppActivity::class.java),
+                Main(R.drawable.ic_joke, getString(R.string.joke), 1, JokeAppActivity::class.java),
+                Main(R.drawable.ic_live_tv, getString(R.string.live_tv), 4, LiveTVActivity::class.java),
+                Main(R.drawable.ic_news, getString(R.string.news_app), 2, NewsAppActivity::class.java),
+                Main(R.drawable.ic_pdf_reader, getString(R.string.pdf_reader), 2, PdfReaderActivity::class.java),
                 Main(
-                    R.drawable.ic_video_player, "Video Player", i10, VideoPlayerActivity::class.java
+                    R.drawable.ic_video_player, getString(R.string.video_player), 3, VideoPlayerActivity::class.java,
                 ),
-                Main(R.drawable.ic_web, "Web App", i11, WebAppActivity::class.java),
-                Main(R.drawable.ic_wordpress, "WordPress Blog", i12, WordpressActivity::class.java)
+                Main(R.drawable.ic_web, getString(R.string.web_app), 2, WebAppActivity::class.java),
+                Main(R.drawable.ic_wordpress, getString(R.string.wordpress_blog), 3, WordpressActivity::class.java),
             )
         )
         adapter?.notifyItemRangeInserted(0, list.size)

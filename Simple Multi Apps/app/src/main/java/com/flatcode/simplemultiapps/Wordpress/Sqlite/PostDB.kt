@@ -11,7 +11,6 @@ class PostDB private constructor(context: Context) {
 
     private val dbHelper = TodoItemDbHelper(context.applicationContext)
 
-    @Suppress("SpellCheckingInspection")
     object PostItem : BaseColumns {
         const val TABLE_NAME = "post"
         const val COLNAME_POSTID = "postID"
@@ -48,7 +47,7 @@ class PostDB private constructor(context: Context) {
                                 wpPostId = cursor.getInt(1),
                                 wpTitle = cursor.getString(2),
                                 wpExcerpt = cursor.getString(3),
-                                isFavorite = cursor.getInt(4) == 1
+                                isFavorite = cursor.getInt(4) == 1,
                             )
                         )
                     }

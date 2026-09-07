@@ -5,5 +5,5 @@ data class Comment(
     var name: String? = null,
     var profileImage: String? = null,
     var published: String? = null,
-    var comment: String? = null
+    var comment: String? = null,
 )

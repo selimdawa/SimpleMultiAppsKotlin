@@ -51,31 +51,39 @@ class PagesActivity : AppCompatActivity() {
     private fun loadPages() {
         binding.progressBar.visibility = View.VISIBLE
 
-        val url = "https://www.googleapis.com/blogger/v3/blogs/${DATA.BLOG_ID}/pages?key=${DATA.BLOGGER_API}"
+        val url = "${DATA.BLOGGER_BASE_URL}${DATA.BLOG_ID}/${DATA.PAGES}?key=${DATA.BLOGGER_API}"
 
-        val stringRequest = StringRequest(Request.Method.GET, url, { response ->
+        val stringRequest = StringRequest(
+            Request.Method.GET, url, { response ->
             binding.progressBar.visibility = View.GONE
             if (response.isNullOrEmpty()) return@StringRequest
             try {
                 val jsonObject = JSONObject(response)
-                val jsonArray = jsonObject.getJSONArray("items")
+                val jsonArray = jsonObject.getJSONArray(DATA.ITEMS)
                 pages.clear()
 
                 for (i in 0 until jsonArray.length()) {
                     try {
                         val jsonObject1 = jsonArray.getJSONObject(i)
-                        val id = jsonObject1.getString("id")
-                        val title = jsonObject1.getString("title")
-                        val content = jsonObject1.getString("content")
-                        val published = jsonObject1.getString("published")
-                        val updated = jsonObject1.getString("updated")
-                        val pageUrl = jsonObject1.getString("url")
-                        val selfLink = jsonObject1.getString("selfLink")
-                        val displayName = jsonObject1.getJSONObject("author").getString("displayName")
+                        val id = jsonObject1.getString(DATA.ID)
+                        val title = jsonObject1.getString(DATA.TITLE)
+                        val content = jsonObject1.getString(DATA.CONTENT)
+                        val published = jsonObject1.getString(DATA.PUBLISHED)
+                        val updated = jsonObject1.getString(DATA.UPDATED)
+                        val pageUrl = jsonObject1.getString(DATA.URL)
+                        val selfLink = jsonObject1.getString(DATA.SELF_LINK)
+                        val displayName =
+                            jsonObject1.getJSONObject(DATA.AUTHOR).getString(DATA.DISPLAY_NAME)
 
                         val page = Page(
-                            displayName, content, id, published,
-                            selfLink, title, updated, pageUrl
+                            displayName,
+                            content,
+                            id,
+                            published,
+                            selfLink,
+                            title,
+                            updated,
+                            pageUrl,
                         )
                         pages.add(page)
                     } catch (e: Exception) {
@@ -87,10 +95,12 @@ class PagesActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
             }
-        }) { error ->
-            binding.progressBar.visibility = View.GONE
-            Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
-        }
+        },
+            { error ->
+                binding.progressBar.visibility = View.GONE
+                Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
+            },
+        )
 
         Volley.newRequestQueue(context).add(stringRequest)
     }

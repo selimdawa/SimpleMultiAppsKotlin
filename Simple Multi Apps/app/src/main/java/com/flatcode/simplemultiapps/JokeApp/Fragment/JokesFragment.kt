@@ -12,6 +12,7 @@ import com.android.volley.toolbox.Volley
 import com.flatcode.simplemultiapps.databinding.FragmentJokesBinding
 import com.flatcode.simplemultiapps.jokeapp.adapter.JokeAdapter
 import com.flatcode.simplemultiapps.jokeapp.model.Joke
+import com.flatcode.simplemultiapps.utils.DATA
 import org.json.JSONException
 
 class JokesFragment : Fragment() {
@@ -23,7 +24,7 @@ class JokesFragment : Fragment() {
     private var adapter: JokeAdapter? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentJokesBinding.inflate(inflater, container, false)
         return binding.root
@@ -48,20 +49,20 @@ class JokesFragment : Fragment() {
         val queue = Volley.newRequestQueue(requireContext())
         val objectRequest = JsonObjectRequest(Request.Method.GET, url, null, { response ->
             try {
-                val jokesArray = response.getJSONArray("jokes")
-                val amount = response.optInt("amount", jokesArray.length())
+                val jokesArray = response.getJSONArray(DATA.JOKES)
+                val amount = response.optInt(DATA.AMOUNT, jokesArray.length())
 
                 for (i in 0 until amount) {
                     val jokeData = jokesArray.getJSONObject(i)
-                    val jokeType = jokeData.optString("type")
+                    val jokeType = jokeData.optString(DATA.TYPE)
 
                     val jokeObject = Joke().apply {
                         type = jokeType
-                        if (jokeType == "single") {
-                            joke = jokeData.optString("joke")
+                        if (jokeType == DATA.JOKE_TYPE_SINGLE) {
+                            joke = jokeData.optString(DATA.JOKE)
                         } else {
-                            setup = jokeData.optString("setup")
-                            delivery = jokeData.optString("delivery")
+                            setup = jokeData.optString(DATA.SETUP)
+                            delivery = jokeData.optString(DATA.DELIVERY)
                         }
                     }
                     jokes.add(jokeObject)
@@ -80,6 +81,6 @@ class JokesFragment : Fragment() {
     }
 
     companion object {
-        const val KEY_JOKES_URL = "extra_jokes_url"
+        const val KEY_JOKES_URL = DATA.JOKES_URL
     }
 }

@@ -21,7 +21,7 @@ fun WebView.loadWordPressContent(content: String?) {
             htmlContent,
             "text/html; charset=utf-8",
             "UTF-8",
-            null
+            null,
         )
     }
 }

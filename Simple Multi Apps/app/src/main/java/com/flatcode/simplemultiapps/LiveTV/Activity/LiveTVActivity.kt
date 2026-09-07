@@ -58,25 +58,25 @@ class LiveTVActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerViews() {
-        bigSliderAdapter = ChannelAdapter("slider")
+        bigSliderAdapter = ChannelAdapter(DATA.SLIDER)
         binding.bigSliderList.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = bigSliderAdapter
         }
 
-        newsChannelAdapter = ChannelAdapter("details")
+        newsChannelAdapter = ChannelAdapter(DATA.DETAILS)
         binding.newsChannelList.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = newsChannelAdapter
         }
 
-        sportsChannelAdapter = ChannelAdapter("details")
+        sportsChannelAdapter = ChannelAdapter(DATA.DETAILS)
         binding.sportsChannelList.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = sportsChannelAdapter
         }
 
-        enterChannelAdapter = ChannelAdapter("details")
+        enterChannelAdapter = ChannelAdapter(DATA.DETAILS)
         binding.enterChannelList.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = enterChannelAdapter
@@ -88,48 +88,51 @@ class LiveTVActivity : AppCompatActivity() {
             context.intent1(CategoriesActivity::class.java)
         }
         binding.more.setOnClickListener {
-            startCategoryDetailActivity("News")
+            startCategoryDetailActivity(DATA.NEWS)
         }
         binding.more2.setOnClickListener {
-            startCategoryDetailActivity("Sports")
+            startCategoryDetailActivity(DATA.SPORTS)
         }
         binding.more3.setOnClickListener {
-            startCategoryDetailActivity("Entertainment")
+            startCategoryDetailActivity(DATA.ENTERTAINMENT)
         }
     }
 
     private fun startCategoryDetailActivity(categoryName: String) {
         context.intent1(CategoryDetailsActivity::class.java) {
-            putExtra("categoryName", categoryName)
+            putExtra(DATA.CATEGORY_NAME, categoryName)
         }
     }
 
     private fun loadAllChannels() {
-        val baseUrl = "http://${DATA.IP_LIVE_TV}/mytv/api.php?key=1A4mgi2rBHCJdqggsYVx&id=1"
+        val baseUrl =
+            "${DATA.HTTP}://${DATA.IP_LIVE_TV}/mytv/api.php?key=${DATA.LIVETV_API_KEY}&id=1"
         getSliderData("$baseUrl&channels=all")
-        getNewsChannels("$baseUrl&cat=News")
-        getSportsChannel("$baseUrl&cat=Sports")
-        getEnterChannel("$baseUrl&cat=Entertainment")
+        getNewsChannels("$baseUrl&cat=${DATA.NEWS}")
+        getSportsChannel("$baseUrl&cat=${DATA.SPORTS}")
+        getEnterChannel("$baseUrl&cat=${DATA.ENTERTAINMENT}")
     }
 
     private fun parseChannel(channelData: JSONObject): Channel {
         return Channel(
-            id = channelData.getInt("id"),
-            name = channelData.getString("name"),
-            description = channelData.getString("description"),
-            thumbnail = channelData.getString("thumbnail"),
-            liveUrl = channelData.getString("live_url"),
-            facebook = channelData.getString("facebook"),
-            twitter = channelData.getString("twitter"),
-            youtube = channelData.getString("youtube"),
-            website = channelData.getString("website"),
-            category = channelData.getString("category")
+            id = channelData.getInt(DATA.ID),
+            name = channelData.getString(DATA.NAME),
+            description = channelData.getString(DATA.DESCRIPTION),
+            thumbnail = channelData.getString(DATA.THUMBNAIL),
+            liveUrl = channelData.getString(DATA.LIVE_URL),
+            facebook = channelData.getString(DATA.FACEBOOK_KEY),
+            twitter = channelData.getString(DATA.TWITTER_KEY),
+            youtube = channelData.getString(DATA.YOUTUBE),
+            website = channelData.getString(DATA.WEBSITE_KEY),
+            category = channelData.getString(DATA.CATEGORY),
         )
     }
 
     private fun getSliderData(url: String) {
-        service?.getChannelData(url, object : OnDataResponse {
-            override fun onResponse(response: JSONObject) {
+        service?.getChannelData(
+            url,
+            object : OnDataResponse {
+                override fun onResponse(response: JSONObject) {
                 channelList.clear()
                 for (i in 0 until response.length()) {
                     try {

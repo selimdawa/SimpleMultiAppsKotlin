@@ -28,7 +28,7 @@ class VideoRepository(private val context: Context) {
         )
 
         context.contentResolver.query(
-            uri, projection, null, null, "${MediaStore.Video.Media.DATE_ADDED} DESC"
+            uri, projection, null, null, "${MediaStore.Video.Media.DATE_ADDED} DESC",
         )?.use { cursor ->
             val idIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
             val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)

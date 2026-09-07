@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +16,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
@@ -89,11 +89,11 @@ class WebAppActivity : AppCompatActivity() {
         aboutAppLayout.visibility = View.VISIBLE
         contactLayout.visibility = View.GONE
         aboutUsText.visibility = View.VISIBLE
-        aboutUsText.text = DATA.aboutUs
+        aboutUsText.text = getString(R.string.about_us_content)
 
         alertDialog = AlertDialog.Builder(context).setView(dialogView).create().apply {
             closeText.setOnClickListener { dismiss() }
-            window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+            window?.setBackgroundDrawable(ContextCompat.getColor(context, R.color.transparent).toDrawable())
             show()
         }
     }
@@ -113,10 +113,10 @@ class WebAppActivity : AppCompatActivity() {
 
         alertDialog = AlertDialog.Builder(context).setView(dialogView).create().apply {
             closeText.setOnClickListener { dismiss() }
-            window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+            window?.setBackgroundDrawable(ContextCompat.getColor(context, R.color.transparent).toDrawable())
 
             emailImage.setOnClickListener {
-                val emailSelectorIntent = Intent(Intent.ACTION_SENDTO).apply { data = "mailto:".toUri() }
+                val emailSelectorIntent = Intent(Intent.ACTION_SENDTO).apply { data = DATA.MAILTO_SCHEME.toUri() }
                 val emailIntent = Intent(Intent.ACTION_SEND).apply {
                     putExtra(Intent.EXTRA_EMAIL, arrayOf(DATA.myEmail))
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
@@ -126,7 +126,7 @@ class WebAppActivity : AppCompatActivity() {
             }
 
             phoneImage.setOnClickListener {
-                val callIntent = Intent(Intent.ACTION_CALL).apply { data = "tel:${DATA.myMobileNumber}".toUri() }
+                val callIntent = Intent(Intent.ACTION_CALL).apply { data = "${DATA.TEL_SCHEME}${DATA.myMobileNumber}".toUri() }
                 startActivity(callIntent)
             }
             show()
@@ -135,22 +135,22 @@ class WebAppActivity : AppCompatActivity() {
 
     private fun shareApp() {
         val share = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
+            type = DATA.TEXT_PLAIN
             addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
-            putExtra(Intent.EXTRA_TEXT, "Share App with\nhttps://play.google.com/store/apps/details?id=$packageName")
+            putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_text, packageName))
         }
-        startActivity(Intent.createChooser(share, "Share link!"))
+        startActivity(Intent.createChooser(share, getString(R.string.share_link)))
     }
 
     private fun rateApp() {
-        val uri = "market://details?id=$packageName".toUri()
+        val uri = "${DATA.MARKET_SCHEME}$packageName".toUri()
         val goToMarket = Intent(Intent.ACTION_VIEW, uri).apply {
             addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NEW_DOCUMENT or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
         }
         try {
             startActivity(goToMarket)
         } catch (_: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, "http://google.com".toUri()))
+            startActivity(Intent(Intent.ACTION_VIEW, DATA.mySite.toUri()))
         }
     }
 
@@ -158,9 +158,9 @@ class WebAppActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
             val message = if ((grantResults.isNotEmpty()) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                "Permission granted"
+                getString(R.string.permission_granted)
             } else {
-                "Permission denied"
+                getString(R.string.permission_denied)
             }
             Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
         }

@@ -1,12 +1,12 @@
 package com.flatcode.simplemultiapps.jokeapp.adapter
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.jokeapp.fragment.JokesFragment
@@ -32,10 +32,10 @@ class JokeCategoriesAdapter(private val context: Context, var categories: List<S
 
             if (selectedPosition == position) {
                 card.setBackgroundResource(R.drawable.button_profile2)
-                categoriesName.setTextColor(Color.WHITE)
+                categoriesName.setTextColor(ContextCompat.getColor(context, R.color.white))
             } else {
                 card.setBackgroundResource(R.drawable.button_profile)
-                categoriesName.setTextColor(Color.BLACK)
+                categoriesName.setTextColor(ContextCompat.getColor(context, R.color.black))
             }
 
             root.setOnClickListener {
@@ -50,7 +50,7 @@ class JokeCategoriesAdapter(private val context: Context, var categories: List<S
 
                 val fragment = JokesFragment().apply {
                     arguments = Bundle().apply {
-                        putString(JokesFragment.KEY_JOKES_URL, "${DATA.JOKE_URL}$endpoint?amount=10")
+                        putString(JokesFragment.KEY_JOKES_URL, "${DATA.JOKE_BASE_URL}$endpoint?amount=10")
                     }
                 }
 

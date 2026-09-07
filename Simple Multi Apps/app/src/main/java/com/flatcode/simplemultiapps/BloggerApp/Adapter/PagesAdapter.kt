@@ -18,8 +18,8 @@ import java.util.Locale
 class PagesAdapter(private val context: Context, var pages: ArrayList<Page>) :
     RecyclerView.Adapter<PagesAdapter.ViewHolder>() {
 
-    private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
-    private val outputDateFormat = SimpleDateFormat("dd/MM/yyyy K:mm a", Locale.ENGLISH)
+    private val inputDateFormat = SimpleDateFormat(DATA.INPUT_DATE_FORMAT, Locale.ENGLISH)
+    private val outputDateFormat = SimpleDateFormat(DATA.OUTPUT_DATE_FORMAT, Locale.ENGLISH)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemBloggerBinding.inflate(LayoutInflater.from(context), parent, false)
@@ -31,7 +31,7 @@ class PagesAdapter(private val context: Context, var pages: ArrayList<Page>) :
         val document = Jsoup.parse(page.content ?: DATA.EMPTY)
 
         try {
-            val image = document.select("img").attr("src")
+            val image = document.select(DATA.IMG).attr(DATA.SRC)
             holder.binding.image.loadImage(image)
         } catch (_: Exception) {
             holder.binding.image.setImageResource(R.color.image_profile)
@@ -54,7 +54,7 @@ class PagesAdapter(private val context: Context, var pages: ArrayList<Page>) :
 
         holder.itemView.setOnClickListener {
             context.intent1(PageDetailsActivity::class.java) {
-                putExtra("pageId", page.id)
+                putExtra(DATA.PAGE_ID, page.id)
             }
         }
     }

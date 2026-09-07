@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.flatcode.simplemultiapps.jokeapp.adapter.JokeCategoriesAdapter
 import com.flatcode.simplemultiapps.jokeapp.fragment.JokesFragment
 import com.flatcode.simplemultiapps.R
+import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.databinding.ActivityJokeAppBinding
 
 class JokeAppActivity : AppCompatActivity() {
@@ -33,11 +34,9 @@ class JokeAppActivity : AppCompatActivity() {
 
         binding.toolbar.nameSpace.setText(R.string.joke)
 
-        val cats = listOf("Any", "Programming", "Dark", "Spooky", "Misc", "Pun", "Christmas")
-
         with(binding.recyclerView) {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            catAdapter = JokeCategoriesAdapter(context, cats)
+            catAdapter = JokeCategoriesAdapter(context, DATA.JOKE_CATEGORIES)
             adapter = catAdapter
         }
 
@@ -46,7 +45,7 @@ class JokeAppActivity : AppCompatActivity() {
                 arguments = Bundle().apply {
                     putString(
                         JokesFragment.KEY_JOKES_URL,
-                        "https://v2.jokeapi.dev/joke/Any?amount=10"
+                        "${DATA.JOKE_BASE_URL}${DATA.ANY}?${DATA.AMOUNT_PARAM}",
                     )
                 }
             }

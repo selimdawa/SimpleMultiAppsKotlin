@@ -2,7 +2,6 @@ package com.flatcode.simplemultiapps.multipledelete.adapter
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.Color
 import android.view.ActionMode
 import android.view.LayoutInflater
 import android.view.Menu
@@ -20,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.multipledelete.model.MultiDelete
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ItemMultiDeleteBinding
+import androidx.core.content.ContextCompat
 
 class MultiDeleteAdapter(
     private val context: Context,
@@ -51,10 +51,10 @@ class MultiDeleteAdapter(
 
             if (isSelectAll || selectList.contains(itemText)) {
                 checkBox.isVisible = true
-                holder.itemView.setBackgroundColor(Color.LTGRAY)
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.gray_light))
             } else {
                 checkBox.isGone = true
-                holder.itemView.setBackgroundColor(Color.TRANSPARENT)
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
             }
         }
 
@@ -148,11 +148,11 @@ class MultiDeleteAdapter(
         with(holder.binding) {
             if (checkBox.isGone) {
                 checkBox.isVisible = true
-                holder.itemView.setBackgroundColor(Color.LTGRAY)
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.gray_light))
                 selectList.add(itemText)
             } else {
                 checkBox.isGone = true
-                holder.itemView.setBackgroundColor(Color.TRANSPARENT)
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
                 selectList.remove(itemText)
             }
         }

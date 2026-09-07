@@ -8,7 +8,7 @@ import com.flatcode.simplemultiapps.jokeapp.model.Joke
 import com.flatcode.simplemultiapps.databinding.ItemJokeBinding
 
 class JokeAdapter(
-    var jokes: List<Joke>
+    var jokes: List<Joke>,
 ) : RecyclerView.Adapter<JokeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

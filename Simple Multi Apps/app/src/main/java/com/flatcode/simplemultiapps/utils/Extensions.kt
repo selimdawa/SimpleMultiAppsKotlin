@@ -40,7 +40,8 @@ fun Context.canWriteToDownloadFolder(): Boolean {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         true
     } else ContextCompat.checkSelfPermission(
-        this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+        this,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
     ) == PackageManager.PERMISSION_GRANTED
 }
 
@@ -61,16 +62,16 @@ fun File.writeBytesToFile(fileName: String?, fileContent: ByteArray?) {
 
 fun createPlainTextShareIntent(chooserTitle: String?, text: String?): Intent {
     val intent = Intent(Intent.ACTION_SEND)
-    intent.type = "text/plain"
+    intent.type = DATA.TEXT_PLAIN
     intent.putExtra(Intent.EXTRA_TEXT, text)
     return Intent.createChooser(intent, chooserTitle)
 }
 
 fun createFileShareIntent(chooserTitle: String?, fileName: String?, fileUri: Uri?): Intent {
     val intent = Intent(Intent.ACTION_SEND)
-    intent.type = "application/pdf"
+    intent.type = DATA.APPLICATION_PDF
     intent.putExtra(Intent.EXTRA_STREAM, fileUri)
-    intent.clipData = ClipData(fileName, arrayOf("application/pdf"), ClipData.Item(fileUri))
+    intent.clipData = ClipData(fileName, arrayOf(DATA.APPLICATION_PDF), ClipData.Item(fileUri))
     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     return Intent.createChooser(intent, chooserTitle)
 }

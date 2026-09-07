@@ -26,8 +26,8 @@ class PageDetailsActivity : AppCompatActivity() {
     private var pageId: String? = null
     private val context: Context = this@PageDetailsActivity
 
-    private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
-    private val outputDateFormat = SimpleDateFormat("dd/MM/yyyy K:mm a", Locale.ENGLISH)
+    private val inputDateFormat = SimpleDateFormat(DATA.INPUT_DATE_FORMAT, Locale.ENGLISH)
+    private val outputDateFormat = SimpleDateFormat(DATA.OUTPUT_DATE_FORMAT, Locale.ENGLISH)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -41,7 +41,7 @@ class PageDetailsActivity : AppCompatActivity() {
             insets
         }
 
-        pageId = intent.getStringExtra("pageId")
+        pageId = intent.getStringExtra(DATA.PAGE_ID)
 
         with(binding.toolbar) {
             nameSpace.text = getString(R.string.page_details)
@@ -53,16 +53,19 @@ class PageDetailsActivity : AppCompatActivity() {
     }
 
     private fun loadPageDetails() {
-        val url = "https://www.googleapis.com/blogger/v3/blogs/${DATA.BLOG_ID}/pages/$pageId?key=${DATA.BLOGGER_API}"
+        val url =
+            "${DATA.BLOGGER_BASE_URL}${DATA.BLOG_ID}/${DATA.PAGES}/$pageId?key=${DATA.BLOGGER_API}"
 
-        val stringRequest = StringRequest(Request.Method.GET, url, { response ->
+        val stringRequest = StringRequest(
+            Request.Method.GET, url, { response ->
             if (response.isNullOrEmpty()) return@StringRequest
             try {
                 val jsonObject = JSONObject(response)
-                val title = jsonObject.getString("title")
-                val content = jsonObject.getString("content")
-                val published = jsonObject.getString("published")
-                val displayName = jsonObject.getJSONObject("author").getString("displayName")
+                val title = jsonObject.getString(DATA.TITLE)
+                val content = jsonObject.getString(DATA.CONTENT)
+                val published = jsonObject.getString(DATA.PUBLISHED)
+                val displayName =
+                    jsonObject.getJSONObject(DATA.AUTHOR).getString(DATA.DISPLAY_NAME)
 
                 val formattedDate = try {
                     val date = inputDateFormat.parse(published)
@@ -72,14 +75,17 @@ class PageDetailsActivity : AppCompatActivity() {
                 }
 
                 binding.title.text = title
-                binding.publishInfo.text = context.getString(R.string.publish_info, displayName, formattedDate)
-                binding.webView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
+                binding.publishInfo.text =
+                    context.getString(R.string.publish_info, displayName, formattedDate)
+                binding.webView.loadDataWithBaseURL(null, content, DATA.TEXT_HTML, DATA.UTF_8, null)
             } catch (e: Exception) {
                 Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
             }
-        }) { error ->
-            Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
-        }
+        },
+            { error ->
+                Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
+            },
+        )
 
         Volley.newRequestQueue(context).add(stringRequest)
     }
