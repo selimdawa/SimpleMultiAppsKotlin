@@ -10,6 +10,7 @@ interface WPApiService {
     @GET("posts")
     fun getPosts(): Call<List<Post?>?>?
 
+    @Suppress("unused")
     @GET("posts/{id}")
     fun getPostById(@Path("id") postId: Int): Call<Post?>?
 

@@ -78,6 +78,7 @@ class PlayerActivity : AppCompatActivity() {
                 val decoders = MediaCodecSelector.DEFAULT.getDecoderInfos(
                     mimeType, requiresSecureDecoder, requiresTunnelingDecoder,
                 )
+                @Suppress("SpellCheckingInspection")
                 if (Build.PRODUCT.contains("sdk_gphone") || Build.MODEL.contains("Emulator")) {
                     // On emulator, prefer Google's software decoders (c2.android.*) over goldfish/hardware ones
                     decoders.sortedBy { it.name.startsWith("c2.android") }.reversed()
