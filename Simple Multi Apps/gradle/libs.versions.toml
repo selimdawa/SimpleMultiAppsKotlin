@@ -1,4 +1,5 @@
 [versions]
+kotlin = "2.4.20"
 agp = "9.4.0"
 androidPdfViewer = "3.2.0-beta06"
 appintro = "v5.1.0"
@@ -51,3 +52,4 @@ volley = { module = "com.android.volley:volley", version.ref = "volley" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
