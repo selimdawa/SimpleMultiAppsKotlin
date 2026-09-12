@@ -8,30 +8,23 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.bloggerapp.adapter.PostAdapter
-import com.flatcode.simplemultiapps.bloggerapp.model.Post
+import com.flatcode.simplemultiapps.bloggerapp.viewmodel.MainViewModel
 import com.flatcode.simplemultiapps.databinding.ActivityBloggerAppBinding
 import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.utils.openActivity
-import org.jsoup.Jsoup
-import org.jsoup.parser.Parser
 
 class BloggerAppActivity : AppCompatActivity() {
 
     private var _binding: ActivityBloggerAppBinding? = null
     private val binding get() = _binding!!
 
-    private var url = DATA.EMPTY
-    private var nextToken = "1"
-    private var isSearch = false
-    private val posts = ArrayList<Post>()
+    private val viewModel: MainViewModel by viewModels()
     private var adapter: PostAdapter? = null
     private val context: Context = this@BloggerAppActivity
 
@@ -48,6 +41,15 @@ class BloggerAppActivity : AppCompatActivity() {
             insets
         }
 
+        setupUI()
+        observeViewModel()
+
+        if (viewModel.posts.value == null) {
+            viewModel.loadPosts(true)
+        }
+    }
+
+    private fun setupUI() {
         with(binding.toolbar) {
             nameSpace.text = getString(R.string.blogger_name)
             close.setOnClickListener { resetSearch() }
@@ -72,7 +74,7 @@ class BloggerAppActivity : AppCompatActivity() {
                     binding.noResultsText.visibility =
                         if (isEmpty && query.isNotEmpty()) View.VISIBLE else View.GONE
                     binding.loadMoreLayout.visibility =
-                        if (query.isEmpty() && nextToken != DATA.END) View.VISIBLE else View.GONE
+                        if (query.isEmpty() && viewModel.getNextToken() != DATA.END) View.VISIBLE else View.GONE
                 }
 
                 override fun afterTextChanged(s: Editable?) {}
@@ -90,15 +92,39 @@ class BloggerAppActivity : AppCompatActivity() {
             }
         })
 
-        loadPosts()
-
         binding.loadMore.setOnClickListener {
             val query = binding.toolbar.textSearch.text.toString().trim()
             if (query.isEmpty()) {
-                loadPosts()
+                viewModel.loadPosts()
             } else {
-                searchPosts(query)
+                viewModel.searchPosts(query)
             }
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.posts.observe(this) { posts ->
+            if (adapter == null) {
+                adapter = PostAdapter(context, ArrayList(posts))
+                binding.recyclerView.adapter = adapter
+            } else {
+                adapter?.updateList(ArrayList(posts))
+            }
+
+            val queryText = binding.toolbar.textSearch.text.toString().trim()
+            if (queryText.isNotEmpty()) {
+                adapter?.filter(queryText)
+            }
+        }
+
+        viewModel.loading.observe(this) { isLoading ->
+            setLoading(
+                isLoading, viewModel.getNextToken() == "1" || viewModel.getNextToken() == DATA.EMPTY
+            )
+        }
+
+        viewModel.error.observe(this) { errorMsg ->
+            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -109,187 +135,12 @@ class BloggerAppActivity : AppCompatActivity() {
         DATA.searchStatus = false
         adapter?.filter("")
         binding.noResultsText.visibility = View.GONE
-        binding.loadMoreLayout.visibility = if (nextToken == DATA.END) View.GONE else View.VISIBLE
-    }
-
-    private fun searchPosts(query: String) {
-        val isInitial = nextToken == "1" || nextToken == DATA.EMPTY
-        isSearch = true
-        setLoading(true, isInitial)
-
-        url = when (nextToken) {
-            DATA.END -> {
-                Toast.makeText(context, "No more posts...", Toast.LENGTH_SHORT).show()
-                setLoading(false, isInitial)
-                return
-            }
-
-            else -> {
-                "${DATA.FEED_URL}?q=$query&start-index=$nextToken&max-results=${DATA.MAX_POST_RESULTS}"
-            }
-        }
-
-        val stringRequest = StringRequest(Request.Method.GET, url, { response ->
-            setLoading(false, isInitial)
-            try {
-                val doc = Jsoup.parse(response ?: DATA.EMPTY, "", Parser.xmlParser())
-                val entries = doc.select("entry")
-
-                if (entries.isEmpty()) {
-                    Toast.makeText(context, "No posts found...", Toast.LENGTH_SHORT).show()
-                    nextToken = DATA.END
-                    setLoading(false, isInitial)
-                    return@StringRequest
-                }
-
-                for (entry in entries) {
-                    try {
-                        val id = entry.selectFirst("id")?.text()?.split("-")?.last() ?: ""
-                        val title = entry.selectFirst("title")?.text() ?: ""
-                        val content = entry.selectFirst("content")?.text() ?: ""
-                        val published = entry.selectFirst("published")?.text() ?: ""
-                        val updated = entry.selectFirst("updated")?.text() ?: ""
-                        val urlPath = entry.selectFirst("link[rel=alternate]")?.attr("href") ?: ""
-                        val selfLink = entry.selectFirst("link[rel=self]")?.attr("href") ?: ""
-                        val authorName = entry.select("author name").first()?.text() ?: DATA.UNKNOWN
-
-                        posts.add(
-                            Post(
-                                authorName,
-                                content,
-                                id,
-                                published,
-                                selfLink,
-                                title,
-                                updated,
-                                urlPath
-                            )
-                        )
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-
-                nextToken = if (entries.size < DATA.MAX_POST_RESULTS.toInt()) {
-                    DATA.END
-                } else {
-                    (nextToken.toInt() + entries.size).toString()
-                }
-
-                if (adapter == null) {
-                    adapter = PostAdapter(context, ArrayList(posts))
-                    binding.recyclerView.adapter = adapter
-                } else {
-                    adapter?.updateList(ArrayList(posts))
-                }
-
-                val queryText = binding.toolbar.textSearch.text.toString().trim()
-                if (queryText.isNotEmpty()) {
-                    adapter?.filter(queryText)
-                }
-
-                setLoading(false, isInitial)
-                binding.recyclerView.requestLayout()
-            } catch (e: Exception) {
-                Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
-            }
-        }) { error ->
-            Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
-            setLoading(false, isInitial)
-        }
-
-        Volley.newRequestQueue(context).add(stringRequest)
-    }
-
-    private fun loadPosts() {
-        val isInitial = nextToken == "1" || nextToken == DATA.EMPTY
-        isSearch = false
-        setLoading(true, isInitial)
-
-        url = when (nextToken) {
-            DATA.END -> {
-                Toast.makeText(context, "No more posts...", Toast.LENGTH_SHORT).show()
-                setLoading(false, isInitial)
-                return
-            }
-
-            else -> {
-                "${DATA.FEED_URL}?start-index=$nextToken&max-results=${DATA.MAX_POST_RESULTS}"
-            }
-        }
-
-        val stringRequest = StringRequest(Request.Method.GET, url, { response ->
-            setLoading(false, isInitial)
-            try {
-                val doc = Jsoup.parse(response ?: DATA.EMPTY, "", Parser.xmlParser())
-                val entries = doc.select("entry")
-
-                if (entries.isEmpty()) {
-                    nextToken = DATA.END
-                    setLoading(false, isInitial)
-                    return@StringRequest
-                }
-
-                for (entry in entries) {
-                    try {
-                        val id = entry.selectFirst("id")?.text()?.split("-")?.last() ?: ""
-                        val title = entry.selectFirst("title")?.text() ?: ""
-                        val content = entry.selectFirst("content")?.text() ?: ""
-                        val published = entry.selectFirst("published")?.text() ?: ""
-                        val updated = entry.selectFirst("updated")?.text() ?: ""
-                        val urlPath = entry.selectFirst("link[rel=alternate]")?.attr("href") ?: ""
-                        val selfLink = entry.selectFirst("link[rel=self]")?.attr("href") ?: ""
-                        val authorName = entry.select("author name").first()?.text() ?: DATA.UNKNOWN
-
-                        posts.add(
-                            Post(
-                                authorName,
-                                content,
-                                id,
-                                published,
-                                selfLink,
-                                title,
-                                updated,
-                                urlPath
-                            )
-                        )
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-
-                nextToken = if (entries.size < DATA.MAX_POST_RESULTS.toInt()) {
-                    DATA.END
-                } else {
-                    (nextToken.toInt() + entries.size).toString()
-                }
-
-                if (adapter == null) {
-                    adapter = PostAdapter(context, ArrayList(posts))
-                    binding.recyclerView.adapter = adapter
-                } else {
-                    adapter?.updateList(ArrayList(posts))
-                }
-
-                val queryText = binding.toolbar.textSearch.text.toString().trim()
-                if (queryText.isNotEmpty()) {
-                    adapter?.filter(queryText)
-                }
-
-                setLoading(false, isInitial)
-                binding.recyclerView.requestLayout()
-            } catch (e: Exception) {
-                Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
-            }
-        }) { error ->
-            Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
-            setLoading(false, isInitial)
-        }
-
-        Volley.newRequestQueue(context).add(stringRequest)
+        binding.loadMoreLayout.visibility =
+            if (viewModel.getNextToken() == DATA.END) View.GONE else View.VISIBLE
     }
 
     private fun setLoading(isLoading: Boolean, isInitial: Boolean) {
+        val binding = _binding ?: return
         if (isLoading) {
             if (isInitial) {
                 binding.progressBar.visibility = View.VISIBLE
@@ -301,7 +152,7 @@ class BloggerAppActivity : AppCompatActivity() {
         } else {
             binding.progressBar.visibility = View.GONE
             binding.loadMoreProgress.visibility = View.GONE
-            if (nextToken == DATA.END) {
+            if (viewModel.getNextToken() == DATA.END) {
                 binding.loadMoreLayout.visibility = View.GONE
             } else {
                 binding.loadMoreLayout.visibility = View.VISIBLE

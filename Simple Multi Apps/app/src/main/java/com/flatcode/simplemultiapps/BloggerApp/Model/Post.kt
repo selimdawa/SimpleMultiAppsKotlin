@@ -8,5 +8,6 @@ data class Post(
     var selfLink: String? = null,
     var title: String? = null,
     var updated: String? = null,
-    var url: String? = null
+    var url: String? = null,
+    var labels: List<String>? = null
 )

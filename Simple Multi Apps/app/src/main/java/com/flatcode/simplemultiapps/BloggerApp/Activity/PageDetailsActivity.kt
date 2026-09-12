@@ -6,18 +6,14 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.R.attr.colorError
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.flatcode.simplemultiapps.R
+import com.flatcode.simplemultiapps.bloggerapp.viewmodel.PageDetailsViewModel
 import com.flatcode.simplemultiapps.databinding.ActivityPageDetailsBinding
-import com.flatcode.simplemultiapps.utils.DATA
-import org.jsoup.Jsoup
-import org.jsoup.parser.Parser
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -26,7 +22,7 @@ class PageDetailsActivity : AppCompatActivity() {
     private var _binding: ActivityPageDetailsBinding? = null
     private val binding get() = _binding!!
 
-    private var pageId: String? = null
+    private val viewModel: PageDetailsViewModel by viewModels()
     private val context: Context = this@PageDetailsActivity
 
     private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
@@ -44,7 +40,7 @@ class PageDetailsActivity : AppCompatActivity() {
             insets
         }
 
-        pageId = intent.getStringExtra("pageId")
+        val pageId = intent.getStringExtra("pageId") ?: ""
 
         with(binding.toolbar) {
             nameSpace.text = getString(R.string.page_details)
@@ -52,54 +48,40 @@ class PageDetailsActivity : AppCompatActivity() {
             back.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
         }
 
-        loadPageDetails()
+        observeViewModel()
+
+        if (viewModel.page.value == null) {
+            viewModel.loadPageDetails(pageId)
+        }
     }
 
-    private fun loadPageDetails() {
-        val url = "https://www.blogger.com/feeds/${DATA.BLOG_ID}/pages/default/$pageId"
-
-        val stringRequest = StringRequest(Request.Method.GET, url, { response ->
-            try {
-                val doc = Jsoup.parse(response ?: DATA.EMPTY, "", Parser.xmlParser())
-                val entry = doc.selectFirst("entry")
-
-                if (entry != null) {
-                    val title = entry.selectFirst("title")?.text() ?: ""
-                    val content = entry.selectFirst("content")?.text() ?: ""
-                    val published = entry.selectFirst("published")?.text() ?: ""
-                    val displayName = entry.select("author name").first()?.text() ?: DATA.UNKNOWN
-
-                    val formattedDate = try {
-                        val date = inputDateFormat.parse(published)
-                        if (date != null) outputDateFormat.format(date) else published
-                    } catch (_: Exception) {
-                        published
-                    }
-
-                    binding.title.text = title
-                    binding.publishInfo.text =
-                        context.getString(R.string.publish_info, displayName, formattedDate)
-
-                    val typedValue = TypedValue()
-                    theme.resolveAttribute(colorError, typedValue, true)
-                    val hexColor = String.format("#%06X", 0xFFFFFF and typedValue.data)
-
-                    val styledContent =
-                        "<html><head><style>body { color: $hexColor; font-family: sans-serif; line-height: 1.6; } a { color: #2196F3; }</style></head><body>$content</body></html>"
-
-                    binding.webView.setBackgroundColor(0)
-                    binding.webView.loadDataWithBaseURL(
-                        null, styledContent, "text/html", "UTF-8", null
-                    )
-                }
-            } catch (e: Exception) {
-                Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
+    private fun observeViewModel() {
+        viewModel.page.observe(this) { page ->
+            val formattedDate = try {
+                val date = inputDateFormat.parse(page.published ?: "")
+                if (date != null) outputDateFormat.format(date) else page.published ?: ""
+            } catch (_: Exception) {
+                page.published ?: ""
             }
-        }) { error ->
-            Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
+
+            binding.title.text = page.title
+            binding.publishInfo.text =
+                context.getString(R.string.publish_info, page.authorName, formattedDate)
+
+            val typedValue = TypedValue()
+            theme.resolveAttribute(colorError, typedValue, true)
+            val hexColor = String.format("#%06X", 0xFFFFFF and typedValue.data)
+
+            val styledContent =
+                "<html><head><style>body { color: $hexColor; font-family: sans-serif; line-height: 1.6; } a { color: #2196F3; }</style></head><body>${page.content}</body></html>"
+
+            binding.webView.setBackgroundColor(0)
+            binding.webView.loadDataWithBaseURL(null, styledContent, "text/html", "UTF-8", null)
         }
 
-        Volley.newRequestQueue(context).add(stringRequest)
+        viewModel.error.observe(this) { errorMsg ->
+            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroy() {
