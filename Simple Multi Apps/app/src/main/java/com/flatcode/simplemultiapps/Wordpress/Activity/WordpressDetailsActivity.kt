@@ -1,26 +1,27 @@
 package com.flatcode.simplemultiapps.wordpress.activity
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.util.TypedValue
+import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.R.attr.colorError
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import coil.load
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.databinding.ActivityWordpressDetailsBinding
-import com.flatcode.simplemultiapps.wordpress.utils.isNetworkAvailable
+import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.wordpress.model.Media
 import com.flatcode.simplemultiapps.wordpress.sqlite.PostDB
 import com.flatcode.simplemultiapps.wordpress.utils.WPApiService
 import com.flatcode.simplemultiapps.wordpress.utils.WordPressClient
+import com.flatcode.simplemultiapps.wordpress.utils.isNetworkAvailable
 import com.flatcode.simplemultiapps.wordpress.utils.loadWordPressContent
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
@@ -31,102 +32,83 @@ class WordpressDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWordpressDetailsBinding
     private val context: Context = this
-    private var isItemSelected = false
+    private var isFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         binding = ActivityWordpressDetailsBinding.inflate(layoutInflater)
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        setContentView(binding.root)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val margin16 = (16 * resources.displayMetrics.density).toInt()
+            binding.backButton.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = systemBars.top + margin16
+            }
+            binding.favoriteButton.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = systemBars.top + margin16
+            }
+            insets
+        }
 
         val id = intent.getIntExtra(DATA.POST_ID, -1)
         val featuredMedia = intent.getIntExtra(DATA.FEATURED_MEDIA, -1)
         val title = intent.getStringExtra(DATA.POST_TITLE).orEmpty()
+        val excerpt = intent.getStringExtra(DATA.POST_EXCERPT).orEmpty()
         val contentPost =
             intent.getStringExtra(DATA.POST_CONTENT).orEmpty().replace("\\\\n".toRegex(), "<br>")
                 .replace("\\\\r".toRegex(), "").replace("\\\\".toRegex(), "")
 
-        initToolbar(title, id)
-        binding.content.webview.loadWordPressContent(contentPost)
+        val typedValue = TypedValue()
+        theme.resolveAttribute(colorError, typedValue, true)
+        val hexColor = String.format("#%06X", 0xFFFFFF and typedValue.data)
+
+        binding.content.postTitle.text = title
+        binding.content.webview.loadWordPressContent(contentPost, hexColor)
+
+        isFavorite = PostDB.getInstance(applicationContext)?.getDbPostIsFav(id) ?: false
+        updateFavoriteUI()
+
+        binding.backButton.setOnClickListener { finish() }
+        binding.favoriteButton.setOnClickListener {
+            if (!isFavorite) {
+                isFavorite = true
+                PostDB.getInstance(applicationContext)?.insert(id, title, excerpt, isFavorite)
+            } else {
+                isFavorite = false
+                PostDB.getInstance(applicationContext)?.delete(id)
+            }
+            updateFavoriteUI()
+        }
 
         if (isNetworkAvailable()) {
             val api: WPApiService = WordPressClient.apiService
             val call: Call<Media?>? = api.getPostThumbnail(featuredMedia)
 
-            call?.enqueue(
-                object : Callback<Media?> {
-                    override fun onResponse(call: Call<Media?>, response: Response<Media?>) {
-                        if (response.code() != 404) {
-                            val media: Media? = response.body()
-                            val mediaUrl = media?.guid?.rendered.orEmpty()
-
-                            binding.postBackdrop.load(mediaUrl) {
-                                crossfade(enable = true)
-                            }
+            call?.enqueue(object : Callback<Media?> {
+                override fun onResponse(call: Call<Media?>, response: Response<Media?>) {
+                    if (response.code() != 404) {
+                        val mediaUrl = response.body()?.guid?.rendered.orEmpty()
+                        binding.postBackdrop.load(mediaUrl) {
+                            crossfade(enable = true)
                         }
                     }
+                }
 
-                    override fun onFailure(call: Call<Media?>, t: Throwable) {}
-                },
-            )
+                override fun onFailure(call: Call<Media?>, t: Throwable) {}
+            })
         } else {
             Snackbar.make(binding.root, R.string.connect_internet, Snackbar.LENGTH_INDEFINITE)
                 .show()
         }
-
-        binding.content.postTitle.text = title
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-            return true
-        }
-
-        val id = intent.getIntExtra(DATA.POST_ID, -1)
-        val title = intent.getStringExtra(DATA.POST_TITLE).orEmpty()
-        val excerpt = intent.getStringExtra(DATA.POST_EXCERPT).orEmpty()
-
-        if (!isItemSelected) {
-            item.icon = ContextCompat.getDrawable(context, R.drawable.ic_heart_selected)
-            isItemSelected = true
-            PostDB.getInstance(applicationContext)?.insert(id, title, excerpt, isItemSelected)
-        } else {
-            item.icon = ContextCompat.getDrawable(context, R.drawable.ic_heart_unselected)
-            isItemSelected = false
-            PostDB.getInstance(applicationContext)?.delete(id)
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun initToolbar(title: String, id: Int) {
-        setSupportActionBar(binding.postToolbar)
-        binding.postCollapsingToolbarLayout.title = title
-
-        isItemSelected = PostDB.getInstance(applicationContext)?.getDbPostIsFav(id) ?: false
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.postToolbar.setNavigationOnClickListener { finish() }
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.add_to_favorite_menu, menu)
-        val favoriteItem = menu.findItem(R.id.add_as_favorite)
-
-        if (isItemSelected) {
-            favoriteItem.icon = ContextCompat.getDrawable(context, R.drawable.ic_heart_selected)
-        } else {
-            favoriteItem.icon = ContextCompat.getDrawable(context, R.drawable.ic_heart_unselected)
-        }
-        return true
+    private fun updateFavoriteUI() {
+        val icon = if (isFavorite) R.drawable.ic_heart_selected else R.drawable.ic_heart_unselected
+        binding.favoriteButton.setImageDrawable(ContextCompat.getDrawable(context, icon))
     }
 
     companion object {

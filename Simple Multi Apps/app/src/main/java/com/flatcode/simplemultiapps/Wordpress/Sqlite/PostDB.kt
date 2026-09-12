@@ -24,6 +24,7 @@ class PostDB private constructor(context: Context) {
         override fun onCreate(db: SQLiteDatabase) {
             db.execSQL(SQL_CREATE_ENTRIES)
         }
+
         override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
     }
 
@@ -33,7 +34,13 @@ class PostDB private constructor(context: Context) {
             dbHelper.readableDatabase.use { db ->
                 db.query(
                     PostItem.TABLE_NAME,
-                    arrayOf(BaseColumns._ID, PostItem.COLUMN_POST_ID, PostItem.COLUMN_TITLE, PostItem.COLUMN_EXCERPT, PostItem.COLUMN_IS_FAVORITE),
+                    arrayOf(
+                        BaseColumns._ID,
+                        PostItem.COLUMN_POST_ID,
+                        PostItem.COLUMN_TITLE,
+                        PostItem.COLUMN_EXCERPT,
+                        PostItem.COLUMN_IS_FAVORITE
+                    ),
                     null,
                     null,
                     null,
@@ -64,7 +71,9 @@ class PostDB private constructor(context: Context) {
                 arrayOf(PostItem.COLUMN_IS_FAVORITE),
                 "${PostItem.COLUMN_POST_ID} = ?",
                 arrayOf(postID.toString()),
-                null, null, null
+                null,
+                null,
+                null
             ).use { cursor ->
                 if (cursor.moveToFirst()) {
                     isFavorite = cursor.getInt(0) == 1
@@ -89,9 +98,7 @@ class PostDB private constructor(context: Context) {
     fun delete(postID: Int): Int {
         return dbHelper.writableDatabase.use { db ->
             db.delete(
-                PostItem.TABLE_NAME,
-                "${PostItem.COLUMN_POST_ID} = ?",
-                arrayOf(postID.toString())
+                PostItem.TABLE_NAME, "${PostItem.COLUMN_POST_ID} = ?", arrayOf(postID.toString())
             )
         }
     }
@@ -110,11 +117,7 @@ class PostDB private constructor(context: Context) {
             }
         }
 
-        private const val SQL_CREATE_ENTRIES = "CREATE TABLE ${PostItem.TABLE_NAME} (" +
-                "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "${PostItem.COLUMN_POST_ID} INT," +
-                "${PostItem.COLUMN_TITLE} TEXT," +
-                "${PostItem.COLUMN_EXCERPT} TEXT," +
-                "${PostItem.COLUMN_IS_FAVORITE} TINYINT(1))"
+        private const val SQL_CREATE_ENTRIES =
+            "CREATE TABLE ${PostItem.TABLE_NAME} (" + "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT," + "${PostItem.COLUMN_POST_ID} INT," + "${PostItem.COLUMN_TITLE} TEXT," + "${PostItem.COLUMN_EXCERPT} TEXT," + "${PostItem.COLUMN_IS_FAVORITE} TINYINT(1))"
     }
 }

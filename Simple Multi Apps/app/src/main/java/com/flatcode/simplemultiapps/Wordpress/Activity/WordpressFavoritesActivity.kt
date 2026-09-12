@@ -1,5 +1,6 @@
 package com.flatcode.simplemultiapps.wordpress.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -7,12 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.flatcode.simplemultiapps.R
+import com.flatcode.simplemultiapps.databinding.ActivityWordpressFavoritesBinding
 import com.flatcode.simplemultiapps.wordpress.adapter.WordpressAdapter
 import com.flatcode.simplemultiapps.wordpress.model.Post
 import com.flatcode.simplemultiapps.wordpress.sqlite.PostDB
 import com.flatcode.simplemultiapps.wordpress.utils.WPApiService
 import com.flatcode.simplemultiapps.wordpress.utils.WordPressClient
-import com.flatcode.simplemultiapps.databinding.ActivityWordpressFavoritesBinding
 import com.flatcode.simplemultiapps.wordpress.utils.isNetworkAvailable
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
@@ -22,6 +23,7 @@ import retrofit2.Response
 class WordpressFavoritesActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWordpressFavoritesBinding
+    private val context: Context = this
     private var sqLitePostList: List<Post?>? = null
     private var postList: List<Post?>? = null
 
@@ -61,18 +63,18 @@ class WordpressFavoritesActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.VISIBLE
             }
 
-            call.enqueue(
-                object : Callback<List<Post?>?> {
-                    override fun onResponse(
-                        call: Call<List<Post?>?>,
-                        response: Response<List<Post?>?>,
-                    ) {
+            call.enqueue(object : Callback<List<Post?>?> {
+                override fun onResponse(
+                    call: Call<List<Post?>?>,
+                    response: Response<List<Post?>?>,
+                ) {
                     binding.progressBar.visibility = View.GONE
                     val myList = ArrayList<Post>()
                     postList = response.body()
 
                     val networkPosts = postList?.filterNotNull().orEmpty()
-                    val favoriteDbMap = favPostList?.filterNotNull().orEmpty().associateBy { it.wpPostId }
+                    val favoriteDbMap =
+                        favPostList?.filterNotNull().orEmpty().associateBy { it.wpPostId }
 
                     for (post in networkPosts) {
                         if (favoriteDbMap.containsKey(post.id)) {
@@ -80,7 +82,7 @@ class WordpressFavoritesActivity : AppCompatActivity() {
                         }
                     }
 
-                    binding.recyclerView.adapter = WordpressAdapter(applicationContext, myList)
+                    binding.recyclerView.adapter = WordpressAdapter(context, myList)
                 }
 
                 override fun onFailure(call: Call<List<Post?>?>, t: Throwable) {
@@ -89,7 +91,8 @@ class WordpressFavoritesActivity : AppCompatActivity() {
             })
         } else {
             binding.progressBar.visibility = View.GONE
-            Snackbar.make(binding.main, R.string.connect_internet, Snackbar.LENGTH_INDEFINITE).show()
+            Snackbar.make(binding.main, R.string.connect_internet, Snackbar.LENGTH_INDEFINITE)
+                .show()
         }
     }
 
