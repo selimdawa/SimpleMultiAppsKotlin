@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.livetv.activity.LiveTVDetailsActivity
 import com.flatcode.simplemultiapps.livetv.model.Channel
 import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.openActivity
 import com.flatcode.simplemultiapps.utils.loadImage
 
 class ChannelAdapter(private val type: String) :
@@ -37,7 +37,7 @@ class ChannelAdapter(private val type: String) :
         holder.image.loadImage(channel.thumbnail)
 
         holder.itemView.setOnClickListener { view ->
-            view.context.intent1(LiveTVDetailsActivity::class.java) {
+            view.context.openActivity(LiveTVDetailsActivity::class.java) {
                 putExtra("channel", channel)
             }
         }

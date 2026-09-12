@@ -17,7 +17,7 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.Locale
 
-fun Context.intent1(cls: Class<*>, init: Intent.() -> Unit = {}) {
+fun Context.openActivity(cls: Class<*>, init: Intent.() -> Unit = {}) {
     val intent = Intent(this, cls)
     intent.init()
     startActivity(intent)

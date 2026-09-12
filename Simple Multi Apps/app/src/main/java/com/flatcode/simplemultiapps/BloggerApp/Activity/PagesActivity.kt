@@ -11,12 +11,13 @@ import androidx.core.view.WindowInsetsCompat
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.bloggerapp.adapter.PagesAdapter
 import com.flatcode.simplemultiapps.bloggerapp.model.Page
-import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.databinding.ActivityBloggerPagesBinding
-import org.json.JSONObject
+import com.flatcode.simplemultiapps.utils.DATA
+import org.jsoup.Jsoup
+import org.jsoup.parser.Parser
 
 class PagesActivity : AppCompatActivity() {
 
@@ -25,7 +26,7 @@ class PagesActivity : AppCompatActivity() {
 
     private val pages = ArrayList<Page>()
     private var adapter: PagesAdapter? = null
-    private val context: Context = this@PagesActivity
+    val context: Context = this@PagesActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -33,7 +34,7 @@ class PagesActivity : AppCompatActivity() {
         _binding = ActivityBloggerPagesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -51,43 +52,32 @@ class PagesActivity : AppCompatActivity() {
     private fun loadPages() {
         binding.progressBar.visibility = View.VISIBLE
 
-        val url = "${DATA.BLOGGER_BASE_URL}${DATA.BLOG_ID}/${DATA.PAGES}?key=${DATA.BLOGGER_API}"
+        val url = DATA.PAGES_FEED_URL
 
-        val stringRequest = StringRequest(
-            Request.Method.GET, url, { response ->
+        val stringRequest = StringRequest(Request.Method.GET, url, { response ->
             binding.progressBar.visibility = View.GONE
-            if (response.isNullOrEmpty()) return@StringRequest
             try {
-                val jsonObject = JSONObject(response)
-                val jsonArray = jsonObject.getJSONArray(DATA.ITEMS)
+                val doc = Jsoup.parse(response ?: DATA.EMPTY, "", Parser.xmlParser())
+                val entries = doc.select("entry")
                 pages.clear()
 
-                for (i in 0 until jsonArray.length()) {
+                for (entry in entries) {
                     try {
-                        val jsonObject1 = jsonArray.getJSONObject(i)
-                        val id = jsonObject1.getString(DATA.ID)
-                        val title = jsonObject1.getString(DATA.TITLE)
-                        val content = jsonObject1.getString(DATA.CONTENT)
-                        val published = jsonObject1.getString(DATA.PUBLISHED)
-                        val updated = jsonObject1.getString(DATA.UPDATED)
-                        val pageUrl = jsonObject1.getString(DATA.URL)
-                        val selfLink = jsonObject1.getString(DATA.SELF_LINK)
-                        val displayName =
-                            jsonObject1.getJSONObject(DATA.AUTHOR).getString(DATA.DISPLAY_NAME)
+                        val id = entry.selectFirst("id")?.text()?.split("-")?.last() ?: ""
+                        val title = entry.selectFirst("title")?.text() ?: ""
+                        val content = entry.selectFirst("content")?.text() ?: ""
+                        val published = entry.selectFirst("published")?.text() ?: ""
+                        val updated = entry.selectFirst("updated")?.text() ?: ""
+                        val urlPath = entry.selectFirst("link[rel=alternate]")?.attr("href") ?: ""
+                        val selfLink = entry.selectFirst("link[rel=self]")?.attr("href") ?: ""
+                        val authorName = entry.select("author name").first()?.text() ?: DATA.UNKNOWN
 
                         val page = Page(
-                            displayName,
-                            content,
-                            id,
-                            published,
-                            selfLink,
-                            title,
-                            updated,
-                            pageUrl,
+                            authorName, content, id, published, selfLink, title, updated, urlPath
                         )
                         pages.add(page)
                     } catch (e: Exception) {
-                        Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
+                        e.printStackTrace()
                     }
                 }
                 adapter = PagesAdapter(context, pages)
@@ -95,12 +85,10 @@ class PagesActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Toast.makeText(context, e.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
             }
-        },
-            { error ->
-                binding.progressBar.visibility = View.GONE
-                Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
-            },
-        )
+        }) { error ->
+            binding.progressBar.visibility = View.GONE
+            Toast.makeText(context, error.message ?: DATA.EMPTY, Toast.LENGTH_SHORT).show()
+        }
 
         Volley.newRequestQueue(context).add(stringRequest)
     }

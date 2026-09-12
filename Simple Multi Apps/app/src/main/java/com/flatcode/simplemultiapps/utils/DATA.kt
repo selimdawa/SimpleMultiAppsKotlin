@@ -2,10 +2,11 @@ package com.flatcode.simplemultiapps.utils
 
 @Suppress("SpellCheckingInspection")
 object DATA {
-    //Database
+
     const val EMPTY = ""
     const val DATA = "data"
     const val END = "end"
+    const val UNKNOWN = "Unknown"
     var searchStatus = false
 
     //Intent Keys
@@ -26,10 +27,7 @@ object DATA {
     const val PDF_PASSWORD = "pdfPassword"
 
     //JSON Keys
-    const val ITEMS = "items"
-    const val NEXT_PAGE_TOKEN = "nextPageToken"
     const val AUTHOR = "author"
-    const val IMAGE = "image"
     const val IMG = "img"
     const val SRC = "src"
     const val THUMBNAIL = "thumbnail"
@@ -38,9 +36,6 @@ object DATA {
     const val TWITTER_KEY = "twitter"
     const val YOUTUBE = "youtube"
     const val WEBSITE_KEY = "website"
-    const val POSTS = "posts"
-    const val PAGES = "pages"
-    const val COMMENTS = "comments"
     const val NAME = "name"
     const val DESCRIPTION = "description"
     const val IMAGE_URL_KEY = "image_url"
@@ -51,12 +46,7 @@ object DATA {
     const val SETUP = "setup"
     const val DELIVERY = "delivery"
     const val TITLE = "title"
-    const val CONTENT = "content"
     const val PUBLISHED = "published"
-    const val UPDATED = "updated"
-    const val URL = "url"
-    const val SELF_LINK = "selfLink"
-    const val DISPLAY_NAME = "displayName"
 
     //Preferences
     const val FIRST_INSTALL = "firstInstall"
@@ -106,9 +96,6 @@ object DATA {
     const val TIME_FORMAT = "%02d:%02d:%02d"
     const val INPUT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
     const val OUTPUT_DATE_FORMAT = "dd/MM/yyyy K:mm a"
-    const val TEXT_HTML = "text/html"
-    const val UTF_8 = "UTF-8"
-    const val LABELS = "labels"
     const val REFRESH_DELAY = 3000L
     const val INS_START = "<ins"
     const val INS_END = "</ins>"
@@ -145,7 +132,6 @@ object DATA {
     var TWITTER = "twitter"
 
     //API & Urls
-    const val BLOGGER_BASE_URL = "https://www.googleapis.com/blogger/v3/blogs/"
     const val JOKE_BASE_URL = "https://v2.jokeapi.dev/joke/"
     const val NEWS_BASE_URL = "https://newsapi.org/v2/"
     const val NEWS_API_KEY = "07f40de92d3644908496e8f9677ee838"

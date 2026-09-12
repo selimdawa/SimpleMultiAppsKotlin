@@ -4,19 +4,19 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.bloggerapp.model.Comment
 import com.flatcode.simplemultiapps.R
+import com.flatcode.simplemultiapps.bloggerapp.model.Comment
+import com.flatcode.simplemultiapps.databinding.ItemBloggerCommentBinding
 import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.utils.loadImage
-import com.flatcode.simplemultiapps.databinding.ItemBloggerCommentBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class CommentAdapter(private val context: Context, var comments: ArrayList<Comment>) :
     RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
-    private val inputDateFormat = SimpleDateFormat(DATA.INPUT_DATE_FORMAT, Locale.ENGLISH)
-    private val outputDateFormat = SimpleDateFormat(DATA.OUTPUT_DATE_FORMAT, Locale.ENGLISH)
+    private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
+    private val outputDateFormat = SimpleDateFormat("dd/MM/yyyy K:mm a", Locale.ENGLISH)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemBloggerCommentBinding.inflate(LayoutInflater.from(context), parent, false)
@@ -28,7 +28,8 @@ class CommentAdapter(private val context: Context, var comments: ArrayList<Comme
 
         val formattedDate = try {
             val date = inputDateFormat.parse(currentComment.published ?: DATA.EMPTY)
-            if (date != null) outputDateFormat.format(date) else currentComment.published ?: DATA.EMPTY
+            if (date != null) outputDateFormat.format(date) else currentComment.published
+                ?: DATA.EMPTY
         } catch (_: Exception) {
             currentComment.published ?: DATA.EMPTY
         }

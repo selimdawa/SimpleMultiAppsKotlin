@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.livetv.activity.CategoryDetailsActivity
 import com.flatcode.simplemultiapps.livetv.model.Category
-import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.openActivity
 import com.flatcode.simplemultiapps.utils.loadImage
 import com.flatcode.simplemultiapps.databinding.ItemLiveTvCategoryBinding
 
@@ -30,7 +30,7 @@ class CategoryAdapter : ListAdapter<Category, CategoryAdapter.ViewHolder>(Catego
             image.loadImage(model.imageUrl)
 
             root.setOnClickListener {
-                root.context.intent1(CategoryDetailsActivity::class.java) {
+                root.context.openActivity(CategoryDetailsActivity::class.java) {
                     putExtra("category", model)
                 }
             }

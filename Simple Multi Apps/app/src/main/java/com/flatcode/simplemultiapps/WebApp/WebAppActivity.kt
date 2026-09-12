@@ -23,7 +23,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.openActivity
 import com.flatcode.simplemultiapps.databinding.ActivityWebAppBinding
 
 class WebAppActivity : AppCompatActivity() {
@@ -53,22 +53,22 @@ class WebAppActivity : AppCompatActivity() {
         }
 
         binding.webSite.setOnClickListener {
-            context.intent1(WebViewActivity::class.java) {
+            context.openActivity(WebViewActivity::class.java) {
                 putExtra(DATA.WEB_NAME, DATA.WEBSITE)
             }
         }
         binding.instagram.setOnClickListener {
-            context.intent1(WebViewActivity::class.java) {
+            context.openActivity(WebViewActivity::class.java) {
                 putExtra(DATA.WEB_NAME, DATA.INSTAGRAM)
             }
         }
         binding.twitter.setOnClickListener {
-            context.intent1(WebViewActivity::class.java) {
+            context.openActivity(WebViewActivity::class.java) {
                 putExtra(DATA.WEB_NAME, DATA.TWITTER)
             }
         }
         binding.facebook.setOnClickListener {
-            context.intent1(WebViewActivity::class.java) {
+            context.openActivity(WebViewActivity::class.java) {
                 putExtra(DATA.WEB_NAME, DATA.FACEBOOK)
             }
         }

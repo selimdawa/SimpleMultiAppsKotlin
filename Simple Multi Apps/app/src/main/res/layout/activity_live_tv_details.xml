@@ -130,6 +130,7 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:indeterminateDrawable="@drawable/progress_bar"
             app:layout_constraintBottom_toBottomOf="@+id/playerView"
             app:layout_constraintEnd_toEndOf="@+id/playerView"
             app:layout_constraintStart_toStartOf="parent"

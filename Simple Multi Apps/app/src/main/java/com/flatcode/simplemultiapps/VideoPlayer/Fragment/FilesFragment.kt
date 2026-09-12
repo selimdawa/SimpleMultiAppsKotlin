@@ -12,7 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.databinding.FragmentFilesBinding
-import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.openActivity
 import com.flatcode.simplemultiapps.videoplayer.activity.PlayerActivity
 import com.flatcode.simplemultiapps.videoplayer.adapter.VideoAdapter
 import com.flatcode.simplemultiapps.videoplayer.viewmodel.VideoViewModel
@@ -38,7 +38,7 @@ class FilesFragment : Fragment() {
 
         adapter = VideoAdapter { position ->
             VideoAdapter.videoFile = ArrayList(viewModel.videoFiles.value)
-            requireContext().intent1(PlayerActivity::class.java) {
+            requireContext().openActivity(PlayerActivity::class.java) {
                 putExtra("position", position)
                 putExtra("sender", "FilesIsSending")
             }

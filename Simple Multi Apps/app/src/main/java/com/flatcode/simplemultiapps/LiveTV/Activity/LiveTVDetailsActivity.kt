@@ -85,6 +85,7 @@ class LiveTVDetailsActivity : AppCompatActivity() {
                 params.width = ViewGroup.LayoutParams.MATCH_PARENT
                 params.height = (200 * applicationContext.resources.displayMetrics.density).toInt()
                 binding.playerView.layoutParams = params
+                fullScreen?.setImageResource(R.drawable.ic_fullscreen_enter)
                 isFullScreen = false
             } else {
                 windowInsetsController.hide(WindowInsetsCompat.Type.statusBars() or WindowInsetsCompat.Type.navigationBars())
@@ -97,6 +98,7 @@ class LiveTVDetailsActivity : AppCompatActivity() {
                 params.width = ViewGroup.LayoutParams.MATCH_PARENT
                 params.height = ViewGroup.LayoutParams.MATCH_PARENT
                 binding.playerView.layoutParams = params
+                fullScreen?.setImageResource(R.drawable.ic_fullscreen_exit)
                 isFullScreen = true
             }
         }

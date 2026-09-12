@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.openActivity
 import com.flatcode.simplemultiapps.videoplayer.adapter.VideoFolderAdapter
 import com.flatcode.simplemultiapps.videoplayer.viewmodel.VideoViewModel
 import com.flatcode.simplemultiapps.databinding.ActivityVideoFolderBinding
@@ -45,7 +45,7 @@ class VideoFolderActivity : AppCompatActivity() {
         adapter = VideoFolderAdapter { position ->
             val currentList = adapter.currentList
             VideoFolderAdapter.folderVideoFile = ArrayList(currentList)
-            context.intent1(PlayerActivity::class.java) {
+            context.openActivity(PlayerActivity::class.java) {
                 putExtra("position", position)
                 putExtra("sender", "FolderIsSending")
             }

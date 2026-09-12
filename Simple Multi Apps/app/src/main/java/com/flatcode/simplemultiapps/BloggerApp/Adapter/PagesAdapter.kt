@@ -4,13 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.bloggerapp.activity.PageDetailsActivity
 import com.flatcode.simplemultiapps.bloggerapp.model.Page
-import com.flatcode.simplemultiapps.R
-import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.intent1
-import com.flatcode.simplemultiapps.utils.loadImage
 import com.flatcode.simplemultiapps.databinding.ItemBloggerBinding
+import com.flatcode.simplemultiapps.utils.DATA
+import com.flatcode.simplemultiapps.utils.loadImage
+import com.flatcode.simplemultiapps.utils.openActivity
 import org.jsoup.Jsoup
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -18,8 +18,8 @@ import java.util.Locale
 class PagesAdapter(private val context: Context, var pages: ArrayList<Page>) :
     RecyclerView.Adapter<PagesAdapter.ViewHolder>() {
 
-    private val inputDateFormat = SimpleDateFormat(DATA.INPUT_DATE_FORMAT, Locale.ENGLISH)
-    private val outputDateFormat = SimpleDateFormat(DATA.OUTPUT_DATE_FORMAT, Locale.ENGLISH)
+    private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
+    private val outputDateFormat = SimpleDateFormat("dd/MM/yyyy K:mm a", Locale.ENGLISH)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemBloggerBinding.inflate(LayoutInflater.from(context), parent, false)
@@ -31,8 +31,13 @@ class PagesAdapter(private val context: Context, var pages: ArrayList<Page>) :
         val document = Jsoup.parse(page.content ?: DATA.EMPTY)
 
         try {
-            val image = document.select(DATA.IMG).attr(DATA.SRC)
-            holder.binding.image.loadImage(image)
+            val elements = document.select("img")
+            if (elements.isNotEmpty()) {
+                val image = elements[0].attr("src")
+                holder.binding.image.loadImage(image)
+            } else {
+                holder.binding.image.setImageResource(R.color.image_profile)
+            }
         } catch (_: Exception) {
             holder.binding.image.setImageResource(R.color.image_profile)
         }
@@ -53,8 +58,8 @@ class PagesAdapter(private val context: Context, var pages: ArrayList<Page>) :
         }
 
         holder.itemView.setOnClickListener {
-            context.intent1(PageDetailsActivity::class.java) {
-                putExtra(DATA.PAGE_ID, page.id)
+            context.openActivity(PageDetailsActivity::class.java) {
+                putExtra("pageId", page.id)
             }
         }
     }

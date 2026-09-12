@@ -34,13 +34,28 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_blogger" />
 
-                <Button
-                    android:id="@+id/loadMore"
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:id="@+id/loadMoreLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/load_more" />
+                    android:layout_marginTop="16dp">
+
+                    <Button
+                        android:id="@+id/loadMore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/load_more" />
+
+                    <ProgressBar
+                        android:id="@+id/loadMoreProgress"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:indeterminateDrawable="@drawable/progress_bar"
+                        android:visibility="gone" />
+
+                </FrameLayout>
 
             </LinearLayout>
 
@@ -51,6 +66,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/progress_bar"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/noResultsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/no_results"
+            android:textColor="@color/white"
+            android:textSize="18sp"
             android:visibility="gone" />
 
     </FrameLayout>

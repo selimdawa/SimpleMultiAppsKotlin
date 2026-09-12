@@ -23,6 +23,7 @@ swiperefreshlayout = "1.2.0"
 volley = "1.2.1"
 
 [libraries]
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 android-pdf-viewer = { module = "io.github.oothp:android-pdf-viewer", version.ref = "androidPdfViewer" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }

@@ -12,7 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.databinding.FragmentFolderBinding
-import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.openActivity
 import com.flatcode.simplemultiapps.videoplayer.activity.VideoFolderActivity
 import com.flatcode.simplemultiapps.videoplayer.adapter.FolderAdapter
 import com.flatcode.simplemultiapps.videoplayer.viewmodel.VideoViewModel
@@ -37,7 +37,7 @@ class FolderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = FolderAdapter { folder ->
-            requireContext().intent1(VideoFolderActivity::class.java) {
+            requireContext().openActivity(VideoFolderActivity::class.java) {
                 putExtra("folderName", folder.path)
             }
         }

@@ -14,7 +14,7 @@ import com.flatcode.simplemultiapps.livetv.service.ChannelDataService
 import com.flatcode.simplemultiapps.livetv.service.ChannelDataService.OnDataResponse
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.openActivity
 import com.flatcode.simplemultiapps.databinding.ActivityLiveTvBinding
 import org.json.JSONException
 import org.json.JSONObject
@@ -85,7 +85,7 @@ class LiveTVActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         binding.toolbar.categories.setOnClickListener {
-            context.intent1(CategoriesActivity::class.java)
+            context.openActivity(CategoriesActivity::class.java)
         }
         binding.more.setOnClickListener {
             startCategoryDetailActivity(DATA.NEWS)
@@ -99,7 +99,7 @@ class LiveTVActivity : AppCompatActivity() {
     }
 
     private fun startCategoryDetailActivity(categoryName: String) {
-        context.intent1(CategoryDetailsActivity::class.java) {
+        context.openActivity(CategoryDetailsActivity::class.java) {
             putExtra(DATA.CATEGORY_NAME, categoryName)
         }
     }

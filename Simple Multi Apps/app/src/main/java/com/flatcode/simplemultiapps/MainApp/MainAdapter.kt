@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ItemMainBinding
-import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.openActivity
 
 class MainAdapter(private val context: Context, private val list: List<Main>) :
     RecyclerView.Adapter<MainAdapter.ViewHolder>() {
@@ -38,7 +38,7 @@ class MainAdapter(private val context: Context, private val list: List<Main>) :
 
             root.setOnClickListener {
                 model.c?.let { targetClass ->
-                    context.intent1(targetClass)
+                    context.openActivity(targetClass)
                 }
             }
         }

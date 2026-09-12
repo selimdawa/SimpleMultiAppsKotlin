@@ -8,7 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.openActivity
 import com.flatcode.simplemultiapps.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
@@ -37,7 +37,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun launch() {
-        context.intent1(MainActivity::class.java)
+        context.openActivity(MainActivity::class.java)
         finish()
     }
 

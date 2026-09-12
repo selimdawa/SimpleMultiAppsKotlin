@@ -14,7 +14,7 @@ import com.android.volley.toolbox.Volley
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityRandomImageGeneratingBinding
 import com.flatcode.simplemultiapps.utils.DATA
-import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.openActivity
 import com.flatcode.simplemultiapps.utils.loadImage
 import org.json.JSONException
 
@@ -69,7 +69,7 @@ class RandomImageGeneratingActivity : AppCompatActivity() {
                         val wikiUrl = breedsData.optString(DATA.JSON_WIKIPEDIA_URL, DATA.EMPTY)
                         val moreLink = breedsData.optString(DATA.JSON_VCA_HOSPITALS_URL, DATA.EMPTY)
 
-                        intent1(ImageInfoActivity::class.java) {
+                        openActivity(ImageInfoActivity::class.java) {
                             putExtra(DATA.KEY_NAME, name)
                             putExtra(DATA.KEY_ORIGIN, origin)
                             putExtra(DATA.KEY_DESC, desc)

@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.flatcode.simplemultiapps.R
 import com.flatcode.simplemultiapps.databinding.ActivityWordpressBinding
 import com.flatcode.simplemultiapps.wordpress.utils.isNetworkAvailable
-import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.openActivity
 import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.wordpress.adapter.WordpressAdapter
 import com.flatcode.simplemultiapps.wordpress.model.Post
@@ -57,7 +57,7 @@ class WordpressActivity : AppCompatActivity() {
         }
 
         binding.toolbar.favorites.setOnClickListener {
-            context.intent1(WordpressFavoritesActivity::class.java)
+            context.openActivity(WordpressFavoritesActivity::class.java)
         }
 
         setListContent(withProgress = true)

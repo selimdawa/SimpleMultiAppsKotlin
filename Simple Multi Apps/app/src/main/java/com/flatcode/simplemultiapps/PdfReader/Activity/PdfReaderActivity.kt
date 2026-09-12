@@ -48,7 +48,7 @@ import com.flatcode.simplemultiapps.utils.DATA
 import com.flatcode.simplemultiapps.utils.canWriteToDownloadFolder
 import com.flatcode.simplemultiapps.utils.createFileShareIntent
 import com.flatcode.simplemultiapps.utils.createPlainTextShareIntent
-import com.flatcode.simplemultiapps.utils.intent1
+import com.flatcode.simplemultiapps.utils.openActivity
 import com.flatcode.simplemultiapps.utils.writeBytesToFile
 import com.github.barteksc.pdfviewer.PDFView.Configurator
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
@@ -132,7 +132,7 @@ class PdfReaderActivity : AppCompatActivity() {
     private fun onFirstInstall() {
         val isFirstRun = prefManager!!.getBoolean(DATA.FIRST_INSTALL, true)
         if (isFirstRun) {
-            activity.intent1(PdfReaderIntroActivity::class.java)
+            activity.openActivity(PdfReaderIntroActivity::class.java)
             prefManager!!.edit {
                 putBoolean(DATA.FIRST_INSTALL, false)
             }

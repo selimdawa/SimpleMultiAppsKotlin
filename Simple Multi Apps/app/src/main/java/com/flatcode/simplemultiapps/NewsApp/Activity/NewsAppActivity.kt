@@ -103,7 +103,7 @@ class NewsAppActivity : AppCompatActivity(), SelectListener, View.OnClickListene
     }
 
     private fun showNews(list: List<NewsHeadlines?>?) {
-        adapter = NewsAppAdapter(context, list, this)
+        adapter = NewsAppAdapter(list, this)
         binding.recyclerView.adapter = adapter
     }
 
