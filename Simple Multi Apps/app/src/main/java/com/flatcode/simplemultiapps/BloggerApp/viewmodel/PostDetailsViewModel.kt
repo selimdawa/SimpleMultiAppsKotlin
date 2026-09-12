@@ -28,18 +28,20 @@ class PostDetailsViewModel(application: Application) : AndroidViewModel(applicat
         _loading.value = true
         repository.fetchPostDetails(postId, { postData ->
             _post.value = postData
-            _loading.value = false
+            loadComments(postId)
         }, { errorMsg ->
             _error.value = errorMsg
             _loading.value = false
         })
     }
 
-    fun loadComments(postId: String) {
+    private fun loadComments(postId: String) {
         repository.fetchComments(postId, { commentsList ->
             _comments.value = commentsList
+            _loading.value = false
         }, { errorMsg ->
             _error.value = errorMsg
+            _loading.value = false
         })
     }
 }

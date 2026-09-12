@@ -55,7 +55,6 @@ class PostDetailsActivity : AppCompatActivity() {
 
         if (viewModel.post.value == null) {
             viewModel.loadPostDetails(postId)
-            viewModel.loadComments(postId)
         }
     }
 
@@ -88,6 +87,10 @@ class PostDetailsActivity : AppCompatActivity() {
 
         viewModel.comments.observe(this) { comments ->
             binding.recyclerComments.adapter = CommentAdapter(context, ArrayList(comments))
+        }
+
+        viewModel.loading.observe(this) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
         viewModel.error.observe(this) { errorMsg ->

@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.littleapp.blogger.model.Post
+import com.flatcode.simplemultiapps.bloggerapp.model.Post
 import com.flatcode.simplemultiapps.bloggerapp.repository.BloggerRepository
-import com.littleapp.blogger.utils.DATA
+import com.flatcode.simplemultiapps.utils.DATA
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 

@@ -79,6 +79,10 @@ class PageDetailsActivity : AppCompatActivity() {
             binding.webView.loadDataWithBaseURL(null, styledContent, "text/html", "UTF-8", null)
         }
 
+        viewModel.loading.observe(this) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
         viewModel.error.observe(this) { errorMsg ->
             Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
         }
