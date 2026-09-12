@@ -67,13 +67,14 @@
                     android:textSize="21sp"
                     android:textStyle="bold" />
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10sp"
                     android:visibility="visible"
-                    app:cardCornerRadius="6sp">
+                    app:cardCornerRadius="6sp"
+                    app:strokeWidth="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -118,7 +119,7 @@
 
                     </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:id="@+id/detail"

@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         )
         adapter?.notifyItemRangeInserted(0, list.size)
 
-        binding.bar.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
         binding.recyclerView.visibility = View.VISIBLE
     }
 

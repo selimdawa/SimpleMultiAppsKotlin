@@ -49,8 +49,8 @@
 
                     <ProgressBar
                         android:id="@+id/loadMoreProgress"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_gravity="center"
                         android:indeterminateDrawable="@drawable/progress_bar"
                         android:visibility="gone" />
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/no_results"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorError"
             android:textSize="18sp"
             android:visibility="gone" />
 

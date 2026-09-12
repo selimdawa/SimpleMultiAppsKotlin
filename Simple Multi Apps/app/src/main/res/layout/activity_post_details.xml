@@ -27,26 +27,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="5sp"
+                android:layout_margin="8dp"
                 android:background="?attr/colorOnBackground"
                 android:orientation="vertical"
-                android:padding="5sp">
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5sp"
+                    android:layout_marginTop="8dp"
                     android:textColor="?attr/colorError"
-                    android:textSize="21sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/publishInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="5sp"
-                    android:textColor="@color/gray" />
+                    android:layout_marginVertical="8dp"
+                    android:textColor="@color/gray"
+                    android:textSize="14sp" />
 
                 <WebView
                     android:id="@+id/webView"
@@ -62,10 +63,11 @@
                     android:id="@+id/labelsTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5sp"
-                    android:layout_marginBottom="5sp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/labels"
-                    android:textColor="?attr/colorError" />
+                    android:textColor="?attr/colorError"
+                    android:textSize="14sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerLabels"
@@ -77,15 +79,16 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1sp"
+                    android:layout_height="1dp"
                     android:background="@color/gray_basic" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="5sp"
+                    android:layout_marginVertical="8dp"
                     android:text="@string/comments"
-                    android:textColor="?attr/colorError" />
+                    android:textColor="?attr/colorError"
+                    android:textSize="14sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerComments"
@@ -105,6 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/progress_bar"
             android:visibility="gone" />
 
     </FrameLayout>

@@ -1,5 +1,6 @@
 package com.flatcode.simplemultiapps.mainapp
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -8,9 +9,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.flatcode.simplemultiapps.utils.openActivity
 import com.flatcode.simplemultiapps.databinding.ActivitySplashBinding
+import com.flatcode.simplemultiapps.utils.openActivity
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
     private var _binding: ActivitySplashBinding? = null
