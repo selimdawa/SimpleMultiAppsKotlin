@@ -16,7 +16,7 @@ espressoCore = "3.7.0"
 appcompat = "1.8.0"
 material = "1.14.0"
 activity = "1.13.0"
-multicolors = "1.0.10"
+multicolors = "1.1.0"
 preferenceKtx = "1.2.1"
 retrofit = "3.0.0"
 swiperefreshlayout = "1.2.0"
@@ -47,7 +47,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
-multicolors = { module = "com.github.selimdawa:MultiColors", version.ref = "multicolors" }
+multicolors = { module = "io.github.selimdawa:multi-colors", version.ref = "multicolors" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 volley = { module = "com.android.volley:volley", version.ref = "volley" }
 

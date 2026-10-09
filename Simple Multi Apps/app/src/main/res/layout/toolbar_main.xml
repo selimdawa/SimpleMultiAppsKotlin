@@ -17,7 +17,8 @@
 
         <io.selimdawa.multicolors.MultiColorButton
             android:layout_width="30dp"
-            android:layout_height="30dp" />
+            android:layout_height="30dp"
+            app:mc_card_stroke_color="white" />
 
         <TextView
             android:id="@+id/nameSpace"
