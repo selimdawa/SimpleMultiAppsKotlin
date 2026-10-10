@@ -10,8 +10,8 @@ android {
         applicationId = "com.flatcode.simplemultiapps"
         minSdk = 24
         targetSdk = 37
-        versionCode = 8
-        versionName = "1.36"
+        versionCode = 9
+        versionName = "1.37"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
