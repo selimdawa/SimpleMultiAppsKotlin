@@ -54,6 +54,7 @@ class CandyCrushGameActivity : AppCompatActivity() {
         }
 
         binding.toolbar.nameSpace.text = getString(R.string.candy_crush_game)
+        binding.toolbarScore.scoreList.text = score.toString()
 
         widthOfScreen = run {
             val windowMetrics = windowManager.currentWindowMetrics
@@ -107,7 +108,7 @@ class CandyCrushGameActivity : AppCompatActivity() {
                 var x = i
                 if (candy[x++].tag as Int == chosenCandy && !isBlank && candy[x++].tag as Int == chosenCandy && candy[x].tag as Int == chosenCandy) {
                     score += 3
-                    binding.toolbarScore.scoreList.text = getString(R.string.score_label, score)
+                    binding.toolbarScore.scoreList.text = score.toString()
                     candy[x].setImageResource(notCandy)
                     candy[x].tag = notCandy
                     x--
@@ -129,7 +130,7 @@ class CandyCrushGameActivity : AppCompatActivity() {
             var x = i
             if (candy[x].tag as Int == chosenCandy && !isBlank && candy[x + noOfBlocks].tag as Int == chosenCandy && candy[x + 2 * noOfBlocks].tag as Int == chosenCandy) {
                 score += 3
-                binding.toolbarScore.scoreList.text = getString(R.string.score_label, score)
+                binding.toolbarScore.scoreList.text = score.toString()
                 candy[x].setImageResource(notCandy)
                 candy[x].tag = notCandy
                 x += noOfBlocks

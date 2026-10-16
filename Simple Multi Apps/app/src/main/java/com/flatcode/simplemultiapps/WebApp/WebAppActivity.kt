@@ -1,21 +1,17 @@
 package com.flatcode.simplemultiapps.webapp
 
-import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
@@ -47,10 +43,6 @@ class WebAppActivity : AppCompatActivity() {
         }
 
         binding.toolbar.nameSpace.setText(R.string.web_app)
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
-        }
 
         binding.webSite.setOnClickListener {
             context.openActivity(WebViewActivity::class.java) {
@@ -126,7 +118,7 @@ class WebAppActivity : AppCompatActivity() {
             }
 
             phoneImage.setOnClickListener {
-                val callIntent = Intent(Intent.ACTION_CALL).apply { data = "${DATA.TEL_SCHEME}${DATA.myMobileNumber}".toUri() }
+                val callIntent = Intent(Intent.ACTION_DIAL).apply { data = "${DATA.TEL_SCHEME}${DATA.myMobileNumber}".toUri() }
                 startActivity(callIntent)
             }
             show()
@@ -151,18 +143,6 @@ class WebAppActivity : AppCompatActivity() {
             startActivity(goToMarket)
         } catch (_: ActivityNotFoundException) {
             startActivity(Intent(Intent.ACTION_VIEW, DATA.mySite.toUri()))
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1) {
-            val message = if ((grantResults.isNotEmpty()) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                getString(R.string.permission_granted)
-            } else {
-                getString(R.string.permission_denied)
-            }
-            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
         }
     }
 
